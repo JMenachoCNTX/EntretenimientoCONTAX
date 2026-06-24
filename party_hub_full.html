@@ -1,0 +1,507 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif}
+:root{
+  --bg:#0f0f1a;--card:#1a1a2e;--card2:#16213e;
+  --accent:#e94560;--gold:#f0a500;--green:#00c48c;
+  --text:#eaeaea;--muted:#8888aa;--border:rgba(255,255,255,0.09);
+  --r:12px;
+}
+#app{background:var(--bg);color:var(--text);min-height:600px;font-size:14px;}
+nav{background:var(--card);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none}
+.nb{flex-shrink:0;background:none;border:none;color:var(--muted);font-size:11px;padding:10px 8px 8px;cursor:pointer;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .2s;}
+.nb.on{color:var(--accent);border-bottom-color:var(--accent);}
+.nb span{font-size:16px;}
+.pg{display:none;padding:14px 12px 60px;}
+.pg.on{display:block;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:12px;}
+.ct{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 16px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:700;transition:all .15s;}
+.bp{background:var(--accent);color:#fff;}
+.bp:hover{filter:brightness(1.15);}
+.bs{background:var(--card2);color:var(--text);border:1px solid var(--border);}
+.bg{background:var(--gold);color:#111;}
+.bsm{padding:6px 11px;font-size:12px;border-radius:8px;}
+.row{display:flex;gap:7px;align-items:center;}
+.row input{flex:1;}
+input,select{background:var(--card2);border:1px solid var(--border);border-radius:9px;color:var(--text);padding:9px 12px;font-size:13px;width:100%;outline:none;}
+input:focus{border-color:var(--accent);}
+.pill{background:#1e2a4a;color:var(--text);font-size:12px;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;}
+.pill button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0;}
+.pill button:hover{color:var(--accent);}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.oi{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
+.oi:last-child{border-bottom:none;}
+.oi span{flex:1;font-size:13px;}
+.ic{width:13px;height:13px;border-radius:3px;flex-shrink:0;}
+.xb{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 6px;}
+.xb:hover{color:var(--accent);}
+.ann{background:var(--accent);color:#fff;padding:10px 20px;border-radius:25px;font-size:14px;font-weight:700;text-align:center;margin:0 auto 12px;display:none;max-width:100%;}
+.ann.on{display:block;}
+.tab{flex:1;padding:7px 4px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--muted);cursor:pointer;font-size:12px;font-weight:700;text-align:center;transition:all .15s;}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tabs{display:flex;gap:5px;margin-bottom:12px;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+</style>
+
+<div id="app">
+<h2 class="sr-only">Party Hub — ruleta, dados, calendario, verdad o reto, top 10 y cronómetros</h2>
+<div class="ann" id="ann"></div>
+
+<nav>
+  <button class="nb on" onclick="go('mbr')" id="t-mbr"><span>👥</span>Equipo</button>
+  <button class="nb" onclick="go('rul')" id="t-rul"><span>🎡</span>Ruleta</button>
+  <button class="nb" onclick="go('cal')" id="t-cal"><span>📅</span>Días</button>
+  <button class="nb" onclick="go('dad')" id="t-dad"><span>🎲</span>Dados</button>
+  <button class="nb" onclick="go('cus')" id="t-cus"><span>🎯</span>D.Custom</button>
+  <button class="nb" onclick="go('tor')" id="t-tor"><span>🔥</span>V/Reto</button>
+  <button class="nb" onclick="go('top')" id="t-top"><span>🏆</span>Top 10</button>
+  <button class="nb" onclick="go('tmr')" id="t-tmr"><span>⏱</span>Tiempo</button>
+</nav>
+
+<!-- MEMBERS -->
+<div class="pg on" id="pg-mbr">
+  <div class="card">
+    <div class="ct">Integrantes del equipo</div>
+    <div class="pills" id="mpills"><span style="color:var(--muted);font-size:12px;">Sin integrantes aún</span></div>
+    <div class="row"><input id="mi" placeholder="Nombre..." onkeydown="if(event.key==='Enter')am()"/><button class="btn bp" onclick="am()">+</button></div>
+  </div>
+  <div class="card" style="text-align:center;padding:28px 16px;">
+    <div style="font-size:44px;margin-bottom:10px;">🎉</div>
+    <div style="font-size:20px;font-weight:800;margin-bottom:6px;">Party Hub</div>
+    <div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta · Calendario · Dados<br>Verdad o Reto · Top 10 · Cronómetro</div>
+    <div style="margin-top:12px;color:var(--muted);font-size:11px;">Todo guardado en este dispositivo</div>
+  </div>
+</div>
+
+<!-- RULETA -->
+<div class="pg" id="pg-rul">
+  <div class="card">
+    <div class="ct">Opciones</div>
+    <div id="ropts"></div>
+    <div class="row" style="margin-top:8px;"><input id="ri" placeholder="Nueva opción..." onkeydown="if(event.key==='Enter')aro()"/><button class="btn bp" onclick="aro()">+</button></div>
+    <div id="rim" style="margin-top:8px;"></div>
+  </div>
+  <canvas id="crul" width="320" height="320" style="display:block;margin:0 auto;max-width:100%;"></canvas>
+  <div style="text-align:center;margin:12px 0;">
+    <button class="btn bg" style="font-size:16px;padding:13px 36px;" onclick="spin()">🎡 GIRAR</button>
+  </div>
+  <div id="sres" style="text-align:center;padding:14px;border-radius:10px;background:var(--card2);font-size:17px;font-weight:700;min-height:54px;display:flex;align-items:center;justify-content:center;">Presiona GIRAR</div>
+</div>
+
+<!-- CALENDARIO -->
+<div class="pg" id="pg-cal">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div style="font-size:18px;font-weight:800;">📅 Calendario</div>
+    <div style="display:flex;gap:6px;">
+      <button class="xb" style="font-size:18px;" onclick="cm(-1)">‹</button>
+      <button class="xb" style="font-size:18px;" onclick="cm(1)">›</button>
+    </div>
+  </div>
+  <div class="card" style="padding:10px;">
+    <div style="text-align:center;font-weight:700;margin-bottom:8px;font-size:15px;" id="cml"></div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;" id="ch"></div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:3px;" id="cg"></div>
+  </div>
+  <div id="upc"></div>
+  <!-- modal inline -->
+  <div id="cmod" style="display:none;margin-top:10px;">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:15px;" id="cmod-title"></div>
+        <button class="xb" onclick="document.getElementById('cmod').style.display='none';renderCal()">✕</button>
+      </div>
+      <div id="tlist"></div>
+      <div class="row" style="margin-top:8px;"><input id="ti2" placeholder="Nueva actividad..."/><button class="btn bp bsm" onclick="at2()">+</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- DADOS -->
+<div class="pg" id="pg-dad">
+  <div class="card">
+    <div class="ct">Cantidad de dados</div>
+    <div style="display:flex;gap:7px;justify-content:center;" id="dcsel"></div>
+    <div id="dmbr" style="margin-top:10px;"></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:16px 0;min-height:110px;align-items:center;" id="darea"></div>
+  <div style="text-align:center;margin-bottom:12px;">
+    <button class="btn bg" style="font-size:16px;padding:13px 32px;" onclick="roll()">🎲 TIRAR</button>
+  </div>
+  <div id="dtot" style="display:none;" class="card" style="text-align:center;">
+    <div class="ct">Total</div>
+    <div id="dtv" style="font-size:34px;font-weight:800;color:var(--accent);text-align:center;"></div>
+  </div>
+</div>
+
+<!-- DADO CUSTOM -->
+<div class="pg" id="pg-cus">
+  <div class="card">
+    <div class="ct">Caras del dado (máx. 20)</div>
+    <div id="cflist"></div>
+    <div class="row" style="margin-top:8px;"><input id="cfi" placeholder="Nueva cara..." onkeydown="if(event.key==='Enter')acf()"/><button class="btn bp" onclick="acf()">+</button></div>
+    <div id="cdim" style="margin-top:8px;"></div>
+  </div>
+  <div id="cdie" onclick="rcd()" style="width:110px;height:110px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#111;margin:16px auto;cursor:pointer;text-align:center;padding:10px;word-break:break-word;">?</div>
+  <div style="text-align:center;margin-bottom:10px;">
+    <button class="btn bg" style="font-size:16px;padding:13px 32px;" onclick="rcd()">🎯 TIRAR</button>
+  </div>
+</div>
+
+<!-- VERDAD O RETO -->
+<div class="pg" id="pg-tor">
+  <div class="card">
+    <div class="ct">Agregar preguntas / retos</div>
+    <div class="tabs" id="tetabs">
+      <div class="tab on" onclick="torTab('truth')">💬 Verdades</div>
+      <div class="tab" onclick="torTab('dare')">🔥 Fuertes</div>
+      <div class="tab" onclick="torTab('mild')">😊 Suaves</div>
+    </div>
+    <div id="torlist"></div>
+    <div class="row" style="margin-top:8px;"><input id="tori" placeholder="Agregar..." onkeydown="if(event.key==='Enter')ator()"/><button class="btn bp" onclick="ator()">+</button></div>
+  </div>
+  <div class="card">
+    <div class="ct">Jugar</div>
+    <div id="tormbr" style="margin-bottom:8px;"></div>
+    <div class="tabs">
+      <div class="tab on" id="tp1" onclick="torPC('truth')">💬 Verdad</div>
+      <div class="tab" id="tp2" onclick="torPC('dare')">🔥 Fuerte</div>
+      <div class="tab" id="tp3" onclick="torPC('mild')">😊 Suave</div>
+    </div>
+    <div id="torbox" style="min-height:90px;border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;text-align:center;margin:10px 0;background:rgba(37,99,235,.15);color:#7bb3ff;border:1px solid rgba(37,99,235,.25);">Elige categoría y presiona</div>
+    <button class="btn bp" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">🎲 ELEGIR</button>
+  </div>
+</div>
+
+<!-- TOP 10 -->
+<div class="pg" id="pg-top">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div style="font-size:18px;font-weight:800;">🏆 Top 10 Shots</div>
+    <button class="btn bs bsm" onclick="if(confirm('¿Reiniciar?')){top10.forEach(p=>p.c=0);sv('t10',top10);rTop()}">Reset</button>
+  </div>
+  <div class="card">
+    <div class="row"><input id="tni" placeholder="Agregar persona..." onkeydown="if(event.key==='Enter')atp()"/><button class="btn bp" onclick="atp()">+</button></div>
+    <div style="margin-top:8px;"><button class="btn bs bsm" onclick="impMbTop()">📥 Importar equipo</button></div>
+  </div>
+  <div id="toplist"></div>
+</div>
+
+<!-- TIMER -->
+<div class="pg" id="pg-tmr">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div style="font-size:18px;font-weight:800;">⏱ Cronómetros</div>
+  </div>
+  <div class="card">
+    <div class="row">
+      <input id="tnm" placeholder="Nombre..." style="flex:2;"/>
+      <input id="tmn" type="number" placeholder="min" style="width:60px;" min="0" max="99"/>
+      <input id="tsc" type="number" placeholder="seg" style="width:60px;" min="0" max="59"/>
+      <button class="btn bp bsm" onclick="addTmr()">+</button>
+    </div>
+    <div style="margin-top:8px;"><button class="btn bs bsm" onclick="impMbTmr()">📥 Importar equipo</button></div>
+  </div>
+  <div id="tmrlist"></div>
+</div>
+</div>
+
+<script>
+const COLS=['#e94560','#0f3460','#f0a500','#00c48c','#7c3aed','#e74c3c','#2980b9','#27ae60','#8e44ad','#f39c12','#16a085','#c0392b'];
+const MNAMES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DNAMES=['D','L','M','X','J','V','S'];
+const DFACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+
+function sv(k,v){try{localStorage.setItem('ph_'+k,JSON.stringify(v));}catch(e){}}
+function lv(k,d){try{const v=localStorage.getItem('ph_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
+
+let members=lv('mbr',[]);
+let rOpts=lv('rul',['Opción A','Opción B','Opción C']);
+let calTasks=lv('cal',{});
+let cFaces=lv('cus',['Cara A','Cara B','Cara C','Cara D','Cara E','Cara F']);
+let torD=lv('tor',{truth:['¿Cuál es tu mayor secreto?','¿A quién le tienes envidia?','¿Cuál fue tu peor mentira?'],dare:['Haz 10 sentadillas','Imita a alguien del grupo','Toma un shot'],mild:['Muestra la última foto de tu galería','Di un halago','Baila 10 segundos']});
+let top10=lv('t10',[]);
+let tmrs=lv('tmrs',[]);
+let torEC='truth',torPC2='truth';
+let dc=1,wAngle=0,wSpin=false;
+let calY,calM,selDate=null;
+let tInts={};
+
+function ann(msg){const el=document.getElementById('ann');el.textContent=msg;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),3000);}
+
+function go(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.getElementById('t-'+id).classList.add('on');
+  if(id==='rul'){rROpts();rWheel();}
+  if(id==='cal')renderCal();
+  if(id==='dad'){rDice();rDmbr();}
+  if(id==='cus'){rCF();rCDim();}
+  if(id==='tor'){rTorList();rTorMbr();}
+  if(id==='top')rTop();
+  if(id==='tmr')rTmrs();
+  if(id==='mbr')rMbr();
+}
+
+// MEMBERS
+function rMbr(){
+  const el=document.getElementById('mpills');
+  el.innerHTML=members.length?members.map((m,i)=>`<div class="pill">${m}<button onclick="rmMbr(${i})">×</button></div>`).join(''):'<span style="color:var(--muted);font-size:12px;">Sin integrantes</span>';
+}
+function am(){const inp=document.getElementById('mi');const v=inp.value.trim();if(!v)return;members.push(v);sv('mbr',members);inp.value='';rMbr();updImps();}
+function rmMbr(i){members.splice(i,1);sv('mbr',members);rMbr();updImps();}
+function updImps(){
+  const ri=document.getElementById('rim');if(ri&&members.length)ri.innerHTML=`<button class="btn bs bsm" onclick="impMbRul()">📥 Importar equipo a ruleta</button>`;else if(ri)ri.innerHTML='';
+  const di=document.getElementById('cdim');if(di&&members.length)di.innerHTML=`<button class="btn bs bsm" onclick="impMbCus()">📥 Importar equipo al dado</button>`;else if(di)di.innerHTML='';
+}
+function impMbRul(){members.forEach(m=>{if(!rOpts.includes(m))rOpts.push(m);});sv('rul',rOpts);rROpts();rWheel();}
+function impMbCus(){members.forEach(m=>{if(!cFaces.includes(m))cFaces.push(m);});sv('cus',cFaces);rCF();}
+function impMbTop(){members.forEach(m=>{if(!top10.find(p=>p.n===m))top10.push({n:m,c:0});});sv('t10',top10);rTop();}
+function impMbTmr(){const mn=parseInt(document.getElementById('tmn').value)||1;const sc=parseInt(document.getElementById('tsc').value)||0;const tot=mn*60+sc||60;members.forEach(m=>{if(!tmrs.find(t=>t.n===m))tmrs.push({n:m,tot,rem:tot,run:false,done:false});});sv('tmrs',tmrs);rTmrs();}
+function rDmbr(){const el=document.getElementById('dmbr');if(!el)return;if(!members.length){el.innerHTML='';return;}el.innerHTML=`<div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Turno de:</div><div style="display:flex;flex-wrap:wrap;gap:5px;">${members.map(m=>`<button class="btn bs bsm" onclick="ann('🎲 Turno de ${m}!')">${m}</button>`).join('')}</div>`;}
+function rTorMbr(){const el=document.getElementById('tormbr');if(!el)return;if(!members.length){el.innerHTML='';return;}el.innerHTML=`<div style="font-size:11px;color:var(--muted);margin-bottom:5px;">Turno de:</div><div style="display:flex;flex-wrap:wrap;gap:5px;">${members.map(m=>`<button class="btn bs bsm" onclick="ann('🔥 Turno de ${m}!')">${m}</button>`).join('')}</div>`;}
+function rCDim(){const el=document.getElementById('cdim');if(!el)return;if(members.length)el.innerHTML=`<button class="btn bs bsm" onclick="impMbCus()">📥 Importar equipo al dado</button>`;else el.innerHTML='';}
+
+// RULETA
+function rROpts(){
+  const el=document.getElementById('ropts');
+  if(!rOpts.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin opciones.</div>';return;}
+  el.innerHTML=rOpts.map((o,i)=>`<div class="oi"><div class="ic" style="background:${COLS[i%COLS.length]}"></div><span>${o}</span><button class="xb" onclick="rmRO(${i})">🗑</button></div>`).join('');
+  updImps();
+}
+function aro(){const inp=document.getElementById('ri');const v=inp.value.trim();if(!v)return;rOpts.push(v);sv('rul',rOpts);inp.value='';rROpts();rWheel();}
+function rmRO(i){rOpts.splice(i,1);sv('rul',rOpts);rROpts();rWheel();}
+function rWheel(){
+  const c=document.getElementById('crul');const ctx=c.getContext('2d');
+  const W=320,H=320,cx=160,cy=160,r=148;
+  ctx.clearRect(0,0,W,H);
+  const n=rOpts.length;
+  if(!n){ctx.fillStyle='#222';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();return;}
+  const arc=2*Math.PI/n;
+  for(let i=0;i<n;i++){
+    const s=wAngle+arc*i;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,s+arc);
+    ctx.fillStyle=COLS[i%COLS.length];ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.25)';ctx.lineWidth=1;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);
+    const txt=rOpts[i].length>13?rOpts[i].substring(0,12)+'…':rOpts[i];
+    ctx.fillStyle='#fff';ctx.font='bold 12px system-ui';ctx.textAlign='right';ctx.fillText(txt,r-8,4);
+    ctx.restore();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,16,0,Math.PI*2);ctx.fillStyle='#111';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fillStyle='#f0a500';ctx.fill();
+  ctx.beginPath();ctx.moveTo(W-6,cy);ctx.lineTo(W-24,cy-9);ctx.lineTo(W-24,cy+9);ctx.closePath();ctx.fillStyle='#fff';ctx.fill();
+}
+function spin(){
+  if(wSpin||rOpts.length<2){ann('Agrega al menos 2 opciones');return;}
+  wSpin=true;document.getElementById('sres').textContent='Girando...';
+  const extra=Math.PI*2*(5+Math.random()*5);const dur=3000+Math.random()*1500;
+  const start=performance.now();const from=wAngle;
+  function frame(now){
+    const t=Math.min((now-start)/dur,1);const ease=1-Math.pow(1-t,4);
+    wAngle=from+extra*ease;rWheel();
+    if(t<1){requestAnimationFrame(frame);}else{
+      wAngle=(from+extra)%(Math.PI*2);rWheel();wSpin=false;
+      const n=rOpts.length;const arc=Math.PI*2/n;
+      const ptr=((Math.PI*2)-wAngle%(Math.PI*2))%(Math.PI*2);
+      const winner=rOpts[Math.floor(ptr/arc)%n];
+      document.getElementById('sres').textContent='🎉 '+winner;ann('🎉 '+winner);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+// CALENDAR
+function initCal(){const d=new Date();calY=d.getFullYear();calM=d.getMonth();}
+function cm(d){calM+=d;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderCal();}
+function renderCal(){
+  document.getElementById('cml').textContent=MNAMES[calM]+' '+calY;
+  document.getElementById('ch').innerHTML=DNAMES.map(d=>`<div style="text-align:center;font-size:10px;color:var(--muted);font-weight:700;padding:4px 0;">${d}</div>`).join('');
+  const first=new Date(calY,calM,1).getDay();
+  const days=new Date(calY,calM+1,0).getDate();
+  const prev=new Date(calY,calM,0).getDate();
+  const today=new Date();
+  let html='';
+  for(let i=0;i<first;i++){html+=`<div style="aspect-ratio:1;border-radius:7px;opacity:.3;border:1px solid var(--border);display:flex;align-items:flex-start;justify-content:center;padding:3px;font-size:10px;">${prev-first+1+i}</div>`;}
+  for(let d=1;d<=days;d++){
+    const k=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const ts=calTasks[k]||[];
+    const isT=d===today.getDate()&&calM===today.getMonth()&&calY===today.getFullYear();
+    html+=`<div onclick="openDay('${k}',${d})" style="aspect-ratio:1;border-radius:7px;border:1px solid ${isT?'var(--accent)':ts.length?'rgba(0,196,140,.4)':'var(--border)'};background:${isT?'rgba(233,69,96,.12)':ts.length?'rgba(0,196,140,.07)':'transparent'};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:3px;font-size:11px;font-weight:${isT?'700':'400'};">
+      ${d}${ts.length?`<div style="width:5px;height:5px;border-radius:50%;background:var(--green);margin-top:2px;"></div>`:''}
+    </div>`;
+  }
+  const rem=(7-((first+days)%7))%7;
+  for(let i=1;i<=rem;i++){html+=`<div style="aspect-ratio:1;border-radius:7px;opacity:.3;border:1px solid var(--border);display:flex;align-items:flex-start;justify-content:center;padding:3px;font-size:10px;">${i}</div>`;}
+  document.getElementById('cg').innerHTML=html;
+  rUpcoming();
+}
+function openDay(k,d){
+  selDate=k;
+  document.getElementById('cmod-title').textContent=d+' de '+MNAMES[calM];
+  document.getElementById('cmod').style.display='block';
+  rTList();
+}
+function rTList(){
+  const ts=calTasks[selDate]||[];
+  const el=document.getElementById('tlist');
+  if(!ts.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;text-align:center;padding:8px;">Sin actividades</div>';return;}
+  el.innerHTML=ts.map((t,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>${t}</span><button class="xb" onclick="rmT(${i})">🗑</button></div>`).join('');
+}
+function at2(){const inp=document.getElementById('ti2');const v=inp.value.trim();if(!v)return;if(!calTasks[selDate])calTasks[selDate]=[];calTasks[selDate].push(v);sv('cal',calTasks);inp.value='';rTList();}
+function rmT(i){calTasks[selDate].splice(i,1);if(!calTasks[selDate].length)delete calTasks[selDate];sv('cal',calTasks);rTList();}
+function rUpcoming(){
+  const now=new Date();now.setHours(0,0,0,0);
+  const items=Object.entries(calTasks).filter(([k])=>new Date(k)>=now).sort(([a],[b])=>a.localeCompare(b)).slice(0,4);
+  const el=document.getElementById('upc');
+  if(!items.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="card" style="margin-top:10px;"><div class="ct">Próximas actividades</div>${items.map(([k,ts])=>`<div style="margin-bottom:7px;"><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">${k}</div>${ts.map(t=>`<div style="font-size:13px;padding:2px 0;border-bottom:1px solid var(--border);">${t}</div>`).join('')}</div>`).join('')}</div>`;
+}
+
+// DADOS
+function rDice(){
+  const a=document.getElementById('darea');
+  a.innerHTML=Array.from({length:dc},(_,i)=>`<div id="d${i}" onclick="roll()" style="width:72px;height:72px;background:#fff;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer;transition:transform .1s;">⚀</div>`).join('');
+  const s=document.getElementById('dcsel');
+  s.innerHTML=[1,2,3,4,5].map(n=>`<button onclick="setDC(${n})" style="width:40px;height:40px;border-radius:9px;border:2px solid ${dc===n?'var(--accent)':'var(--border)'};background:${dc===n?'rgba(233,69,96,.15)':'var(--card2)'};color:${dc===n?'var(--accent)':'var(--text)'};font-size:16px;font-weight:800;cursor:pointer;">${n}</button>`).join('');
+}
+function setDC(n){dc=n;rDice();}
+function roll(){
+  document.getElementById('dtot').style.display='block';
+  let tot=0;
+  for(let i=0;i<dc;i++){
+    const d=document.getElementById('d'+i);
+    d.style.animation='none';void d.offsetWidth;
+    d.style.animation='shake .4s ease';
+    const val=Math.floor(Math.random()*6);
+    setTimeout(()=>{d.textContent=DFACES[val];},400);
+    tot+=Math.floor(Math.random()*6)+1;
+  }
+  setTimeout(()=>{document.getElementById('dtv').textContent=tot;},420);
+}
+
+// DADO CUSTOM
+function rCF(){
+  const el=document.getElementById('cflist');
+  if(!cFaces.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin caras.</div>';return;}
+  el.innerHTML=cFaces.map((f,i)=>`<div class="oi"><span>${f}</span><button class="xb" onclick="rmCF(${i})">🗑</button></div>`).join('');
+  rCDim();
+}
+function acf(){if(cFaces.length>=20){ann('Máximo 20 caras');return;}const inp=document.getElementById('cfi');const v=inp.value.trim();if(!v)return;cFaces.push(v);sv('cus',cFaces);inp.value='';rCF();}
+function rmCF(i){cFaces.splice(i,1);sv('cus',cFaces);rCF();}
+function rcd(){
+  if(cFaces.length<2){ann('Agrega al menos 2 caras');return;}
+  const d=document.getElementById('cdie');
+  d.textContent='?';d.style.animation='none';void d.offsetWidth;d.style.animation='shake .4s ease';
+  setTimeout(()=>{const v=cFaces[Math.floor(Math.random()*cFaces.length)];d.textContent=v;ann('🎯 '+v);},400);
+}
+
+// VERDAD O RETO
+function torTab(c){
+  torEC=c;
+  document.querySelectorAll('#tetabs .tab').forEach((t,i)=>{t.classList.toggle('on',['truth','dare','mild'][i]===c);});
+  rTorList();
+}
+function rTorList(){
+  const items=torD[torEC]||[];
+  const el=document.getElementById('torlist');
+  if(!items.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin elementos.</div>';return;}
+  el.innerHTML=items.map((t,i)=>`<div class="oi"><span style="font-size:12px;">${t}</span><button class="xb" onclick="rmTor(${i})">🗑</button></div>`).join('');
+}
+function ator(){const inp=document.getElementById('tori');const v=inp.value.trim();if(!v)return;torD[torEC].push(v);sv('tor',torD);inp.value='';rTorList();}
+function rmTor(i){torD[torEC].splice(i,1);sv('tor',torD);rTorList();}
+function torPC(c){
+  torPC2=c;
+  ['truth','dare','mild'].forEach((x,i)=>{document.getElementById('tp'+(i+1)).classList.toggle('on',x===c);});
+  const box=document.getElementById('torbox');
+  if(c==='truth'){box.style.background='rgba(37,99,235,.15)';box.style.color='#7bb3ff';box.style.borderColor='rgba(37,99,235,.25)';}
+  else if(c==='dare'){box.style.background='rgba(233,69,96,.15)';box.style.color='#f87a8a';box.style.borderColor='rgba(233,69,96,.25)';}
+  else{box.style.background='rgba(0,196,140,.12)';box.style.color='#00c48c';box.style.borderColor='rgba(0,196,140,.22)';}
+}
+function pickTor(){
+  const items=torD[torPC2]||[];
+  if(!items.length){ann('Sin elementos en esta categoría');return;}
+  document.getElementById('torbox').textContent=items[Math.floor(Math.random()*items.length)];
+}
+
+// TOP 10
+function atp(){const inp=document.getElementById('tni');const v=inp.value.trim();if(!v)return;if(top10.find(p=>p.n===v)){ann('Ya existe');return;}top10.push({n:v,c:0});sv('t10',top10);inp.value='';rTop();}
+function chC(i,d){const orig=top10.findIndex((_,j)=>j===i);top10[orig].c=Math.max(0,top10[orig].c+d);sv('t10',top10);rTop();}
+function rTop(){
+  const sorted=[...top10].map((p,i)=>({...p,oi:i})).sort((a,b)=>b.c-a.c).slice(0,10);
+  const el=document.getElementById('toplist');
+  if(!sorted.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Agrega personas</div>';return;}
+  el.innerHTML=sorted.map((p,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--card);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;">
+      <div style="font-size:16px;font-weight:800;min-width:28px;color:${i===0?'#f0a500':i===1?'#ccc':i===2?'#cd7f32':'var(--muted)'};">${['🥇','🥈','🥉'][i]||'#'+(i+1)}</div>
+      <div style="flex:1;font-weight:700;font-size:14px;">${p.n}</div>
+      <button onclick="chC(${p.oi},-1)" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;">−</button>
+      <div style="font-size:22px;font-weight:800;color:var(--accent);min-width:32px;text-align:center;">${p.c}</div>
+      <button onclick="chC(${p.oi},1)" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;">+</button>
+      <button class="xb" onclick="top10.splice(${p.oi},1);sv('t10',top10);rTop()">🗑</button>
+    </div>`).join('');
+}
+
+// TIMERS
+function ft(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function addTmr(){
+  const n=document.getElementById('tnm').value.trim()||'Cronómetro';
+  const mn=parseInt(document.getElementById('tmn').value)||0;
+  const sc=parseInt(document.getElementById('tsc').value)||0;
+  const tot=mn*60+sc;
+  if(!tot){ann('Ingresa un tiempo');return;}
+  tmrs.push({n,tot,rem:tot,run:false,done:false});
+  sv('tmrs',tmrs);
+  document.getElementById('tnm').value='';
+  document.getElementById('tmn').value='';
+  document.getElementById('tsc').value='';
+  rTmrs();
+}
+function togTmr(i){
+  if(tmrs[i].done)return;
+  if(tmrs[i].run){clearInterval(tInts[i]);tmrs[i].run=false;}
+  else{
+    tmrs[i].run=true;
+    tInts[i]=setInterval(()=>{
+      tmrs[i].rem--;
+      if(tmrs[i].rem<=0){tmrs[i].rem=0;tmrs[i].run=false;tmrs[i].done=true;clearInterval(tInts[i]);ann('⏰ '+tmrs[i].n+' — ¡Tiempo!');}
+      sv('tmrs',tmrs);updTmr(i);
+    },1000);
+  }
+  sv('tmrs',tmrs);updTmr(i);
+}
+function resTmr(i){clearInterval(tInts[i]);delete tInts[i];tmrs[i].rem=tmrs[i].tot;tmrs[i].run=false;tmrs[i].done=false;sv('tmrs',tmrs);updTmr(i);}
+function updTmr(i){
+  const d=document.getElementById('td-'+i);
+  const b=document.getElementById('tb-'+i);
+  if(!d)return;
+  const t=tmrs[i];
+  d.textContent=ft(t.rem);
+  d.style.color=t.done?'var(--green)':'var(--accent)';
+  if(b)b.textContent=t.done?'✓ Listo':t.run?'⏸ Pausa':'▶ Inicio';
+}
+function rTmrs(){
+  const el=document.getElementById('tmrlist');
+  if(!tmrs.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Agrega un cronómetro</div>';return;}
+  el.innerHTML=tmrs.map((t,i)=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px;">${t.n}</div>
+      <div id="td-${i}" style="font-size:44px;font-weight:800;color:${t.done?'var(--green)':'var(--accent)'};line-height:1;font-variant-numeric:tabular-nums;">${ft(t.rem)}</div>
+      <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;">
+        <button class="btn bp" id="tb-${i}" onclick="togTmr(${i})">${t.done?'✓ Listo':t.run?'⏸ Pausa':'▶ Inicio'}</button>
+        <button class="btn bs" onclick="resTmr(${i})">↺ Reset</button>
+        <button class="xb" onclick="clearInterval(tInts[${i}]);tmrs.splice(${i},1);sv('tmrs',tmrs);rTmrs()">🗑</button>
+      </div>
+    </div>`).join('');
+  tmrs.forEach((t,i)=>{if(t.run&&!tInts[i])togTmr(i);});
+}
+
+// SHAKE ANIM
+const sty=document.createElement('style');
+sty.textContent='@keyframes shake{0%,100%{transform:rotate(0)scale(1)}20%{transform:rotate(-12deg)scale(1.1)}40%{transform:rotate(12deg)scale(1.1)}60%{transform:rotate(-8deg)scale(1.05)}80%{transform:rotate(8deg)scale(1.05)}}';
+document.head.appendChild(sty);
+
+// INIT
+initCal();rMbr();rWheel();updImps();
+</script>
