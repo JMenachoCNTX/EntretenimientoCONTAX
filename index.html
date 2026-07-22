@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Party Hub</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --card2: #16213e;
+    --accent: #e94560;
+    --accent2: #0f3460;
+    --gold: #f0a500;
+    --text: #eaeaea;
+    --muted: #8888aa;
+    --border: rgba(255,255,255,0.08);
+    --radius: 16px;
+    --green: #00c48c;
+    --purple: #7c3aed;
+    --blue: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+  
+  /* NAV */
+  nav { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 900px; margin: 0 auto; padding: 0 12px; display: flex; overflow-x: auto; gap: 4px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { flex-shrink: 0; background: none; border: none; color: var(--muted); font-size: 12px; padding: 12px 10px 10px; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .nav-btn span { font-size: 18px; }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-btn:hover { color: var(--text); }
+
+  /* PAGES */
+  .page { display: none; max-width: 700px; margin: 0 auto; padding: 20px 14px 80px; }
+  .page.active { display: block; }
+
+  /* CARDS */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: all .15s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.15); }
+  .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-gold { background: var(--gold); color: #111; }
+  .btn-green { background: var(--green); color: #111; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 8px; }
+  .btn-icon { padding: 7px; border-radius: 8px; background: var(--card2); border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-size: 14px; }
+  .btn-icon:hover { color: var(--accent); }
+
+  /* INPUTS */
+  input[type=text], input[type=number], select, textarea {
+    background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+    padding: 10px 14px; font-size: 14px; width: 100%; outline: none; transition: border .2s;
+  }
+  input[type=text]:focus, input[type=number]:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--card); }
+
+  /* MEMBERS BAR */
+  .member-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .member-pill { background: var(--accent2); color: var(--text); font-size: 12px; padding: 4px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+  .member-pill button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+  .member-pill button:hover { color: var(--accent); }
+
+  .flex-row { display: flex; gap: 8px; align-items: center; }
+  .flex-row input { flex: 1; }
+  .tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+  .tag-red { background: rgba(233,69,96,.2); color: #f87; }
+  .tag-green { background: rgba(0,196,140,.2); color: var(--green); }
+  .tag-gold { background: rgba(240,165,0,.2); color: var(--gold); }
+
+  /* =================== RULETA =================== */
+  #canvas-ruleta { display: block; margin: 0 auto; max-width: 100%; }
+  .option-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .option-item:last-child { border-bottom: none; }
+  .option-item span { flex: 1; font-size: 14px; }
+  .option-color { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .spin-result { text-align: center; padding: 16px; border-radius: 12px; background: var(--accent2); margin-top: 14px; font-size: 18px; font-weight: 700; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+
+  /* =================== CALENDARIO =================== */
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-header { text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; padding: 6px 0; }
+  .cal-day { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 4px 2px; font-size: 12px; transition: all .15s; position: relative; overflow: hidden; }
+  .cal-day:hover { border-color: var(--accent); }
+  .cal-day.today { border-color: var(--accent); background: rgba(233,69,96,.1); }
+  .cal-day.has-task { background: rgba(0,196,140,.08); border-color: rgba(0,196,140,.3); }
+  .cal-day.other-month { opacity: .35; }
+  .cal-day .day-num { font-size: 11px; font-weight: 600; }
+  .cal-day .task-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); margin-top: 2px; }
+  .task-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+  .task-modal.open { display: flex; }
+  .task-modal-inner { background: var(--card); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 380px; border: 1px solid var(--border); }
+  .task-list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+  /* =================== DADOS =================== */
+  .dice-area { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; padding: 20px 0; min-height: 120px; align-items: center; }
+  .die { width: 80px; height: 80px; background: #fff; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 42px; box-shadow: 0 4px 16px rgba(0,0,0,.5); transition: transform .1s; cursor: pointer; }
+  .die:hover { transform: scale(1.08); }
+  .die.rolling { animation: shake .4s ease; }
+  @keyframes shake {
+    0%,100%{transform:rotate(0deg) scale(1)}
+    20%{transform:rotate(-10deg) scale(1.1)}
+    40%{transform:rotate(10deg) scale(1.1)}
+    60%{transform:rotate(-8deg) scale(1.05)}
+    80%{transform:rotate(8deg) scale(1.05)}
+  }
+  .dice-count-sel { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .dice-count-btn { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--border); background: var(--card2); color: var(--text); font-size: 18px; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .dice-count-btn.active { border-color: var(--accent); background: rgba(233,69,96,.15); color: var(--accent); }
+
+  /* =================== DADO CUSTOM =================== */
+  .custom-die-display { width: 120px; height: 120px; background: linear-gradient(135deg,#fff 0%,#f0f0f0 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #111; margin: 20px auto; box-shadow: 0 6px 24px rgba(0,0,0,.5); cursor: pointer; text-align: center; padding: 12px; word-break: break-word; transition: transform .1s; }
+  .custom-die-display:hover { transform: scale(1.05); }
+  .custom-die-display.rolling { animation: shake .4s ease; }
+
+  /* =================== VERDAD O RETO =================== */
+  .tor-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tor-tab { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--card2); color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 600; text-align: center; transition: all .15s; }
+  .tor-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tor-result-box { min-height: 100px; border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; text-align: center; margin: 14px 0; }
+  .tor-truth { background: rgba(37,99,235,.2); color: #7bb3ff; border: 1px solid rgba(37,99,235,.3); }
+  .tor-dare { background: rgba(233,69,96,.2); color: #f87a8a; border: 1px solid rgba(233,69,96,.3); }
+  .tor-mild { background: rgba(0,196,140,.15); color: var(--green); border: 1px solid rgba(0,196,140,.25); }
+
+  /* =================== TOP 10 =================== */
+  .top-list { display: flex; flex-direction: column; gap: 8px; }
+  .top-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); }
+  .top-rank { font-size: 18px; font-weight: 800; min-width: 32px; color: var(--muted); }
+  .top-rank.r1 { color: var(--gold); }
+  .top-rank.r2 { color: #ccc; }
+  .top-rank.r3 { color: #cd7f32; }
+  .top-name { flex: 1; font-weight: 600; font-size: 15px; }
+  .top-count { font-size: 24px; font-weight: 800; color: var(--accent); min-width: 36px; text-align: right; }
+  .count-controls { display: flex; gap: 4px; align-items: center; }
+  .count-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: all .15s; }
+  .count-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* =================== CRONÓMETRO =================== */
+  .timer-card { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+  .timer-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .timer-display { font-size: 48px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--accent); line-height: 1; }
+  .timer-display.done { color: var(--green); }
+  .timer-controls { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .timer-setup { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .timer-setup input { width: 70px; }
+
+  /* MISC */
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .section-title { font-size: 20px; font-weight: 800; }
+  .empty-state { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; }
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+  .result-announce { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 30px; font-size: 16px; font-weight: 700; z-index: 300; opacity: 0; transition: opacity .3s; pointer-events: none; max-width: 90%; text-align: center; }
+  .result-announce.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="result-announce" id="announce"></div>
+
+<!-- TASK MODAL -->
+<div class="task-modal" id="taskModal">
+  <div class="task-modal-inner">
+    <h3 id="modalDateTitle" style="margin-bottom:14px;font-size:16px;"></h3>
+    <div id="taskListEl"></div>
+    <div class="flex-row" style="margin-top:12px;">
+      <input type="text" id="taskInput" placeholder="Nueva actividad..." />
+      <button class="btn btn-primary btn-sm" onclick="addTask()">+</button>
+    </div>
+    <button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="goPage('members')" id="tab-members"><span>👥</span>Equipo</button>
+    <button class="nav-btn" onclick="goPage('ruleta')" id="tab-ruleta"><span>🎡</span>Ruleta</button>
+    <button class="nav-btn" onclick="goPage('calendar')" id="tab-calendar"><span>📅</span>Calendario</button>
+    <button class="nav-btn" onclick="goPage('dados')" id="tab-dados"><span>🎲</span>Dados</button>
+    <button class="nav-btn" onclick="goPage('dador')" id="tab-dador"><span>🎯</span>Dado Custom</button>
+    <button class="nav-btn" onclick="goPage('tor')" id="tab-tor"><span>🔥</span>Verdad/Reto</button>
+    <button class="nav-btn" onclick="goPage('top10')" id="tab-top10"><span>🏆</span>Top 10</button>
+    <button class="nav-btn" onclick="goPage('timer')" id="tab-timer"><span>⏱️</span>Cronómetro</button>
+  </div>
+</nav>
+
+<!-- =================== MEMBERS PAGE =================== -->
+<div class="page active" id="page-members">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">👥 Integrantes</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Equipo (opcional para todos los juegos)</div>
+    <div class="member-pills" id="memberPills"></div>
+    <div class="flex-row">
+      <input type="text" id="memberInput" placeholder="Nombre del integrante..." onkeydown="if(event.key==='Enter')addMember()" />
+      <button class="btn btn-primary" onclick="addMember()">Agregar</button>
+    </div>
+  </div>
+  <div class="card" style="text-align:center;padding:30px 20px;">
+    <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+    <div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div>
+    <div style="color:var(--muted);font-size:14px;line-height:1.6;">Ruleta · Calendario · Dados · Verdad o Reto<br>Top 10 de shots · Cronómetro</div>
+    <div style="margin-top:16px;color:var(--muted);font-size:12px;">Agrega integrantes arriba para usarlos en todos los juegos</div>
+  </div>
+</div>
+
+<!-- =================== RULETA PAGE =================== -->
+<div class="page" id="page-ruleta">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🎡 Ruleta</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Opciones de la ruleta</div>
+    <div id="ruletaOptions"></div>
+    <div class="flex-row" style="margin-top:10px;">
+      <input type="text" id="ruletaInput" placeholder="Nueva opción..." onkeydown="if(event.key==='Enter')addRuletaOption()" />
+      <button class="btn btn-primary" onclick="addRuletaOption()">+</button>
+    </div>
+    <div id="memberImportRuleta" style="margin-top:10px;"></div>
+  </div>
+
+  <canvas id="canvas-ruleta" width="340" height="340"></canvas>
+
+  <div style="text-align:center;margin:14px 0;">
+    <button class="btn btn-gold" style="font-size:18px;padding:14px 40px;" onclick="spinWheel()">🎡 GIRAR</button>
+  </div>
+  <div class="spin-result" id="spinResult">Presiona GIRAR para empezar</div>
+</div>
+
+<!-- =================== CALENDAR PAGE =================== -->
+<div class="page" id="page-calendar">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">📅 Calendario</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon" onclick="changeMonth(-1)">‹</button>
+      <button class="btn-icon" onclick="changeMonth(1)">›</button>
+    </div>
+  </div>
+  <div class="card" style="padding:12px;">
+    <div style="text-align:center;font-weight:700;margin-bottom:10px;font-size:16px;" id="calMonthLabel"></div>
+    <div class="calendar-grid" id="calHeaders"></div>
+    <div class="calendar-grid" id="calGrid" style="margin-top:6px;gap:3px;"></div>
+  </div>
+  <div id="upcomingTasks" style="margin-top:6px;"></div>
+</div>
+
+<!-- =================== DADOS PAGE =================== -->
+<div class="page" id="page-dados">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🎲 Dados</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Cantidad de dados</div>
+    <div class="dice-count-sel" id="diceCountSel"></div>
+    <div id="memberPickDados" style="margin-top:12px;"></div>
+  </div>
+  <div class="dice-area" id="diceArea"></div>
+  <div style="text-align:center;margin:10px 0 16px;">
+    <button class="btn btn-gold" style="font-size:18px;padding:14px 36px;" onclick="rollDice()">🎲 TIRAR</button>
+  </div>
+  <div class="card" id="dadosTotalCard" style="display:none;text-align:center;">
+    <div class="card-title">Total</div>
+    <div id="dadosTotal" style="font-size:36px;font-weight:800;color:var(--accent);"></div>
+  </div>
+</div>
+
+<!-- =================== DADO CUSTOM PAGE =================== -->
+<div class="page" id="page-dador">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🎯 Dado Custom</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Caras del dado (máx. 20)</div>
+    <div id="customFaceList"></div>
+    <div class="flex-row" style="margin-top:10px;">
+      <input type="text" id="customFaceInput" placeholder="Nueva cara..." onkeydown="if(event.key==='Enter')addCustomFace()" />
+      <button class="btn btn-primary" onclick="addCustomFace()">+</button>
+    </div>
+    <div id="memberImportDador" style="margin-top:10px;"></div>
+  </div>
+  <div class="custom-die-display" id="customDieDisplay" onclick="rollCustomDie()">?</div>
+  <div style="text-align:center;margin-bottom:10px;">
+    <button class="btn btn-gold" style="font-size:18px;padding:14px 36px;" onclick="rollCustomDie()">🎯 TIRAR DADO</button>
+  </div>
+</div>
+
+<!-- =================== VERDAD O RETO PAGE =================== -->
+<div class="page" id="page-tor">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🔥 Verdad o Reto</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Configurar preguntas / retos</div>
+    <div class="tor-tabs" id="torEditTabs">
+      <div class="tor-tab active" onclick="torTab('truth')">💬 Verdades</div>
+      <div class="tor-tab" onclick="torTab('dare')">🔥 Retos Fuertes</div>
+      <div class="tor-tab" onclick="torTab('mild')">😊 Retos Suaves</div>
+    </div>
+    <div id="torList"></div>
+    <div class="flex-row" style="margin-top:10px;">
+      <input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()" />
+      <button class="btn btn-primary" onclick="addTor()">+</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Jugar</div>
+    <div id="memberPickTor" style="margin-bottom:10px;"></div>
+    <div class="tor-tabs">
+      <div class="tor-tab active" id="torPlayTab1" onclick="torPlayCategory('truth')">💬 Verdad</div>
+      <div class="tor-tab" id="torPlayTab2" onclick="torPlayCategory('dare')">🔥 Fuerte</div>
+      <div class="tor-tab" id="torPlayTab3" onclick="torPlayCategory('mild')">😊 Suave</div>
+    </div>
+    <div class="tor-result-box tor-truth" id="torResultBox">Elige una categoría y presiona el botón</div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:16px;" onclick="pickTor()">🎲 ELEGIR</button>
+  </div>
+</div>
+
+<!-- =================== TOP 10 PAGE =================== -->
+<div class="page" id="page-top10">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🏆 Top 10</div>
+    <button class="btn btn-secondary btn-sm" onclick="resetTop10()">Reiniciar</button>
+  </div>
+  <div class="card">
+    <div class="card-title">Contador de vasos / shots</div>
+    <div class="flex-row" style="margin-bottom:12px;">
+      <input type="text" id="top10NameInput" placeholder="Agregar persona..." onkeydown="if(event.key==='Enter')addTop10Person()" />
+      <button class="btn btn-primary" onclick="addTop10Person()">+</button>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="importMembersTop10()">📥 Importar integrantes</button>
+  </div>
+  <div class="top-list" id="topList"></div>
+</div>
+
+<!-- =================== TIMER PAGE =================== -->
+<div class="page" id="page-timer">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">⏱️ Cronómetros</div>
+    <button class="btn btn-secondary btn-sm" onclick="addTimerPerson()">+ Persona</button>
+  </div>
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Agregar cronómetro</div>
+    <div class="flex-row">
+      <input type="text" id="timerNameInput" placeholder="Nombre..." />
+      <input type="number" id="timerMin" placeholder="min" style="width:70px;" min="0" max="99" />
+      <input type="number" id="timerSec" placeholder="seg" style="width:70px;" min="0" max="59" />
+      <button class="btn btn-primary" onclick="addTimer()">+</button>
+    </div>
+    <button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="importMembersTimer()">📥 Importar integrantes</button>
+  </div>
+  <div id="timerList"></div>
+</div>
+
+<script>
+// ====== STATE ======
+let members = JSON.parse(localStorage.getItem('members')||'[]');
+let ruletaOpts = JSON.parse(localStorage.getItem('ruletaOpts')||'["Opción A","Opción B","Opción C"]');
+let calendarTasks = JSON.parse(localStorage.getItem('calTasks')||'{}');
+let diceCount = 1;
+let customFaces = JSON.parse(localStorage.getItem('customFaces')||'["A","B","C","D","E","F"]');
+let torData = JSON.parse(localStorage.getItem('torData')||JSON.stringify({truth:["¿Cuál es tu mayor secreto?","¿A quién le tienes envidia?","¿Cuál fue tu peor mentira?"],dare:["Haz 10 sentadillas","Imita a alguien del grupo","Toma un shot"],mild:["Muestra la última foto de tu galería","Di un halago a alguien","Baila 10 segundos"]}));
+let torCategory = 'truth';
+let torEditCat = 'truth';
+let top10People = JSON.parse(localStorage.getItem('top10')||'[]');
+let timers = JSON.parse(localStorage.getItem('timers')||'[]');
+let calYear, calMonth;
+let selectedCalDate = null;
+let wheelSpinning = false;
+let wheelAngle = 0;
+
+function save(key,val){localStorage.setItem(key,JSON.stringify(val));}
+function ann(msg){const el=document.getElementById('announce');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000);}
+
+// ====== NAVIGATION ======
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='ruleta')renderWheel();
+  if(id==='calendar')renderCalendar();
+  if(id==='dados')renderDiceArea();
+  if(id==='tor')renderTor();
+  if(id==='top10')renderTop10();
+  if(id==='timer')renderTimers();
+  if(id==='members')renderMembers();
+  if(id==='ruleta')renderRuletaOpts();
+  if(id==='dador')renderCustomFaces();
+}
+
+// ====== MEMBERS ======
+function renderMembers(){
+  const pills = document.getElementById('memberPills');
+  pills.innerHTML = members.length ? members.map((m,i)=>`<div class="member-pill">${m}<button onclick="removeMember(${i})">×</button></div>`).join('') : '<span style="color:var(--muted);font-size:13px;">Sin integrantes aún</span>';
+}
+function addMember(){
+  const inp=document.getElementById('memberInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  members.push(v); save('members',members); inp.value='';
+  renderMembers(); updateMemberImports();
+}
+function removeMember(i){members.splice(i,1);save('members',members);renderMembers();updateMemberImports();}
+function updateMemberImports(){
+  // Ruleta
+  const ri=document.getElementById('memberImportRuleta');
+  if(ri&&members.length) ri.innerHTML=`<button class="btn btn-secondary btn-sm" onclick="importMembersRuleta()">📥 Importar integrantes a ruleta</button>`;
+  else if(ri) ri.innerHTML='';
+  // Dador
+  const di=document.getElementById('memberImportDador');
+  if(di&&members.length) di.innerHTML=`<button class="btn btn-secondary btn-sm" onclick="importMembersDador()">📥 Importar integrantes al dado</button>`;
+  else if(di) di.innerHTML='';
+  // TOR
+  const ti=document.getElementById('memberPickTor');
+  if(ti) renderMemberPickTor();
+  // Dados
+  const mp=document.getElementById('memberPickDados');
+  if(mp) renderMemberPickDados();
+}
+function importMembersRuleta(){members.forEach(m=>{if(!ruletaOpts.includes(m))ruletaOpts.push(m);});save('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
+function importMembersDador(){members.forEach(m=>{if(!customFaces.includes(m))customFaces.push(m);});save('customFaces',customFaces);renderCustomFaces();}
+function importMembersTop10(){members.forEach(m=>{if(!top10People.find(p=>p.name===m))top10People.push({name:m,count:0});});save('top10',top10People);renderTop10();}
+function importMembersTimer(){
+  const min=parseInt(document.getElementById('timerMin').value)||1;
+  const sec=parseInt(document.getElementById('timerSec').value)||0;
+  members.forEach(m=>{
+    if(!timers.find(t=>t.name===m))timers.push({name:m,total:(min*60+sec),remaining:(min*60+sec),running:false,done:false});
+  });
+  save('timers',timers);renderTimers();
+}
+
+// ====== RULETA ======
+const RCOLORS=['#e94560','#0f3460','#f0a500','#00c48c','#7c3aed','#e74c3c','#2980b9','#27ae60','#8e44ad','#f39c12','#16a085','#c0392b'];
+function renderRuletaOpts(){
+  const el=document.getElementById('ruletaOptions');
+  if(!ruletaOpts.length){el.innerHTML='<div class="empty-state">Sin opciones. Agrega al menos 2.</div>';return;}
+  el.innerHTML=ruletaOpts.map((o,i)=>`<div class="option-item"><div class="option-color" style="background:${RCOLORS[i%RCOLORS.length]}"></div><span>${o}</span><button class="btn-icon" onclick="removeRuletaOpt(${i})">🗑</button></div>`).join('');
+  updateMemberImports();
+}
+function addRuletaOption(){
+  const inp=document.getElementById('ruletaInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  ruletaOpts.push(v);save('ruletaOpts',ruletaOpts);inp.value='';
+  renderRuletaOpts();renderWheel();
+}
+function removeRuletaOpt(i){ruletaOpts.splice(i,1);save('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
+
+function renderWheel(){
+  const canvas=document.getElementById('canvas-ruleta');
+  const ctx=canvas.getContext('2d');
+  const W=340,H=340,cx=170,cy=170,r=155;
+  ctx.clearRect(0,0,W,H);
+  const n=ruletaOpts.length;
+  if(!n){ctx.fillStyle='#333';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#aaa';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('Sin opciones',cx,cy);return;}
+  const arc=2*Math.PI/n;
+  for(let i=0;i<n;i++){
+    const start=wheelAngle+arc*i;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+arc);ctx.fillStyle=RCOLORS[i%RCOLORS.length];ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(start+arc/2);
+    const txt=ruletaOpts[i].length>14?ruletaOpts[i].substring(0,13)+'…':ruletaOpts[i];
+    ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='right';ctx.fillText(txt,r-10,5);
+    ctx.restore();
+  }
+  // center circle
+  ctx.beginPath();ctx.arc(cx,cy,18,0,Math.PI*2);ctx.fillStyle='#111';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.fillStyle='var(--gold,#f0a500)';ctx.fill();
+  // pointer
+  ctx.beginPath();ctx.moveTo(W-8,cy);ctx.lineTo(W-28,cy-10);ctx.lineTo(W-28,cy+10);ctx.closePath();ctx.fillStyle='#fff';ctx.fill();
+}
+
+function spinWheel(){
+  if(wheelSpinning||ruletaOpts.length<2){ann('Agrega al menos 2 opciones');return;}
+  wheelSpinning=true;
+  document.getElementById('spinResult').textContent='Girando...';
+  const extra=Math.PI*2*(5+Math.random()*5);
+  const target=wheelAngle+extra;
+  const dur=3000+Math.random()*1500;
+  const start=performance.now();
+  const from=wheelAngle;
+  function frame(now){
+    const t=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-t,4);
+    wheelAngle=from+extra*ease;
+    renderWheel();
+    if(t<1){requestAnimationFrame(frame);}else{
+      wheelAngle=target%(Math.PI*2);
+      renderWheel();
+      wheelSpinning=false;
+      // Find winner: pointer is at angle 0 (right side)
+      const n=ruletaOpts.length;
+      const arc=Math.PI*2/n;
+      // pointer direction is right (0 rad). wheel segment at pointer = -wheelAngle mod arc
+      const ptr=((Math.PI*2)-wheelAngle%(Math.PI*2))%(Math.PI*2);
+      const idx=Math.floor(ptr/arc)%n;
+      const winner=ruletaOpts[idx];
+      document.getElementById('spinResult').textContent='🎉 '+winner;
+      ann('🎉 '+winner);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+// ====== CALENDAR ======
+const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DAYS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+function initCal(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();}
+function changeMonth(d){calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function renderCalendar(){
+  document.getElementById('calMonthLabel').textContent=MONTHS[calMonth]+' '+calYear;
+  const headers=document.getElementById('calHeaders');
+  headers.innerHTML=DAYS.map(d=>`<div class="cal-header">${d}</div>`).join('');
+  const grid=document.getElementById('calGrid');
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  const today=new Date();
+  let html='';
+  for(let i=0;i<first;i++){const d=prevDays-first+1+i;html+=`<div class="cal-day other-month"><div class="day-num">${d}</div></div>`;}
+  for(let d=1;d<=days;d++){
+    const key=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const tasks=calendarTasks[key]||[];
+    const isToday=d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear();
+    html+=`<div class="cal-day${isToday?' today':''}${tasks.length?' has-task':''}" onclick="openDayModal('${key}',${d})">
+      <div class="day-num">${d}</div>
+      ${tasks.length?'<div class="task-dot"></div>':''}
+    </div>`;
+  }
+  const remaining=(7-((first+days)%7))%7;
+  for(let i=1;i<=remaining;i++){html+=`<div class="cal-day other-month"><div class="day-num">${i}</div></div>`;}
+  grid.innerHTML=html;
+  renderUpcoming();
+}
+function openDayModal(key,day){
+  selectedCalDate=key;
+  document.getElementById('modalDateTitle').textContent=`${day} de ${MONTHS[calMonth]}, ${calYear}`;
+  renderTaskList();
+  document.getElementById('taskModal').classList.add('open');
+}
+function closeModal(){document.getElementById('taskModal').classList.remove('open');renderCalendar();}
+function renderTaskList(){
+  const tasks=calendarTasks[selectedCalDate]||[];
+  const el=document.getElementById('taskListEl');
+  if(!tasks.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:10px;">Sin actividades</div>';return;}
+  el.innerHTML=tasks.map((t,i)=>`<div class="task-list-item"><span>${t}</span><button class="btn-icon" onclick="removeTask(${i})">🗑</button></div>`).join('');
+}
+function addTask(){
+  const inp=document.getElementById('taskInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  if(!calendarTasks[selectedCalDate])calendarTasks[selectedCalDate]=[];
+  calendarTasks[selectedCalDate].push(v);
+  save('calTasks',calendarTasks);inp.value='';renderTaskList();
+}
+function removeTask(i){calendarTasks[selectedCalDate].splice(i,1);if(!calendarTasks[selectedCalDate].length)delete calendarTasks[selectedCalDate];save('calTasks',calendarTasks);renderTaskList();}
+function renderUpcoming(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const items=Object.entries(calendarTasks).filter(([k])=>new Date(k)>=today).sort(([a],[b])=>a.localeCompare(b)).slice(0,5);
+  const el=document.getElementById('upcomingTasks');
+  if(!items.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="card"><div class="card-title">Próximas actividades</div>${items.map(([k,tasks])=>`<div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--muted);margin-bottom:3px;">${k}</div>${tasks.map(t=>`<div style="font-size:14px;padding:3px 0;border-bottom:1px solid var(--border);">${t}</div>`).join('')}</div>`).join('')}</div>`;
+}
+
+// ====== DADOS ======
+const DICE_FACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+function renderDiceArea(){
+  const area=document.getElementById('diceArea');
+  area.innerHTML=Array.from({length:diceCount},(_,i)=>`<div class="die" id="die-${i}" onclick="rollDice()">⚀</div>`).join('');
+  // count selector
+  const sel=document.getElementById('diceCountSel');
+  sel.innerHTML=[1,2,3,4,5].map(n=>`<button class="dice-count-btn${diceCount===n?' active':''}" onclick="setDiceCount(${n})">${n}</button>`).join('');
+  renderMemberPickDados();
+}
+function setDiceCount(n){diceCount=n;renderDiceArea();}
+function rollDice(){
+  const total_card=document.getElementById('dadosTotalCard');
+  total_card.style.display='block';
+  let total=0;
+  for(let i=0;i<diceCount;i++){
+    const die=document.getElementById('die-'+i);
+    die.classList.add('rolling');
+    setTimeout(()=>{
+      const val=Math.floor(Math.random()*6);
+      die.textContent=DICE_FACES[val];
+      die.classList.remove('rolling');
+    },400);
+    total+=Math.floor(Math.random()*6)+1;
+  }
+  setTimeout(()=>{document.getElementById('dadosTotal').textContent=total;},450);
+}
+function renderMemberPickDados(){
+  const el=document.getElementById('memberPickDados');
+  if(!el)return;
+  if(!members.length){el.innerHTML='';return;}
+  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Turno de:</div><div class="dice-count-sel">${members.map((m,i)=>`<button class="btn btn-secondary btn-sm" onclick="ann('🎲 Turno de ${m}!')">${m}</button>`).join('')}</div>`;
+}
+
+// ====== DADO CUSTOM ======
+function renderCustomFaces(){
+  const el=document.getElementById('customFaceList');
+  if(!customFaces.length){el.innerHTML='<div class="empty-state">Sin caras. Agrega al menos 2.</div>';return;}
+  el.innerHTML=customFaces.map((f,i)=>`<div class="option-item"><span>${f}</span><button class="btn-icon" onclick="removeCustomFace(${i})">🗑</button></div>`).join('');
+  updateMemberImports();
+}
+function addCustomFace(){
+  if(customFaces.length>=20){ann('Máximo 20 caras');return;}
+  const inp=document.getElementById('customFaceInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  customFaces.push(v);save('customFaces',customFaces);inp.value='';renderCustomFaces();
+}
+function removeCustomFace(i){customFaces.splice(i,1);save('customFaces',customFaces);renderCustomFaces();}
+function rollCustomDie(){
+  if(customFaces.length<2){ann('Agrega al menos 2 caras');return;}
+  const die=document.getElementById('customDieDisplay');
+  die.classList.add('rolling');
+  die.textContent='?';
+  setTimeout(()=>{
+    const val=customFaces[Math.floor(Math.random()*customFaces.length)];
+    die.textContent=val;
+    die.classList.remove('rolling');
+    ann('🎯 '+val);
+  },400);
+}
+
+// ====== VERDAD O RETO ======
+function torTab(cat){
+  torEditCat=cat;
+  document.querySelectorAll('#torEditTabs .tor-tab').forEach((t,i)=>{t.classList.toggle('active',['truth','dare','mild'][i]===cat);});
+  renderTor();
+}
+function renderTor(){
+  const items=torData[torEditCat]||[];
+  const el=document.getElementById('torList');
+  if(!items.length){el.innerHTML='<div class="empty-state">Sin elementos. Agrega algunos.</div>';return;}
+  el.innerHTML=items.map((t,i)=>`<div class="option-item"><span style="font-size:13px;">${t}</span><button class="btn-icon" onclick="removeTor(${i})">🗑</button></div>`).join('');
+  renderMemberPickTor();
+}
+function addTor(){
+  const inp=document.getElementById('torInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  torData[torEditCat].push(v);save('torData',torData);inp.value='';renderTor();
+}
+function removeTor(i){torData[torEditCat].splice(i,1);save('torData',torData);renderTor();}
+function torPlayCategory(cat){
+  torCategory=cat;
+  ['truth','dare','mild'].forEach((c,i)=>{document.getElementById('torPlayTab'+(i+1)).classList.toggle('active',c===cat);});
+  const box=document.getElementById('torResultBox');
+  box.className='tor-result-box tor-'+cat;
+}
+function pickTor(){
+  const items=torData[torCategory]||[];
+  if(!items.length){ann('Sin elementos en esta categoría');return;}
+  const picked=items[Math.floor(Math.random()*items.length)];
+  document.getElementById('torResultBox').textContent=picked;
+  ann((torCategory==='truth'?'💬':'🔥')+' '+picked.substring(0,40));
+}
+function renderMemberPickTor(){
+  const el=document.getElementById('memberPickTor');
+  if(!el)return;
+  if(!members.length){el.innerHTML='';return;}
+  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Turno de:</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${members.map((m)=>`<button class="btn btn-secondary btn-sm" onclick="ann('🔥 Turno de ${m}!')">${m}</button>`).join('')}</div>`;
+}
+
+// ====== TOP 10 ======
+function addTop10Person(){
+  const inp=document.getElementById('top10NameInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  if(top10People.find(p=>p.name===v)){ann('Ya existe');return;}
+  top10People.push({name:v,count:0});
+  save('top10',top10People);inp.value='';renderTop10();
+}
+function changeCount(i,d){
+  top10People[i].count=Math.max(0,top10People[i].count+d);
+  save('top10',top10People);renderTop10();
+}
+function resetTop10(){if(confirm('¿Reiniciar todos los contadores?')){top10People.forEach(p=>p.count=0);save('top10',top10People);renderTop10();}}
+function renderTop10(){
+  const sorted=[...top10People].sort((a,b)=>b.count-a.count).slice(0,10);
+  const el=document.getElementById('topList');
+  if(!sorted.length){el.innerHTML='<div class="empty-state">Agrega personas para empezar</div>';return;}
+  el.innerHTML=sorted.map((p,i)=>{
+    const origIdx=top10People.findIndex(x=>x.name===p.name);
+    return `<div class="top-item">
+      <div class="top-rank${i===0?' r1':i===1?' r2':i===2?' r3':''}">${['🥇','🥈','🥉'][i]||'#'+(i+1)}</div>
+      <div class="top-name">${p.name}</div>
+      <div class="count-controls">
+        <button class="count-btn" onclick="changeCount(${origIdx},-1)">−</button>
+        <div class="top-count">${p.count}</div>
+        <button class="count-btn" onclick="changeCount(${origIdx},1)">+</button>
+      </div>
+      <button class="btn-icon" onclick="top10People.splice(${origIdx},1);save('top10',top10People);renderTop10();">🗑</button>
+    </div>`;
+  }).join('');
+}
+
+// ====== TIMERS ======
+let timerIntervals={};
+function addTimer(){
+  const name=document.getElementById('timerNameInput').value.trim()||'Cronómetro';
+  const min=parseInt(document.getElementById('timerMin').value)||0;
+  const sec=parseInt(document.getElementById('timerSec').value)||0;
+  const total=min*60+sec;
+  if(!total){ann('Ingresa un tiempo');return;}
+  timers.push({name,total,remaining:total,running:false,done:false});
+  save('timers',timers);
+  document.getElementById('timerNameInput').value='';
+  document.getElementById('timerMin').value='';
+  document.getElementById('timerSec').value='';
+  renderTimers();
+}
+function addTimerPerson(){
+  const name=members.length?members[timers.length%members.length]:'Persona '+(timers.length+1);
+  const min=parseInt(document.getElementById('timerMin').value)||1;
+  const sec=parseInt(document.getElementById('timerSec').value)||0;
+  const total=min*60+sec||60;
+  timers.push({name,total,remaining:total,running:false,done:false});
+  save('timers',timers);renderTimers();
+}
+function fmtTime(s){const m=Math.floor(s/60);const sec=s%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
+function toggleTimer(i){
+  if(timers[i].done)return;
+  if(timers[i].running){
+    clearInterval(timerIntervals[i]);timers[i].running=false;
+  }else{
+    timers[i].running=true;
+    timerIntervals[i]=setInterval(()=>{
+      timers[i].remaining--;
+      if(timers[i].remaining<=0){timers[i].remaining=0;timers[i].running=false;timers[i].done=true;clearInterval(timerIntervals[i]);ann('⏰ '+timers[i].name+' — Tiempo!');}
+      save('timers',timers);updateTimerDisplay(i);
+    },1000);
+  }
+  save('timers',timers);updateTimerDisplay(i);
+}
+function resetTimer(i){clearInterval(timerIntervals[i]);timers[i].remaining=timers[i].total;timers[i].running=false;timers[i].done=false;save('timers',timers);updateTimerDisplay(i);}
+function removeTimer(i){clearInterval(timerIntervals[i]);delete timerIntervals[i];timers.splice(i,1);save('timers',timers);renderTimers();}
+function updateTimerDisplay(i){
+  const d=document.getElementById('timerDisp-'+i);
+  const t=timers[i];
+  if(!d)return;
+  d.textContent=fmtTime(t.remaining);
+  d.className='timer-display'+(t.done?' done':'');
+  const btn=document.getElementById('timerBtn-'+i);
+  if(btn)btn.textContent=t.done?'✓ Listo':t.running?'⏸ Pausar':'▶ Iniciar';
+}
+function renderTimers(){
+  const el=document.getElementById('timerList');
+  if(!timers.length){el.innerHTML='<div class="empty-state">Agrega un cronómetro arriba</div>';return;}
+  el.innerHTML=timers.map((t,i)=>`
+    <div class="timer-card">
+      <div class="timer-name">${t.name}</div>
+      <div class="timer-display${t.done?' done':''}" id="timerDisp-${i}">${fmtTime(t.remaining)}</div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="timerBtn-${i}" onclick="toggleTimer(${i})">${t.done?'✓ Listo':t.running?'⏸ Pausar':'▶ Iniciar'}</button>
+        <button class="btn btn-secondary" onclick="resetTimer(${i})">↺ Reiniciar</button>
+        <button class="btn-icon" onclick="removeTimer(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+  // Restore running timers on re-render
+  timers.forEach((t,i)=>{if(t.running&&!timerIntervals[i])toggleTimer(i);});
+}
+
+// ====== INIT ======
+initCal();
+renderMembers();
+renderWheel();
+updateMemberImports();
+</script>
+</body>
+</html>
