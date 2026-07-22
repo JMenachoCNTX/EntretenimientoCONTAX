@@ -1,507 +1,779 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Party Hub</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif}
-:root{
-  --bg:#0f0f1a;--card:#1a1a2e;--card2:#16213e;
-  --accent:#e94560;--gold:#f0a500;--green:#00c48c;
-  --text:#eaeaea;--muted:#8888aa;--border:rgba(255,255,255,0.09);
-  --r:12px;
-}
-#app{background:var(--bg);color:var(--text);min-height:600px;font-size:14px;}
-nav{background:var(--card);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;}
-nav::-webkit-scrollbar{display:none}
-.nb{flex-shrink:0;background:none;border:none;color:var(--muted);font-size:11px;padding:10px 8px 8px;cursor:pointer;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .2s;}
-.nb.on{color:var(--accent);border-bottom-color:var(--accent);}
-.nb span{font-size:16px;}
-.pg{display:none;padding:14px 12px 60px;}
-.pg.on{display:block;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:12px;}
-.ct{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 16px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:700;transition:all .15s;}
-.bp{background:var(--accent);color:#fff;}
-.bp:hover{filter:brightness(1.15);}
-.bs{background:var(--card2);color:var(--text);border:1px solid var(--border);}
-.bg{background:var(--gold);color:#111;}
-.bsm{padding:6px 11px;font-size:12px;border-radius:8px;}
-.row{display:flex;gap:7px;align-items:center;}
-.row input{flex:1;}
-input,select{background:var(--card2);border:1px solid var(--border);border-radius:9px;color:var(--text);padding:9px 12px;font-size:13px;width:100%;outline:none;}
-input:focus{border-color:var(--accent);}
-.pill{background:#1e2a4a;color:var(--text);font-size:12px;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;}
-.pill button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0;}
-.pill button:hover{color:var(--accent);}
-.pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
-.oi{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
-.oi:last-child{border-bottom:none;}
-.oi span{flex:1;font-size:13px;}
-.ic{width:13px;height:13px;border-radius:3px;flex-shrink:0;}
-.xb{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 6px;}
-.xb:hover{color:var(--accent);}
-.ann{background:var(--accent);color:#fff;padding:10px 20px;border-radius:25px;font-size:14px;font-weight:700;text-align:center;margin:0 auto 12px;display:none;max-width:100%;}
-.ann.on{display:block;}
-.tab{flex:1;padding:7px 4px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--muted);cursor:pointer;font-size:12px;font-weight:700;text-align:center;transition:all .15s;}
-.tab.on{background:var(--accent);color:#fff;border-color:var(--accent);}
-.tabs{display:flex;gap:5px;margin-bottom:12px;}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
-</style>
+  :root {
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --card2: #16213e;
+    --accent: #e94560;
+    --accent2: #0f3460;
+    --gold: #f0a500;
+    --text: #eaeaea;
+    --muted: #8888aa;
+    --border: rgba(255,255,255,0.08);
+    --radius: 16px;
+    --green: #00c48c;
+    --purple: #7c3aed;
+    --blue: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+  
+  /* NAV */
+  nav { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 900px; margin: 0 auto; padding: 0 12px; display: flex; overflow-x: auto; gap: 4px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { flex-shrink: 0; background: none; border: none; color: var(--muted); font-size: 12px; padding: 12px 10px 10px; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .nav-btn span { font-size: 18px; }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-btn:hover { color: var(--text); }
 
-<div id="app">
-<h2 class="sr-only">Party Hub — ruleta, dados, calendario, verdad o reto, top 10 y cronómetros</h2>
-<div class="ann" id="ann"></div>
+  /* PAGES */
+  .page { display: none; max-width: 700px; margin: 0 auto; padding: 20px 14px 80px; }
+  .page.active { display: block; }
+
+  /* CARDS */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: all .15s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.15); }
+  .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-gold { background: var(--gold); color: #111; }
+  .btn-green { background: var(--green); color: #111; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 8px; }
+  .btn-icon { padding: 7px; border-radius: 8px; background: var(--card2); border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-size: 14px; }
+  .btn-icon:hover { color: var(--accent); }
+
+  /* INPUTS */
+  input[type=text], input[type=number], select, textarea {
+    background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+    padding: 10px 14px; font-size: 14px; width: 100%; outline: none; transition: border .2s;
+  }
+  input[type=text]:focus, input[type=number]:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--card); }
+
+  /* MEMBERS BAR */
+  .member-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .member-pill { background: var(--accent2); color: var(--text); font-size: 12px; padding: 4px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+  .member-pill button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+  .member-pill button:hover { color: var(--accent); }
+
+  .flex-row { display: flex; gap: 8px; align-items: center; }
+  .flex-row input { flex: 1; }
+  .tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+  .tag-red { background: rgba(233,69,96,.2); color: #f87; }
+  .tag-green { background: rgba(0,196,140,.2); color: var(--green); }
+  .tag-gold { background: rgba(240,165,0,.2); color: var(--gold); }
+
+  /* =================== RULETA =================== */
+  #canvas-ruleta { display: block; margin: 0 auto; max-width: 100%; }
+  .option-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .option-item:last-child { border-bottom: none; }
+  .option-item span { flex: 1; font-size: 14px; }
+  .option-color { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .spin-result { text-align: center; padding: 16px; border-radius: 12px; background: var(--accent2); margin-top: 14px; font-size: 18px; font-weight: 700; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+
+  /* =================== CALENDARIO =================== */
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-header { text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; padding: 6px 0; }
+  .cal-day { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 4px 2px; font-size: 12px; transition: all .15s; position: relative; overflow: hidden; }
+  .cal-day:hover { border-color: var(--accent); }
+  .cal-day.today { border-color: var(--accent); background: rgba(233,69,96,.1); }
+  .cal-day.has-task { background: rgba(0,196,140,.08); border-color: rgba(0,196,140,.3); }
+  .cal-day.other-month { opacity: .35; }
+  .cal-day .day-num { font-size: 11px; font-weight: 600; }
+  .cal-day .task-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); margin-top: 2px; }
+  .task-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+  .task-modal.open { display: flex; }
+  .task-modal-inner { background: var(--card); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 380px; border: 1px solid var(--border); }
+  .task-list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+  /* =================== DADOS =================== */
+  .dice-area { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; padding: 20px 0; min-height: 120px; align-items: center; }
+  .die { width: 80px; height: 80px; background: #fff; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 42px; box-shadow: 0 4px 16px rgba(0,0,0,.5); transition: transform .1s; cursor: pointer; }
+  .die:hover { transform: scale(1.08); }
+  .die.rolling { animation: shake .4s ease; }
+  @keyframes shake {
+    0%,100%{transform:rotate(0deg) scale(1)}
+    20%{transform:rotate(-10deg) scale(1.1)}
+    40%{transform:rotate(10deg) scale(1.1)}
+    60%{transform:rotate(-8deg) scale(1.05)}
+    80%{transform:rotate(8deg) scale(1.05)}
+  }
+  .dice-count-sel { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .dice-count-btn { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--border); background: var(--card2); color: var(--text); font-size: 18px; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .dice-count-btn.active { border-color: var(--accent); background: rgba(233,69,96,.15); color: var(--accent); }
+
+  /* =================== DADO CUSTOM =================== */
+  .custom-die-display { width: 120px; height: 120px; background: linear-gradient(135deg,#fff 0%,#f0f0f0 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #111; margin: 20px auto; box-shadow: 0 6px 24px rgba(0,0,0,.5); cursor: pointer; text-align: center; padding: 12px; word-break: break-word; transition: transform .1s; }
+  .custom-die-display:hover { transform: scale(1.05); }
+  .custom-die-display.rolling { animation: shake .4s ease; }
+
+  /* =================== VERDAD O RETO =================== */
+  .tor-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tor-tab { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--card2); color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 600; text-align: center; transition: all .15s; }
+  .tor-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tor-result-box { min-height: 100px; border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; text-align: center; margin: 14px 0; }
+  .tor-truth { background: rgba(37,99,235,.2); color: #7bb3ff; border: 1px solid rgba(37,99,235,.3); }
+  .tor-dare { background: rgba(233,69,96,.2); color: #f87a8a; border: 1px solid rgba(233,69,96,.3); }
+  .tor-mild { background: rgba(0,196,140,.15); color: var(--green); border: 1px solid rgba(0,196,140,.25); }
+
+  /* =================== TOP 10 =================== */
+  .top-list { display: flex; flex-direction: column; gap: 8px; }
+  .top-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); }
+  .top-rank { font-size: 18px; font-weight: 800; min-width: 32px; color: var(--muted); }
+  .top-rank.r1 { color: var(--gold); }
+  .top-rank.r2 { color: #ccc; }
+  .top-rank.r3 { color: #cd7f32; }
+  .top-name { flex: 1; font-weight: 600; font-size: 15px; }
+  .top-count { font-size: 24px; font-weight: 800; color: var(--accent); min-width: 36px; text-align: right; }
+  .count-controls { display: flex; gap: 4px; align-items: center; }
+  .count-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: all .15s; }
+  .count-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* =================== CRONÓMETRO =================== */
+  .timer-card { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+  .timer-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .timer-display { font-size: 48px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--accent); line-height: 1; }
+  .timer-display.done { color: var(--green); }
+  .timer-controls { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .timer-setup { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .timer-setup input { width: 70px; }
+
+  /* MISC */
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .section-title { font-size: 20px; font-weight: 800; }
+  .empty-state { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; }
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+  .result-announce { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 30px; font-size: 16px; font-weight: 700; z-index: 300; opacity: 0; transition: opacity .3s; pointer-events: none; max-width: 90%; text-align: center; }
+  .result-announce.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="result-announce" id="announce"></div>
+
+<!-- TASK MODAL -->
+<div class="task-modal" id="taskModal">
+  <div class="task-modal-inner">
+    <h3 id="modalDateTitle" style="margin-bottom:14px;font-size:16px;"></h3>
+    <div id="taskListEl"></div>
+    <div class="flex-row" style="margin-top:12px;">
+      <input type="text" id="taskInput" placeholder="Nueva actividad..." />
+      <button class="btn btn-primary btn-sm" onclick="addTask()">+</button>
+    </div>
+    <button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
 
 <nav>
-  <button class="nb on" onclick="go('mbr')" id="t-mbr"><span>👥</span>Equipo</button>
-  <button class="nb" onclick="go('rul')" id="t-rul"><span>🎡</span>Ruleta</button>
-  <button class="nb" onclick="go('cal')" id="t-cal"><span>📅</span>Días</button>
-  <button class="nb" onclick="go('dad')" id="t-dad"><span>🎲</span>Dados</button>
-  <button class="nb" onclick="go('cus')" id="t-cus"><span>🎯</span>D.Custom</button>
-  <button class="nb" onclick="go('tor')" id="t-tor"><span>🔥</span>V/Reto</button>
-  <button class="nb" onclick="go('top')" id="t-top"><span>🏆</span>Top 10</button>
-  <button class="nb" onclick="go('tmr')" id="t-tmr"><span>⏱</span>Tiempo</button>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="goPage('members')" id="tab-members"><span>👥</span>Equipo</button>
+    <button class="nav-btn" onclick="goPage('ruleta')" id="tab-ruleta"><span>🎡</span>Ruleta</button>
+    <button class="nav-btn" onclick="goPage('calendar')" id="tab-calendar"><span>📅</span>Calendario</button>
+    <button class="nav-btn" onclick="goPage('dados')" id="tab-dados"><span>🎲</span>Dados</button>
+    <button class="nav-btn" onclick="goPage('dador')" id="tab-dador"><span>🎯</span>Dado Custom</button>
+    <button class="nav-btn" onclick="goPage('tor')" id="tab-tor"><span>🔥</span>Verdad/Reto</button>
+    <button class="nav-btn" onclick="goPage('top10')" id="tab-top10"><span>🏆</span>Top 10</button>
+    <button class="nav-btn" onclick="goPage('timer')" id="tab-timer"><span>⏱️</span>Cronómetro</button>
+  </div>
 </nav>
 
-<!-- MEMBERS -->
-<div class="pg on" id="pg-mbr">
+<!-- =================== MEMBERS PAGE =================== -->
+<div class="page active" id="page-members">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">👥 Integrantes</div>
+  </div>
   <div class="card">
-    <div class="ct">Integrantes del equipo</div>
-    <div class="pills" id="mpills"><span style="color:var(--muted);font-size:12px;">Sin integrantes aún</span></div>
-    <div class="row"><input id="mi" placeholder="Nombre..." onkeydown="if(event.key==='Enter')am()"/><button class="btn bp" onclick="am()">+</button></div>
-  </div>
-  <div class="card" style="text-align:center;padding:28px 16px;">
-    <div style="font-size:44px;margin-bottom:10px;">🎉</div>
-    <div style="font-size:20px;font-weight:800;margin-bottom:6px;">Party Hub</div>
-    <div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta · Calendario · Dados<br>Verdad o Reto · Top 10 · Cronómetro</div>
-    <div style="margin-top:12px;color:var(--muted);font-size:11px;">Todo guardado en este dispositivo</div>
-  </div>
-</div>
-
-<!-- RULETA -->
-<div class="pg" id="pg-rul">
-  <div class="card">
-    <div class="ct">Opciones</div>
-    <div id="ropts"></div>
-    <div class="row" style="margin-top:8px;"><input id="ri" placeholder="Nueva opción..." onkeydown="if(event.key==='Enter')aro()"/><button class="btn bp" onclick="aro()">+</button></div>
-    <div id="rim" style="margin-top:8px;"></div>
-  </div>
-  <canvas id="crul" width="320" height="320" style="display:block;margin:0 auto;max-width:100%;"></canvas>
-  <div style="text-align:center;margin:12px 0;">
-    <button class="btn bg" style="font-size:16px;padding:13px 36px;" onclick="spin()">🎡 GIRAR</button>
-  </div>
-  <div id="sres" style="text-align:center;padding:14px;border-radius:10px;background:var(--card2);font-size:17px;font-weight:700;min-height:54px;display:flex;align-items:center;justify-content:center;">Presiona GIRAR</div>
-</div>
-
-<!-- CALENDARIO -->
-<div class="pg" id="pg-cal">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <div style="font-size:18px;font-weight:800;">📅 Calendario</div>
-    <div style="display:flex;gap:6px;">
-      <button class="xb" style="font-size:18px;" onclick="cm(-1)">‹</button>
-      <button class="xb" style="font-size:18px;" onclick="cm(1)">›</button>
+    <div class="card-title">Equipo (opcional para todos los juegos)</div>
+    <div class="member-pills" id="memberPills"></div>
+    <div class="flex-row">
+      <input type="text" id="memberInput" placeholder="Nombre del integrante..." onkeydown="if(event.key==='Enter')addMember()" />
+      <button class="btn btn-primary" onclick="addMember()">Agregar</button>
     </div>
   </div>
-  <div class="card" style="padding:10px;">
-    <div style="text-align:center;font-weight:700;margin-bottom:8px;font-size:15px;" id="cml"></div>
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;" id="ch"></div>
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:3px;" id="cg"></div>
+  <div class="card" style="text-align:center;padding:30px 20px;">
+    <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+    <div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div>
+    <div style="color:var(--muted);font-size:14px;line-height:1.6;">Ruleta · Calendario · Dados · Verdad o Reto<br>Top 10 de shots · Cronómetro</div>
+    <div style="margin-top:16px;color:var(--muted);font-size:12px;">Agrega integrantes arriba para usarlos en todos los juegos</div>
   </div>
-  <div id="upc"></div>
-  <!-- modal inline -->
-  <div id="cmod" style="display:none;margin-top:10px;">
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-weight:700;font-size:15px;" id="cmod-title"></div>
-        <button class="xb" onclick="document.getElementById('cmod').style.display='none';renderCal()">✕</button>
-      </div>
-      <div id="tlist"></div>
-      <div class="row" style="margin-top:8px;"><input id="ti2" placeholder="Nueva actividad..."/><button class="btn bp bsm" onclick="at2()">+</button></div>
+</div>
+
+<!-- =================== RULETA PAGE =================== -->
+<div class="page" id="page-ruleta">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🎡 Ruleta</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Opciones de la ruleta</div>
+    <div id="ruletaOptions"></div>
+    <div class="flex-row" style="margin-top:10px;">
+      <input type="text" id="ruletaInput" placeholder="Nueva opción..." onkeydown="if(event.key==='Enter')addRuletaOption()" />
+      <button class="btn btn-primary" onclick="addRuletaOption()">+</button>
+    </div>
+    <div id="memberImportRuleta" style="margin-top:10px;"></div>
+  </div>
+
+  <canvas id="canvas-ruleta" width="340" height="340"></canvas>
+
+  <div style="text-align:center;margin:14px 0;">
+    <button class="btn btn-gold" style="font-size:18px;padding:14px 40px;" onclick="spinWheel()">🎡 GIRAR</button>
+  </div>
+  <div class="spin-result" id="spinResult">Presiona GIRAR para empezar</div>
+</div>
+
+<!-- =================== CALENDAR PAGE =================== -->
+<div class="page" id="page-calendar">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">📅 Calendario</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon" onclick="changeMonth(-1)">‹</button>
+      <button class="btn-icon" onclick="changeMonth(1)">›</button>
     </div>
   </div>
+  <div class="card" style="padding:12px;">
+    <div style="text-align:center;font-weight:700;margin-bottom:10px;font-size:16px;" id="calMonthLabel"></div>
+    <div class="calendar-grid" id="calHeaders"></div>
+    <div class="calendar-grid" id="calGrid" style="margin-top:6px;gap:3px;"></div>
+  </div>
+  <div id="upcomingTasks" style="margin-top:6px;"></div>
 </div>
 
-<!-- DADOS -->
-<div class="pg" id="pg-dad">
+<!-- =================== DADOS PAGE =================== -->
+<div class="page" id="page-dados">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🎲 Dados</div>
+  </div>
   <div class="card">
-    <div class="ct">Cantidad de dados</div>
-    <div style="display:flex;gap:7px;justify-content:center;" id="dcsel"></div>
-    <div id="dmbr" style="margin-top:10px;"></div>
+    <div class="card-title">Cantidad de dados</div>
+    <div class="dice-count-sel" id="diceCountSel"></div>
+    <div id="memberPickDados" style="margin-top:12px;"></div>
   </div>
-  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:16px 0;min-height:110px;align-items:center;" id="darea"></div>
-  <div style="text-align:center;margin-bottom:12px;">
-    <button class="btn bg" style="font-size:16px;padding:13px 32px;" onclick="roll()">🎲 TIRAR</button>
+  <div class="dice-area" id="diceArea"></div>
+  <div style="text-align:center;margin:10px 0 16px;">
+    <button class="btn btn-gold" style="font-size:18px;padding:14px 36px;" onclick="rollDice()">🎲 TIRAR</button>
   </div>
-  <div id="dtot" style="display:none;" class="card" style="text-align:center;">
-    <div class="ct">Total</div>
-    <div id="dtv" style="font-size:34px;font-weight:800;color:var(--accent);text-align:center;"></div>
+  <div class="card" id="dadosTotalCard" style="display:none;text-align:center;">
+    <div class="card-title">Total</div>
+    <div id="dadosTotal" style="font-size:36px;font-weight:800;color:var(--accent);"></div>
   </div>
 </div>
 
-<!-- DADO CUSTOM -->
-<div class="pg" id="pg-cus">
-  <div class="card">
-    <div class="ct">Caras del dado (máx. 20)</div>
-    <div id="cflist"></div>
-    <div class="row" style="margin-top:8px;"><input id="cfi" placeholder="Nueva cara..." onkeydown="if(event.key==='Enter')acf()"/><button class="btn bp" onclick="acf()">+</button></div>
-    <div id="cdim" style="margin-top:8px;"></div>
+<!-- =================== DADO CUSTOM PAGE =================== -->
+<div class="page" id="page-dador">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🎯 Dado Custom</div>
   </div>
-  <div id="cdie" onclick="rcd()" style="width:110px;height:110px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#111;margin:16px auto;cursor:pointer;text-align:center;padding:10px;word-break:break-word;">?</div>
+  <div class="card">
+    <div class="card-title">Caras del dado (máx. 20)</div>
+    <div id="customFaceList"></div>
+    <div class="flex-row" style="margin-top:10px;">
+      <input type="text" id="customFaceInput" placeholder="Nueva cara..." onkeydown="if(event.key==='Enter')addCustomFace()" />
+      <button class="btn btn-primary" onclick="addCustomFace()">+</button>
+    </div>
+    <div id="memberImportDador" style="margin-top:10px;"></div>
+  </div>
+  <div class="custom-die-display" id="customDieDisplay" onclick="rollCustomDie()">?</div>
   <div style="text-align:center;margin-bottom:10px;">
-    <button class="btn bg" style="font-size:16px;padding:13px 32px;" onclick="rcd()">🎯 TIRAR</button>
+    <button class="btn btn-gold" style="font-size:18px;padding:14px 36px;" onclick="rollCustomDie()">🎯 TIRAR DADO</button>
   </div>
 </div>
 
-<!-- VERDAD O RETO -->
-<div class="pg" id="pg-tor">
-  <div class="card">
-    <div class="ct">Agregar preguntas / retos</div>
-    <div class="tabs" id="tetabs">
-      <div class="tab on" onclick="torTab('truth')">💬 Verdades</div>
-      <div class="tab" onclick="torTab('dare')">🔥 Fuertes</div>
-      <div class="tab" onclick="torTab('mild')">😊 Suaves</div>
-    </div>
-    <div id="torlist"></div>
-    <div class="row" style="margin-top:8px;"><input id="tori" placeholder="Agregar..." onkeydown="if(event.key==='Enter')ator()"/><button class="btn bp" onclick="ator()">+</button></div>
+<!-- =================== VERDAD O RETO PAGE =================== -->
+<div class="page" id="page-tor">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🔥 Verdad o Reto</div>
   </div>
+
   <div class="card">
-    <div class="ct">Jugar</div>
-    <div id="tormbr" style="margin-bottom:8px;"></div>
-    <div class="tabs">
-      <div class="tab on" id="tp1" onclick="torPC('truth')">💬 Verdad</div>
-      <div class="tab" id="tp2" onclick="torPC('dare')">🔥 Fuerte</div>
-      <div class="tab" id="tp3" onclick="torPC('mild')">😊 Suave</div>
+    <div class="card-title">Configurar preguntas / retos</div>
+    <div class="tor-tabs" id="torEditTabs">
+      <div class="tor-tab active" onclick="torTab('truth')">💬 Verdades</div>
+      <div class="tor-tab" onclick="torTab('dare')">🔥 Retos Fuertes</div>
+      <div class="tor-tab" onclick="torTab('mild')">😊 Retos Suaves</div>
     </div>
-    <div id="torbox" style="min-height:90px;border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;text-align:center;margin:10px 0;background:rgba(37,99,235,.15);color:#7bb3ff;border:1px solid rgba(37,99,235,.25);">Elige categoría y presiona</div>
-    <button class="btn bp" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">🎲 ELEGIR</button>
+    <div id="torList"></div>
+    <div class="flex-row" style="margin-top:10px;">
+      <input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()" />
+      <button class="btn btn-primary" onclick="addTor()">+</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Jugar</div>
+    <div id="memberPickTor" style="margin-bottom:10px;"></div>
+    <div class="tor-tabs">
+      <div class="tor-tab active" id="torPlayTab1" onclick="torPlayCategory('truth')">💬 Verdad</div>
+      <div class="tor-tab" id="torPlayTab2" onclick="torPlayCategory('dare')">🔥 Fuerte</div>
+      <div class="tor-tab" id="torPlayTab3" onclick="torPlayCategory('mild')">😊 Suave</div>
+    </div>
+    <div class="tor-result-box tor-truth" id="torResultBox">Elige una categoría y presiona el botón</div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:16px;" onclick="pickTor()">🎲 ELEGIR</button>
   </div>
 </div>
 
-<!-- TOP 10 -->
-<div class="pg" id="pg-top">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <div style="font-size:18px;font-weight:800;">🏆 Top 10 Shots</div>
-    <button class="btn bs bsm" onclick="if(confirm('¿Reiniciar?')){top10.forEach(p=>p.c=0);sv('t10',top10);rTop()}">Reset</button>
+<!-- =================== TOP 10 PAGE =================== -->
+<div class="page" id="page-top10">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">🏆 Top 10</div>
+    <button class="btn btn-secondary btn-sm" onclick="resetTop10()">Reiniciar</button>
   </div>
   <div class="card">
-    <div class="row"><input id="tni" placeholder="Agregar persona..." onkeydown="if(event.key==='Enter')atp()"/><button class="btn bp" onclick="atp()">+</button></div>
-    <div style="margin-top:8px;"><button class="btn bs bsm" onclick="impMbTop()">📥 Importar equipo</button></div>
+    <div class="card-title">Contador de vasos / shots</div>
+    <div class="flex-row" style="margin-bottom:12px;">
+      <input type="text" id="top10NameInput" placeholder="Agregar persona..." onkeydown="if(event.key==='Enter')addTop10Person()" />
+      <button class="btn btn-primary" onclick="addTop10Person()">+</button>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="importMembersTop10()">📥 Importar integrantes</button>
   </div>
-  <div id="toplist"></div>
+  <div class="top-list" id="topList"></div>
 </div>
 
-<!-- TIMER -->
-<div class="pg" id="pg-tmr">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <div style="font-size:18px;font-weight:800;">⏱ Cronómetros</div>
+<!-- =================== TIMER PAGE =================== -->
+<div class="page" id="page-timer">
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">⏱️ Cronómetros</div>
+    <button class="btn btn-secondary btn-sm" onclick="addTimerPerson()">+ Persona</button>
   </div>
-  <div class="card">
-    <div class="row">
-      <input id="tnm" placeholder="Nombre..." style="flex:2;"/>
-      <input id="tmn" type="number" placeholder="min" style="width:60px;" min="0" max="99"/>
-      <input id="tsc" type="number" placeholder="seg" style="width:60px;" min="0" max="59"/>
-      <button class="btn bp bsm" onclick="addTmr()">+</button>
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Agregar cronómetro</div>
+    <div class="flex-row">
+      <input type="text" id="timerNameInput" placeholder="Nombre..." />
+      <input type="number" id="timerMin" placeholder="min" style="width:70px;" min="0" max="99" />
+      <input type="number" id="timerSec" placeholder="seg" style="width:70px;" min="0" max="59" />
+      <button class="btn btn-primary" onclick="addTimer()">+</button>
     </div>
-    <div style="margin-top:8px;"><button class="btn bs bsm" onclick="impMbTmr()">📥 Importar equipo</button></div>
+    <button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="importMembersTimer()">📥 Importar integrantes</button>
   </div>
-  <div id="tmrlist"></div>
-</div>
+  <div id="timerList"></div>
 </div>
 
 <script>
-const COLS=['#e94560','#0f3460','#f0a500','#00c48c','#7c3aed','#e74c3c','#2980b9','#27ae60','#8e44ad','#f39c12','#16a085','#c0392b'];
-const MNAMES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const DNAMES=['D','L','M','X','J','V','S'];
-const DFACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+// ====== STATE ======
+let members = JSON.parse(localStorage.getItem('members')||'[]');
+let ruletaOpts = JSON.parse(localStorage.getItem('ruletaOpts')||'["Opción A","Opción B","Opción C"]');
+let calendarTasks = JSON.parse(localStorage.getItem('calTasks')||'{}');
+let diceCount = 1;
+let customFaces = JSON.parse(localStorage.getItem('customFaces')||'["A","B","C","D","E","F"]');
+let torData = JSON.parse(localStorage.getItem('torData')||JSON.stringify({truth:["¿Cuál es tu mayor secreto?","¿A quién le tienes envidia?","¿Cuál fue tu peor mentira?"],dare:["Haz 10 sentadillas","Imita a alguien del grupo","Toma un shot"],mild:["Muestra la última foto de tu galería","Di un halago a alguien","Baila 10 segundos"]}));
+let torCategory = 'truth';
+let torEditCat = 'truth';
+let top10People = JSON.parse(localStorage.getItem('top10')||'[]');
+let timers = JSON.parse(localStorage.getItem('timers')||'[]');
+let calYear, calMonth;
+let selectedCalDate = null;
+let wheelSpinning = false;
+let wheelAngle = 0;
 
-function sv(k,v){try{localStorage.setItem('ph_'+k,JSON.stringify(v));}catch(e){}}
-function lv(k,d){try{const v=localStorage.getItem('ph_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(key,val){localStorage.setItem(key,JSON.stringify(val));}
+function ann(msg){const el=document.getElementById('announce');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000);}
 
-let members=lv('mbr',[]);
-let rOpts=lv('rul',['Opción A','Opción B','Opción C']);
-let calTasks=lv('cal',{});
-let cFaces=lv('cus',['Cara A','Cara B','Cara C','Cara D','Cara E','Cara F']);
-let torD=lv('tor',{truth:['¿Cuál es tu mayor secreto?','¿A quién le tienes envidia?','¿Cuál fue tu peor mentira?'],dare:['Haz 10 sentadillas','Imita a alguien del grupo','Toma un shot'],mild:['Muestra la última foto de tu galería','Di un halago','Baila 10 segundos']});
-let top10=lv('t10',[]);
-let tmrs=lv('tmrs',[]);
-let torEC='truth',torPC2='truth';
-let dc=1,wAngle=0,wSpin=false;
-let calY,calM,selDate=null;
-let tInts={};
-
-function ann(msg){const el=document.getElementById('ann');el.textContent=msg;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),3000);}
-
-function go(id){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
-  document.getElementById('pg-'+id).classList.add('on');
-  document.getElementById('t-'+id).classList.add('on');
-  if(id==='rul'){rROpts();rWheel();}
-  if(id==='cal')renderCal();
-  if(id==='dad'){rDice();rDmbr();}
-  if(id==='cus'){rCF();rCDim();}
-  if(id==='tor'){rTorList();rTorMbr();}
-  if(id==='top')rTop();
-  if(id==='tmr')rTmrs();
-  if(id==='mbr')rMbr();
+// ====== NAVIGATION ======
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='ruleta')renderWheel();
+  if(id==='calendar')renderCalendar();
+  if(id==='dados')renderDiceArea();
+  if(id==='tor')renderTor();
+  if(id==='top10')renderTop10();
+  if(id==='timer')renderTimers();
+  if(id==='members')renderMembers();
+  if(id==='ruleta')renderRuletaOpts();
+  if(id==='dador')renderCustomFaces();
 }
 
-// MEMBERS
-function rMbr(){
-  const el=document.getElementById('mpills');
-  el.innerHTML=members.length?members.map((m,i)=>`<div class="pill">${m}<button onclick="rmMbr(${i})">×</button></div>`).join(''):'<span style="color:var(--muted);font-size:12px;">Sin integrantes</span>';
+// ====== MEMBERS ======
+function renderMembers(){
+  const pills = document.getElementById('memberPills');
+  pills.innerHTML = members.length ? members.map((m,i)=>`<div class="member-pill">${m}<button onclick="removeMember(${i})">×</button></div>`).join('') : '<span style="color:var(--muted);font-size:13px;">Sin integrantes aún</span>';
 }
-function am(){const inp=document.getElementById('mi');const v=inp.value.trim();if(!v)return;members.push(v);sv('mbr',members);inp.value='';rMbr();updImps();}
-function rmMbr(i){members.splice(i,1);sv('mbr',members);rMbr();updImps();}
-function updImps(){
-  const ri=document.getElementById('rim');if(ri&&members.length)ri.innerHTML=`<button class="btn bs bsm" onclick="impMbRul()">📥 Importar equipo a ruleta</button>`;else if(ri)ri.innerHTML='';
-  const di=document.getElementById('cdim');if(di&&members.length)di.innerHTML=`<button class="btn bs bsm" onclick="impMbCus()">📥 Importar equipo al dado</button>`;else if(di)di.innerHTML='';
+function addMember(){
+  const inp=document.getElementById('memberInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  members.push(v); save('members',members); inp.value='';
+  renderMembers(); updateMemberImports();
 }
-function impMbRul(){members.forEach(m=>{if(!rOpts.includes(m))rOpts.push(m);});sv('rul',rOpts);rROpts();rWheel();}
-function impMbCus(){members.forEach(m=>{if(!cFaces.includes(m))cFaces.push(m);});sv('cus',cFaces);rCF();}
-function impMbTop(){members.forEach(m=>{if(!top10.find(p=>p.n===m))top10.push({n:m,c:0});});sv('t10',top10);rTop();}
-function impMbTmr(){const mn=parseInt(document.getElementById('tmn').value)||1;const sc=parseInt(document.getElementById('tsc').value)||0;const tot=mn*60+sc||60;members.forEach(m=>{if(!tmrs.find(t=>t.n===m))tmrs.push({n:m,tot,rem:tot,run:false,done:false});});sv('tmrs',tmrs);rTmrs();}
-function rDmbr(){const el=document.getElementById('dmbr');if(!el)return;if(!members.length){el.innerHTML='';return;}el.innerHTML=`<div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Turno de:</div><div style="display:flex;flex-wrap:wrap;gap:5px;">${members.map(m=>`<button class="btn bs bsm" onclick="ann('🎲 Turno de ${m}!')">${m}</button>`).join('')}</div>`;}
-function rTorMbr(){const el=document.getElementById('tormbr');if(!el)return;if(!members.length){el.innerHTML='';return;}el.innerHTML=`<div style="font-size:11px;color:var(--muted);margin-bottom:5px;">Turno de:</div><div style="display:flex;flex-wrap:wrap;gap:5px;">${members.map(m=>`<button class="btn bs bsm" onclick="ann('🔥 Turno de ${m}!')">${m}</button>`).join('')}</div>`;}
-function rCDim(){const el=document.getElementById('cdim');if(!el)return;if(members.length)el.innerHTML=`<button class="btn bs bsm" onclick="impMbCus()">📥 Importar equipo al dado</button>`;else el.innerHTML='';}
+function removeMember(i){members.splice(i,1);save('members',members);renderMembers();updateMemberImports();}
+function updateMemberImports(){
+  // Ruleta
+  const ri=document.getElementById('memberImportRuleta');
+  if(ri&&members.length) ri.innerHTML=`<button class="btn btn-secondary btn-sm" onclick="importMembersRuleta()">📥 Importar integrantes a ruleta</button>`;
+  else if(ri) ri.innerHTML='';
+  // Dador
+  const di=document.getElementById('memberImportDador');
+  if(di&&members.length) di.innerHTML=`<button class="btn btn-secondary btn-sm" onclick="importMembersDador()">📥 Importar integrantes al dado</button>`;
+  else if(di) di.innerHTML='';
+  // TOR
+  const ti=document.getElementById('memberPickTor');
+  if(ti) renderMemberPickTor();
+  // Dados
+  const mp=document.getElementById('memberPickDados');
+  if(mp) renderMemberPickDados();
+}
+function importMembersRuleta(){members.forEach(m=>{if(!ruletaOpts.includes(m))ruletaOpts.push(m);});save('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
+function importMembersDador(){members.forEach(m=>{if(!customFaces.includes(m))customFaces.push(m);});save('customFaces',customFaces);renderCustomFaces();}
+function importMembersTop10(){members.forEach(m=>{if(!top10People.find(p=>p.name===m))top10People.push({name:m,count:0});});save('top10',top10People);renderTop10();}
+function importMembersTimer(){
+  const min=parseInt(document.getElementById('timerMin').value)||1;
+  const sec=parseInt(document.getElementById('timerSec').value)||0;
+  members.forEach(m=>{
+    if(!timers.find(t=>t.name===m))timers.push({name:m,total:(min*60+sec),remaining:(min*60+sec),running:false,done:false});
+  });
+  save('timers',timers);renderTimers();
+}
 
-// RULETA
-function rROpts(){
-  const el=document.getElementById('ropts');
-  if(!rOpts.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin opciones.</div>';return;}
-  el.innerHTML=rOpts.map((o,i)=>`<div class="oi"><div class="ic" style="background:${COLS[i%COLS.length]}"></div><span>${o}</span><button class="xb" onclick="rmRO(${i})">🗑</button></div>`).join('');
-  updImps();
+// ====== RULETA ======
+const RCOLORS=['#e94560','#0f3460','#f0a500','#00c48c','#7c3aed','#e74c3c','#2980b9','#27ae60','#8e44ad','#f39c12','#16a085','#c0392b'];
+function renderRuletaOpts(){
+  const el=document.getElementById('ruletaOptions');
+  if(!ruletaOpts.length){el.innerHTML='<div class="empty-state">Sin opciones. Agrega al menos 2.</div>';return;}
+  el.innerHTML=ruletaOpts.map((o,i)=>`<div class="option-item"><div class="option-color" style="background:${RCOLORS[i%RCOLORS.length]}"></div><span>${o}</span><button class="btn-icon" onclick="removeRuletaOpt(${i})">🗑</button></div>`).join('');
+  updateMemberImports();
 }
-function aro(){const inp=document.getElementById('ri');const v=inp.value.trim();if(!v)return;rOpts.push(v);sv('rul',rOpts);inp.value='';rROpts();rWheel();}
-function rmRO(i){rOpts.splice(i,1);sv('rul',rOpts);rROpts();rWheel();}
-function rWheel(){
-  const c=document.getElementById('crul');const ctx=c.getContext('2d');
-  const W=320,H=320,cx=160,cy=160,r=148;
+function addRuletaOption(){
+  const inp=document.getElementById('ruletaInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  ruletaOpts.push(v);save('ruletaOpts',ruletaOpts);inp.value='';
+  renderRuletaOpts();renderWheel();
+}
+function removeRuletaOpt(i){ruletaOpts.splice(i,1);save('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
+
+function renderWheel(){
+  const canvas=document.getElementById('canvas-ruleta');
+  const ctx=canvas.getContext('2d');
+  const W=340,H=340,cx=170,cy=170,r=155;
   ctx.clearRect(0,0,W,H);
-  const n=rOpts.length;
-  if(!n){ctx.fillStyle='#222';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();return;}
+  const n=ruletaOpts.length;
+  if(!n){ctx.fillStyle='#333';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#aaa';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('Sin opciones',cx,cy);return;}
   const arc=2*Math.PI/n;
   for(let i=0;i<n;i++){
-    const s=wAngle+arc*i;
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,s+arc);
-    ctx.fillStyle=COLS[i%COLS.length];ctx.fill();
-    ctx.strokeStyle='rgba(0,0,0,.25)';ctx.lineWidth=1;ctx.stroke();
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);
-    const txt=rOpts[i].length>13?rOpts[i].substring(0,12)+'…':rOpts[i];
-    ctx.fillStyle='#fff';ctx.font='bold 12px system-ui';ctx.textAlign='right';ctx.fillText(txt,r-8,4);
+    const start=wheelAngle+arc*i;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+arc);ctx.fillStyle=RCOLORS[i%RCOLORS.length];ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(start+arc/2);
+    const txt=ruletaOpts[i].length>14?ruletaOpts[i].substring(0,13)+'…':ruletaOpts[i];
+    ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='right';ctx.fillText(txt,r-10,5);
     ctx.restore();
   }
-  ctx.beginPath();ctx.arc(cx,cy,16,0,Math.PI*2);ctx.fillStyle='#111';ctx.fill();
-  ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fillStyle='#f0a500';ctx.fill();
-  ctx.beginPath();ctx.moveTo(W-6,cy);ctx.lineTo(W-24,cy-9);ctx.lineTo(W-24,cy+9);ctx.closePath();ctx.fillStyle='#fff';ctx.fill();
+  // center circle
+  ctx.beginPath();ctx.arc(cx,cy,18,0,Math.PI*2);ctx.fillStyle='#111';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.fillStyle='var(--gold,#f0a500)';ctx.fill();
+  // pointer
+  ctx.beginPath();ctx.moveTo(W-8,cy);ctx.lineTo(W-28,cy-10);ctx.lineTo(W-28,cy+10);ctx.closePath();ctx.fillStyle='#fff';ctx.fill();
 }
-function spin(){
-  if(wSpin||rOpts.length<2){ann('Agrega al menos 2 opciones');return;}
-  wSpin=true;document.getElementById('sres').textContent='Girando...';
-  const extra=Math.PI*2*(5+Math.random()*5);const dur=3000+Math.random()*1500;
-  const start=performance.now();const from=wAngle;
+
+function spinWheel(){
+  if(wheelSpinning||ruletaOpts.length<2){ann('Agrega al menos 2 opciones');return;}
+  wheelSpinning=true;
+  document.getElementById('spinResult').textContent='Girando...';
+  const extra=Math.PI*2*(5+Math.random()*5);
+  const target=wheelAngle+extra;
+  const dur=3000+Math.random()*1500;
+  const start=performance.now();
+  const from=wheelAngle;
   function frame(now){
-    const t=Math.min((now-start)/dur,1);const ease=1-Math.pow(1-t,4);
-    wAngle=from+extra*ease;rWheel();
+    const t=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-t,4);
+    wheelAngle=from+extra*ease;
+    renderWheel();
     if(t<1){requestAnimationFrame(frame);}else{
-      wAngle=(from+extra)%(Math.PI*2);rWheel();wSpin=false;
-      const n=rOpts.length;const arc=Math.PI*2/n;
-      const ptr=((Math.PI*2)-wAngle%(Math.PI*2))%(Math.PI*2);
-      const winner=rOpts[Math.floor(ptr/arc)%n];
-      document.getElementById('sres').textContent='🎉 '+winner;ann('🎉 '+winner);
+      wheelAngle=target%(Math.PI*2);
+      renderWheel();
+      wheelSpinning=false;
+      // Find winner: pointer is at angle 0 (right side)
+      const n=ruletaOpts.length;
+      const arc=Math.PI*2/n;
+      // pointer direction is right (0 rad). wheel segment at pointer = -wheelAngle mod arc
+      const ptr=((Math.PI*2)-wheelAngle%(Math.PI*2))%(Math.PI*2);
+      const idx=Math.floor(ptr/arc)%n;
+      const winner=ruletaOpts[idx];
+      document.getElementById('spinResult').textContent='🎉 '+winner;
+      ann('🎉 '+winner);
     }
   }
   requestAnimationFrame(frame);
 }
 
-// CALENDAR
-function initCal(){const d=new Date();calY=d.getFullYear();calM=d.getMonth();}
-function cm(d){calM+=d;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderCal();}
-function renderCal(){
-  document.getElementById('cml').textContent=MNAMES[calM]+' '+calY;
-  document.getElementById('ch').innerHTML=DNAMES.map(d=>`<div style="text-align:center;font-size:10px;color:var(--muted);font-weight:700;padding:4px 0;">${d}</div>`).join('');
-  const first=new Date(calY,calM,1).getDay();
-  const days=new Date(calY,calM+1,0).getDate();
-  const prev=new Date(calY,calM,0).getDate();
+// ====== CALENDAR ======
+const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DAYS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+function initCal(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();}
+function changeMonth(d){calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function renderCalendar(){
+  document.getElementById('calMonthLabel').textContent=MONTHS[calMonth]+' '+calYear;
+  const headers=document.getElementById('calHeaders');
+  headers.innerHTML=DAYS.map(d=>`<div class="cal-header">${d}</div>`).join('');
+  const grid=document.getElementById('calGrid');
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
   const today=new Date();
   let html='';
-  for(let i=0;i<first;i++){html+=`<div style="aspect-ratio:1;border-radius:7px;opacity:.3;border:1px solid var(--border);display:flex;align-items:flex-start;justify-content:center;padding:3px;font-size:10px;">${prev-first+1+i}</div>`;}
+  for(let i=0;i<first;i++){const d=prevDays-first+1+i;html+=`<div class="cal-day other-month"><div class="day-num">${d}</div></div>`;}
   for(let d=1;d<=days;d++){
-    const k=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const ts=calTasks[k]||[];
-    const isT=d===today.getDate()&&calM===today.getMonth()&&calY===today.getFullYear();
-    html+=`<div onclick="openDay('${k}',${d})" style="aspect-ratio:1;border-radius:7px;border:1px solid ${isT?'var(--accent)':ts.length?'rgba(0,196,140,.4)':'var(--border)'};background:${isT?'rgba(233,69,96,.12)':ts.length?'rgba(0,196,140,.07)':'transparent'};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:3px;font-size:11px;font-weight:${isT?'700':'400'};">
-      ${d}${ts.length?`<div style="width:5px;height:5px;border-radius:50%;background:var(--green);margin-top:2px;"></div>`:''}
+    const key=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const tasks=calendarTasks[key]||[];
+    const isToday=d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear();
+    html+=`<div class="cal-day${isToday?' today':''}${tasks.length?' has-task':''}" onclick="openDayModal('${key}',${d})">
+      <div class="day-num">${d}</div>
+      ${tasks.length?'<div class="task-dot"></div>':''}
     </div>`;
   }
-  const rem=(7-((first+days)%7))%7;
-  for(let i=1;i<=rem;i++){html+=`<div style="aspect-ratio:1;border-radius:7px;opacity:.3;border:1px solid var(--border);display:flex;align-items:flex-start;justify-content:center;padding:3px;font-size:10px;">${i}</div>`;}
-  document.getElementById('cg').innerHTML=html;
-  rUpcoming();
+  const remaining=(7-((first+days)%7))%7;
+  for(let i=1;i<=remaining;i++){html+=`<div class="cal-day other-month"><div class="day-num">${i}</div></div>`;}
+  grid.innerHTML=html;
+  renderUpcoming();
 }
-function openDay(k,d){
-  selDate=k;
-  document.getElementById('cmod-title').textContent=d+' de '+MNAMES[calM];
-  document.getElementById('cmod').style.display='block';
-  rTList();
+function openDayModal(key,day){
+  selectedCalDate=key;
+  document.getElementById('modalDateTitle').textContent=`${day} de ${MONTHS[calMonth]}, ${calYear}`;
+  renderTaskList();
+  document.getElementById('taskModal').classList.add('open');
 }
-function rTList(){
-  const ts=calTasks[selDate]||[];
-  const el=document.getElementById('tlist');
-  if(!ts.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;text-align:center;padding:8px;">Sin actividades</div>';return;}
-  el.innerHTML=ts.map((t,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>${t}</span><button class="xb" onclick="rmT(${i})">🗑</button></div>`).join('');
+function closeModal(){document.getElementById('taskModal').classList.remove('open');renderCalendar();}
+function renderTaskList(){
+  const tasks=calendarTasks[selectedCalDate]||[];
+  const el=document.getElementById('taskListEl');
+  if(!tasks.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:10px;">Sin actividades</div>';return;}
+  el.innerHTML=tasks.map((t,i)=>`<div class="task-list-item"><span>${t}</span><button class="btn-icon" onclick="removeTask(${i})">🗑</button></div>`).join('');
 }
-function at2(){const inp=document.getElementById('ti2');const v=inp.value.trim();if(!v)return;if(!calTasks[selDate])calTasks[selDate]=[];calTasks[selDate].push(v);sv('cal',calTasks);inp.value='';rTList();}
-function rmT(i){calTasks[selDate].splice(i,1);if(!calTasks[selDate].length)delete calTasks[selDate];sv('cal',calTasks);rTList();}
-function rUpcoming(){
-  const now=new Date();now.setHours(0,0,0,0);
-  const items=Object.entries(calTasks).filter(([k])=>new Date(k)>=now).sort(([a],[b])=>a.localeCompare(b)).slice(0,4);
-  const el=document.getElementById('upc');
+function addTask(){
+  const inp=document.getElementById('taskInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  if(!calendarTasks[selectedCalDate])calendarTasks[selectedCalDate]=[];
+  calendarTasks[selectedCalDate].push(v);
+  save('calTasks',calendarTasks);inp.value='';renderTaskList();
+}
+function removeTask(i){calendarTasks[selectedCalDate].splice(i,1);if(!calendarTasks[selectedCalDate].length)delete calendarTasks[selectedCalDate];save('calTasks',calendarTasks);renderTaskList();}
+function renderUpcoming(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const items=Object.entries(calendarTasks).filter(([k])=>new Date(k)>=today).sort(([a],[b])=>a.localeCompare(b)).slice(0,5);
+  const el=document.getElementById('upcomingTasks');
   if(!items.length){el.innerHTML='';return;}
-  el.innerHTML=`<div class="card" style="margin-top:10px;"><div class="ct">Próximas actividades</div>${items.map(([k,ts])=>`<div style="margin-bottom:7px;"><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">${k}</div>${ts.map(t=>`<div style="font-size:13px;padding:2px 0;border-bottom:1px solid var(--border);">${t}</div>`).join('')}</div>`).join('')}</div>`;
+  el.innerHTML=`<div class="card"><div class="card-title">Próximas actividades</div>${items.map(([k,tasks])=>`<div style="margin-bottom:8px;"><div style="font-size:12px;color:var(--muted);margin-bottom:3px;">${k}</div>${tasks.map(t=>`<div style="font-size:14px;padding:3px 0;border-bottom:1px solid var(--border);">${t}</div>`).join('')}</div>`).join('')}</div>`;
 }
 
-// DADOS
-function rDice(){
-  const a=document.getElementById('darea');
-  a.innerHTML=Array.from({length:dc},(_,i)=>`<div id="d${i}" onclick="roll()" style="width:72px;height:72px;background:#fff;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer;transition:transform .1s;">⚀</div>`).join('');
-  const s=document.getElementById('dcsel');
-  s.innerHTML=[1,2,3,4,5].map(n=>`<button onclick="setDC(${n})" style="width:40px;height:40px;border-radius:9px;border:2px solid ${dc===n?'var(--accent)':'var(--border)'};background:${dc===n?'rgba(233,69,96,.15)':'var(--card2)'};color:${dc===n?'var(--accent)':'var(--text)'};font-size:16px;font-weight:800;cursor:pointer;">${n}</button>`).join('');
+// ====== DADOS ======
+const DICE_FACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+function renderDiceArea(){
+  const area=document.getElementById('diceArea');
+  area.innerHTML=Array.from({length:diceCount},(_,i)=>`<div class="die" id="die-${i}" onclick="rollDice()">⚀</div>`).join('');
+  // count selector
+  const sel=document.getElementById('diceCountSel');
+  sel.innerHTML=[1,2,3,4,5].map(n=>`<button class="dice-count-btn${diceCount===n?' active':''}" onclick="setDiceCount(${n})">${n}</button>`).join('');
+  renderMemberPickDados();
 }
-function setDC(n){dc=n;rDice();}
-function roll(){
-  document.getElementById('dtot').style.display='block';
-  let tot=0;
-  for(let i=0;i<dc;i++){
-    const d=document.getElementById('d'+i);
-    d.style.animation='none';void d.offsetWidth;
-    d.style.animation='shake .4s ease';
-    const val=Math.floor(Math.random()*6);
-    setTimeout(()=>{d.textContent=DFACES[val];},400);
-    tot+=Math.floor(Math.random()*6)+1;
+function setDiceCount(n){diceCount=n;renderDiceArea();}
+function rollDice(){
+  const total_card=document.getElementById('dadosTotalCard');
+  total_card.style.display='block';
+  let total=0;
+  for(let i=0;i<diceCount;i++){
+    const die=document.getElementById('die-'+i);
+    die.classList.add('rolling');
+    setTimeout(()=>{
+      const val=Math.floor(Math.random()*6);
+      die.textContent=DICE_FACES[val];
+      die.classList.remove('rolling');
+    },400);
+    total+=Math.floor(Math.random()*6)+1;
   }
-  setTimeout(()=>{document.getElementById('dtv').textContent=tot;},420);
+  setTimeout(()=>{document.getElementById('dadosTotal').textContent=total;},450);
+}
+function renderMemberPickDados(){
+  const el=document.getElementById('memberPickDados');
+  if(!el)return;
+  if(!members.length){el.innerHTML='';return;}
+  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Turno de:</div><div class="dice-count-sel">${members.map((m,i)=>`<button class="btn btn-secondary btn-sm" onclick="ann('🎲 Turno de ${m}!')">${m}</button>`).join('')}</div>`;
 }
 
-// DADO CUSTOM
-function rCF(){
-  const el=document.getElementById('cflist');
-  if(!cFaces.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin caras.</div>';return;}
-  el.innerHTML=cFaces.map((f,i)=>`<div class="oi"><span>${f}</span><button class="xb" onclick="rmCF(${i})">🗑</button></div>`).join('');
-  rCDim();
+// ====== DADO CUSTOM ======
+function renderCustomFaces(){
+  const el=document.getElementById('customFaceList');
+  if(!customFaces.length){el.innerHTML='<div class="empty-state">Sin caras. Agrega al menos 2.</div>';return;}
+  el.innerHTML=customFaces.map((f,i)=>`<div class="option-item"><span>${f}</span><button class="btn-icon" onclick="removeCustomFace(${i})">🗑</button></div>`).join('');
+  updateMemberImports();
 }
-function acf(){if(cFaces.length>=20){ann('Máximo 20 caras');return;}const inp=document.getElementById('cfi');const v=inp.value.trim();if(!v)return;cFaces.push(v);sv('cus',cFaces);inp.value='';rCF();}
-function rmCF(i){cFaces.splice(i,1);sv('cus',cFaces);rCF();}
-function rcd(){
-  if(cFaces.length<2){ann('Agrega al menos 2 caras');return;}
-  const d=document.getElementById('cdie');
-  d.textContent='?';d.style.animation='none';void d.offsetWidth;d.style.animation='shake .4s ease';
-  setTimeout(()=>{const v=cFaces[Math.floor(Math.random()*cFaces.length)];d.textContent=v;ann('🎯 '+v);},400);
+function addCustomFace(){
+  if(customFaces.length>=20){ann('Máximo 20 caras');return;}
+  const inp=document.getElementById('customFaceInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  customFaces.push(v);save('customFaces',customFaces);inp.value='';renderCustomFaces();
+}
+function removeCustomFace(i){customFaces.splice(i,1);save('customFaces',customFaces);renderCustomFaces();}
+function rollCustomDie(){
+  if(customFaces.length<2){ann('Agrega al menos 2 caras');return;}
+  const die=document.getElementById('customDieDisplay');
+  die.classList.add('rolling');
+  die.textContent='?';
+  setTimeout(()=>{
+    const val=customFaces[Math.floor(Math.random()*customFaces.length)];
+    die.textContent=val;
+    die.classList.remove('rolling');
+    ann('🎯 '+val);
+  },400);
 }
 
-// VERDAD O RETO
-function torTab(c){
-  torEC=c;
-  document.querySelectorAll('#tetabs .tab').forEach((t,i)=>{t.classList.toggle('on',['truth','dare','mild'][i]===c);});
-  rTorList();
+// ====== VERDAD O RETO ======
+function torTab(cat){
+  torEditCat=cat;
+  document.querySelectorAll('#torEditTabs .tor-tab').forEach((t,i)=>{t.classList.toggle('active',['truth','dare','mild'][i]===cat);});
+  renderTor();
 }
-function rTorList(){
-  const items=torD[torEC]||[];
-  const el=document.getElementById('torlist');
-  if(!items.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin elementos.</div>';return;}
-  el.innerHTML=items.map((t,i)=>`<div class="oi"><span style="font-size:12px;">${t}</span><button class="xb" onclick="rmTor(${i})">🗑</button></div>`).join('');
+function renderTor(){
+  const items=torData[torEditCat]||[];
+  const el=document.getElementById('torList');
+  if(!items.length){el.innerHTML='<div class="empty-state">Sin elementos. Agrega algunos.</div>';return;}
+  el.innerHTML=items.map((t,i)=>`<div class="option-item"><span style="font-size:13px;">${t}</span><button class="btn-icon" onclick="removeTor(${i})">🗑</button></div>`).join('');
+  renderMemberPickTor();
 }
-function ator(){const inp=document.getElementById('tori');const v=inp.value.trim();if(!v)return;torD[torEC].push(v);sv('tor',torD);inp.value='';rTorList();}
-function rmTor(i){torD[torEC].splice(i,1);sv('tor',torD);rTorList();}
-function torPC(c){
-  torPC2=c;
-  ['truth','dare','mild'].forEach((x,i)=>{document.getElementById('tp'+(i+1)).classList.toggle('on',x===c);});
-  const box=document.getElementById('torbox');
-  if(c==='truth'){box.style.background='rgba(37,99,235,.15)';box.style.color='#7bb3ff';box.style.borderColor='rgba(37,99,235,.25)';}
-  else if(c==='dare'){box.style.background='rgba(233,69,96,.15)';box.style.color='#f87a8a';box.style.borderColor='rgba(233,69,96,.25)';}
-  else{box.style.background='rgba(0,196,140,.12)';box.style.color='#00c48c';box.style.borderColor='rgba(0,196,140,.22)';}
+function addTor(){
+  const inp=document.getElementById('torInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  torData[torEditCat].push(v);save('torData',torData);inp.value='';renderTor();
+}
+function removeTor(i){torData[torEditCat].splice(i,1);save('torData',torData);renderTor();}
+function torPlayCategory(cat){
+  torCategory=cat;
+  ['truth','dare','mild'].forEach((c,i)=>{document.getElementById('torPlayTab'+(i+1)).classList.toggle('active',c===cat);});
+  const box=document.getElementById('torResultBox');
+  box.className='tor-result-box tor-'+cat;
 }
 function pickTor(){
-  const items=torD[torPC2]||[];
+  const items=torData[torCategory]||[];
   if(!items.length){ann('Sin elementos en esta categoría');return;}
-  document.getElementById('torbox').textContent=items[Math.floor(Math.random()*items.length)];
+  const picked=items[Math.floor(Math.random()*items.length)];
+  document.getElementById('torResultBox').textContent=picked;
+  ann((torCategory==='truth'?'💬':'🔥')+' '+picked.substring(0,40));
+}
+function renderMemberPickTor(){
+  const el=document.getElementById('memberPickTor');
+  if(!el)return;
+  if(!members.length){el.innerHTML='';return;}
+  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Turno de:</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${members.map((m)=>`<button class="btn btn-secondary btn-sm" onclick="ann('🔥 Turno de ${m}!')">${m}</button>`).join('')}</div>`;
 }
 
-// TOP 10
-function atp(){const inp=document.getElementById('tni');const v=inp.value.trim();if(!v)return;if(top10.find(p=>p.n===v)){ann('Ya existe');return;}top10.push({n:v,c:0});sv('t10',top10);inp.value='';rTop();}
-function chC(i,d){const orig=top10.findIndex((_,j)=>j===i);top10[orig].c=Math.max(0,top10[orig].c+d);sv('t10',top10);rTop();}
-function rTop(){
-  const sorted=[...top10].map((p,i)=>({...p,oi:i})).sort((a,b)=>b.c-a.c).slice(0,10);
-  const el=document.getElementById('toplist');
-  if(!sorted.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Agrega personas</div>';return;}
-  el.innerHTML=sorted.map((p,i)=>`
-    <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--card);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;">
-      <div style="font-size:16px;font-weight:800;min-width:28px;color:${i===0?'#f0a500':i===1?'#ccc':i===2?'#cd7f32':'var(--muted)'};">${['🥇','🥈','🥉'][i]||'#'+(i+1)}</div>
-      <div style="flex:1;font-weight:700;font-size:14px;">${p.n}</div>
-      <button onclick="chC(${p.oi},-1)" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;">−</button>
-      <div style="font-size:22px;font-weight:800;color:var(--accent);min-width:32px;text-align:center;">${p.c}</div>
-      <button onclick="chC(${p.oi},1)" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;">+</button>
-      <button class="xb" onclick="top10.splice(${p.oi},1);sv('t10',top10);rTop()">🗑</button>
-    </div>`).join('');
+// ====== TOP 10 ======
+function addTop10Person(){
+  const inp=document.getElementById('top10NameInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  if(top10People.find(p=>p.name===v)){ann('Ya existe');return;}
+  top10People.push({name:v,count:0});
+  save('top10',top10People);inp.value='';renderTop10();
+}
+function changeCount(i,d){
+  top10People[i].count=Math.max(0,top10People[i].count+d);
+  save('top10',top10People);renderTop10();
+}
+function resetTop10(){if(confirm('¿Reiniciar todos los contadores?')){top10People.forEach(p=>p.count=0);save('top10',top10People);renderTop10();}}
+function renderTop10(){
+  const sorted=[...top10People].sort((a,b)=>b.count-a.count).slice(0,10);
+  const el=document.getElementById('topList');
+  if(!sorted.length){el.innerHTML='<div class="empty-state">Agrega personas para empezar</div>';return;}
+  el.innerHTML=sorted.map((p,i)=>{
+    const origIdx=top10People.findIndex(x=>x.name===p.name);
+    return `<div class="top-item">
+      <div class="top-rank${i===0?' r1':i===1?' r2':i===2?' r3':''}">${['🥇','🥈','🥉'][i]||'#'+(i+1)}</div>
+      <div class="top-name">${p.name}</div>
+      <div class="count-controls">
+        <button class="count-btn" onclick="changeCount(${origIdx},-1)">−</button>
+        <div class="top-count">${p.count}</div>
+        <button class="count-btn" onclick="changeCount(${origIdx},1)">+</button>
+      </div>
+      <button class="btn-icon" onclick="top10People.splice(${origIdx},1);save('top10',top10People);renderTop10();">🗑</button>
+    </div>`;
+  }).join('');
 }
 
-// TIMERS
-function ft(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
-function addTmr(){
-  const n=document.getElementById('tnm').value.trim()||'Cronómetro';
-  const mn=parseInt(document.getElementById('tmn').value)||0;
-  const sc=parseInt(document.getElementById('tsc').value)||0;
-  const tot=mn*60+sc;
-  if(!tot){ann('Ingresa un tiempo');return;}
-  tmrs.push({n,tot,rem:tot,run:false,done:false});
-  sv('tmrs',tmrs);
-  document.getElementById('tnm').value='';
-  document.getElementById('tmn').value='';
-  document.getElementById('tsc').value='';
-  rTmrs();
+// ====== TIMERS ======
+let timerIntervals={};
+function addTimer(){
+  const name=document.getElementById('timerNameInput').value.trim()||'Cronómetro';
+  const min=parseInt(document.getElementById('timerMin').value)||0;
+  const sec=parseInt(document.getElementById('timerSec').value)||0;
+  const total=min*60+sec;
+  if(!total){ann('Ingresa un tiempo');return;}
+  timers.push({name,total,remaining:total,running:false,done:false});
+  save('timers',timers);
+  document.getElementById('timerNameInput').value='';
+  document.getElementById('timerMin').value='';
+  document.getElementById('timerSec').value='';
+  renderTimers();
 }
-function togTmr(i){
-  if(tmrs[i].done)return;
-  if(tmrs[i].run){clearInterval(tInts[i]);tmrs[i].run=false;}
-  else{
-    tmrs[i].run=true;
-    tInts[i]=setInterval(()=>{
-      tmrs[i].rem--;
-      if(tmrs[i].rem<=0){tmrs[i].rem=0;tmrs[i].run=false;tmrs[i].done=true;clearInterval(tInts[i]);ann('⏰ '+tmrs[i].n+' — ¡Tiempo!');}
-      sv('tmrs',tmrs);updTmr(i);
+function addTimerPerson(){
+  const name=members.length?members[timers.length%members.length]:'Persona '+(timers.length+1);
+  const min=parseInt(document.getElementById('timerMin').value)||1;
+  const sec=parseInt(document.getElementById('timerSec').value)||0;
+  const total=min*60+sec||60;
+  timers.push({name,total,remaining:total,running:false,done:false});
+  save('timers',timers);renderTimers();
+}
+function fmtTime(s){const m=Math.floor(s/60);const sec=s%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
+function toggleTimer(i){
+  if(timers[i].done)return;
+  if(timers[i].running){
+    clearInterval(timerIntervals[i]);timers[i].running=false;
+  }else{
+    timers[i].running=true;
+    timerIntervals[i]=setInterval(()=>{
+      timers[i].remaining--;
+      if(timers[i].remaining<=0){timers[i].remaining=0;timers[i].running=false;timers[i].done=true;clearInterval(timerIntervals[i]);ann('⏰ '+timers[i].name+' — Tiempo!');}
+      save('timers',timers);updateTimerDisplay(i);
     },1000);
   }
-  sv('tmrs',tmrs);updTmr(i);
+  save('timers',timers);updateTimerDisplay(i);
 }
-function resTmr(i){clearInterval(tInts[i]);delete tInts[i];tmrs[i].rem=tmrs[i].tot;tmrs[i].run=false;tmrs[i].done=false;sv('tmrs',tmrs);updTmr(i);}
-function updTmr(i){
-  const d=document.getElementById('td-'+i);
-  const b=document.getElementById('tb-'+i);
+function resetTimer(i){clearInterval(timerIntervals[i]);timers[i].remaining=timers[i].total;timers[i].running=false;timers[i].done=false;save('timers',timers);updateTimerDisplay(i);}
+function removeTimer(i){clearInterval(timerIntervals[i]);delete timerIntervals[i];timers.splice(i,1);save('timers',timers);renderTimers();}
+function updateTimerDisplay(i){
+  const d=document.getElementById('timerDisp-'+i);
+  const t=timers[i];
   if(!d)return;
-  const t=tmrs[i];
-  d.textContent=ft(t.rem);
-  d.style.color=t.done?'var(--green)':'var(--accent)';
-  if(b)b.textContent=t.done?'✓ Listo':t.run?'⏸ Pausa':'▶ Inicio';
+  d.textContent=fmtTime(t.remaining);
+  d.className='timer-display'+(t.done?' done':'');
+  const btn=document.getElementById('timerBtn-'+i);
+  if(btn)btn.textContent=t.done?'✓ Listo':t.running?'⏸ Pausar':'▶ Iniciar';
 }
-function rTmrs(){
-  const el=document.getElementById('tmrlist');
-  if(!tmrs.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Agrega un cronómetro</div>';return;}
-  el.innerHTML=tmrs.map((t,i)=>`
-    <div class="card" style="margin-bottom:10px;">
-      <div style="font-size:15px;font-weight:700;margin-bottom:6px;">${t.n}</div>
-      <div id="td-${i}" style="font-size:44px;font-weight:800;color:${t.done?'var(--green)':'var(--accent)'};line-height:1;font-variant-numeric:tabular-nums;">${ft(t.rem)}</div>
-      <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;">
-        <button class="btn bp" id="tb-${i}" onclick="togTmr(${i})">${t.done?'✓ Listo':t.run?'⏸ Pausa':'▶ Inicio'}</button>
-        <button class="btn bs" onclick="resTmr(${i})">↺ Reset</button>
-        <button class="xb" onclick="clearInterval(tInts[${i}]);tmrs.splice(${i},1);sv('tmrs',tmrs);rTmrs()">🗑</button>
+function renderTimers(){
+  const el=document.getElementById('timerList');
+  if(!timers.length){el.innerHTML='<div class="empty-state">Agrega un cronómetro arriba</div>';return;}
+  el.innerHTML=timers.map((t,i)=>`
+    <div class="timer-card">
+      <div class="timer-name">${t.name}</div>
+      <div class="timer-display${t.done?' done':''}" id="timerDisp-${i}">${fmtTime(t.remaining)}</div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="timerBtn-${i}" onclick="toggleTimer(${i})">${t.done?'✓ Listo':t.running?'⏸ Pausar':'▶ Iniciar'}</button>
+        <button class="btn btn-secondary" onclick="resetTimer(${i})">↺ Reiniciar</button>
+        <button class="btn-icon" onclick="removeTimer(${i})">🗑</button>
       </div>
     </div>`).join('');
-  tmrs.forEach((t,i)=>{if(t.run&&!tInts[i])togTmr(i);});
+  // Restore running timers on re-render
+  timers.forEach((t,i)=>{if(t.running&&!timerIntervals[i])toggleTimer(i);});
 }
 
-// SHAKE ANIM
-const sty=document.createElement('style');
-sty.textContent='@keyframes shake{0%,100%{transform:rotate(0)scale(1)}20%{transform:rotate(-12deg)scale(1.1)}40%{transform:rotate(12deg)scale(1.1)}60%{transform:rotate(-8deg)scale(1.05)}80%{transform:rotate(8deg)scale(1.05)}}';
-document.head.appendChild(sty);
-
-// INIT
-initCal();rMbr();rWheel();updImps();
+// ====== INIT ======
+initCal();
+renderMembers();
+renderWheel();
+updateMemberImports();
 </script>
+</body>
+</html>
