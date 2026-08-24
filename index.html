@@ -160,6 +160,45 @@ input:focus{border-color:var(--accent);}
 .pc-back-dark{background:repeating-linear-gradient(45deg,#111,#111 4px,#1a1400 4px,#1a1400 8px);border:3px solid #8a6a00;border-radius:12px;box-shadow:0 0 12px rgba(200,150,0,.25),0 4px 20px rgba(0,0,0,.7);}
 /* Popup full card */
 .popup-card-wrap{display:flex;justify-content:center;padding:8px 0 20px;}
+/* PLAYER AVATARS */
+.player-card{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.player-card:last-child{border-bottom:none;}
+.player-avatar{width:44px;height:44px;border-radius:50%;background:var(--card2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;flex-shrink:0;transition:border-color .2s;}
+.player-avatar:hover{border-color:var(--accent);}
+.player-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.player-name{flex:1;font-weight:700;font-size:14px;}
+.player-edit-row{display:flex;gap:6px;align-items:center;}
+.avatar-picker{display:none;flex-wrap:wrap;gap:6px;margin-top:8px;padding:8px;background:var(--card2);border-radius:10px;}
+.avatar-picker.open{display:flex;}
+.av-opt{width:36px;height:36px;border-radius:50%;background:var(--card2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:border-color .15s;}
+.av-opt:hover{border-color:var(--gold);}
+/* Turn widget with avatar */
+.turn-widget-avatar-img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+/* TURNOS */
+.turn-bar{position:sticky;top:56px;z-index:90;background:linear-gradient(90deg,var(--accent),#7c3aed);padding:8px 14px;display:none;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 2px 12px rgba(233,69,96,.35);}
+.turn-bar.active{display:flex;}
+.turn-bar-name{font-size:15px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.turn-bar-sub{font-size:11px;color:rgba(255,255,255,.7);}
+.turn-bar-right{display:flex;gap:7px;align-items:center;flex-shrink:0;}
+.turn-next-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;}
+.turn-next-btn:hover{background:rgba(255,255,255,.28);}
+.turn-close-btn{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:18px;padding:2px 6px;}
+
+/* TURN WIDGET (inline en páginas de juego) */
+.turn-widget{display:flex;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:14px;align-items:center;justify-content:space-between;gap:10px;transition:background .3s,border-color .3s;}
+.turn-widget.active{background:linear-gradient(90deg,rgba(233,69,96,.15),rgba(124,58,237,.15));border-color:rgba(233,69,96,.4);}
+.turn-widget-left{display:flex;align-items:center;gap:10px;}
+.turn-widget-avatar{width:40px;height:40px;border-radius:50%;background:var(--card2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--muted);flex-shrink:0;transition:background .3s,color .3s;}
+.turn-widget.active .turn-widget-avatar{background:linear-gradient(135deg,var(--accent),#7c3aed);border-color:transparent;color:#fff;}
+.turn-widget-name{font-size:14px;font-weight:800;color:var(--muted);transition:color .3s;}
+.turn-widget.active .turn-widget-name{color:var(--text);}
+.turn-widget-sub{font-size:11px;color:var(--muted);}
+.turn-widget-btn{background:var(--accent);border:none;color:#fff;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;display:none;}
+.turn-widget.active .turn-widget-btn{display:block;}
+.turn-widget-btn:hover{filter:brightness(1.15);}
+.turn-widget-init{font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline;flex-shrink:0;}
+.turn-widget.active .turn-widget-init{display:none;}
+
 /* TODIS */
 .todis-btn{
   aspect-ratio:1;border:none;border-radius:16px;
@@ -301,28 +340,93 @@ input:focus{border-color:var(--accent);}
   </div>
 </div>
 
+<div class="turn-bar" id="turnBar">
+  <div><div class="turn-bar-sub">Turno de:</div><div class="turn-bar-name" id="turnBarName">-</div></div>
+  <div class="turn-bar-right">
+    <button class="turn-next-btn" onclick="turnNext()">&#x23ED; Siguiente</button>
+    <button class="turn-close-btn" onclick="turnStop()">&#x2715;</button>
+  </div>
+</div>
 <nav><div class="nav-inner">
-  <button class="nav-btn active" onclick="goPage('members')" id="tab-members"><span>&#x1F465;</span>Equipo</button>
+  <button class="nav-btn active" onclick="goPage('members')" id="tab-members"><span>&#x1F465;</span>Jugadores</button>
   <button class="nav-btn" onclick="goPage('ruleta')" id="tab-ruleta"><span>&#x1F3A1;</span>Ruleta</button>
   <button class="nav-btn" onclick="goPage('dados')" id="tab-dados"><span>&#x1F3B2;</span>Dados</button>
   <button class="nav-btn" onclick="goPage('tor')" id="tab-tor"><span>&#x1F525;</span>V/Reto</button>
-  <button class="nav-btn" onclick="goPage('mahjong')" id="tab-mahjong"><span>🀄</span>Mahjong</button>
+  <button class="nav-btn" onclick="goPage('mahjong')" id="tab-mahjong"><span>🔍</span>Encuentra</button>
   <button class="nav-btn" onclick="goPage('todis')" id="tab-todis"><span>🎰</span>TODIS</button>
   <button class="nav-btn" onclick="goPage('cartas')" id="tab-cartas"><span>&#x1F0CF;</span>Cartas</button>
+  <button class="nav-btn" onclick="goPage('yonunca')" id="tab-yonunca"><span>&#x1F645;</span>Yo Nunca</button>
   <button class="nav-btn" onclick="goPage('top10')" id="tab-top10"><span>&#x1F3C6;</span>Top 10</button>
   <button class="nav-btn" onclick="goPage('timer')" id="tab-timer"><span>&#x23F1;</span>Tiempo</button>
 </div></nav>
 
 <!-- MEMBERS -->
 <div class="page active" id="page-members">
-  <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F465; Equipo</div></div>
-  <div class="card"><div class="card-title">Integrantes</div><div class="member-pills" id="memberPills"></div><div class="flex-row"><input type="text" id="memberInput" placeholder="Nombre..." onkeydown="if(event.key==='Enter')addMember()"/><button class="btn btn-primary" onclick="addMember()">Agregar</button></div></div>
+  <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F465; Jugadores</div></div>
+
+  <!-- Add player -->
+  <div class="card">
+    <div class="card-title">Agregar jugador</div>
+    <div class="flex-row">
+      <input type="text" id="memberInput" placeholder="Nombre del jugador..." onkeydown="if(event.key==='Enter')addMember()"/>
+      <button class="btn btn-primary" onclick="addMember()">+ Agregar</button>
+    </div>
+  </div>
+
+  <!-- Player list -->
+  <div class="card" id="membersCard">
+    <div class="card-title">Jugadores</div>
+    <div id="memberPills"><div style="color:var(--muted);font-size:13px;padding:6px 0;">No hay jugadores a&#xFA;n</div></div>
+  </div>
+
+  <!-- Avatar picker modal (inline) -->
+  <div id="avatarModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:400;align-items:flex-end;justify-content:center;padding:0;">
+    <div style="background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 16px 32px;border-top:1px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:800;" id="avModalTitle">Elige avatar</div>
+        <button class="btn-icon" onclick="closeAvatarModal()">&#x2715;</button>
+      </div>
+      <!-- Photo/File buttons -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="btn btn-secondary" style="flex:1;gap:6px;" onclick="avTakePhoto()">
+          &#x1F4F8; C&#xE1;mara
+        </button>
+        <button class="btn btn-secondary" style="flex:1;gap:6px;" onclick="avPickFile()">
+          &#x1F5BC; Galería
+        </button>
+        <input type="file" id="avCameraInput" accept="image/*" capture="user" style="display:none;" onchange="avFileChosen(this)"/>
+        <input type="file" id="avFileInput" accept="image/*" style="display:none;" onchange="avFileChosen(this)"/>
+      </div>
+      <div class="card-title">O elige un emoji</div>
+      <div id="avEmojiGrid" style="display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
+    </div>
+  </div>
+  <div class="card" style="padding:12px 15px;">
+    <div class="card-title">Turnos aleatorios</div>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:10px;">Elige el orden al azar y cambia turno autom&aacute;ticamente en todos los juegos</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-primary" style="flex:1;" onclick="turnStart()">&#x1F3B2; Iniciar turnos</button>
+      <button class="btn btn-secondary btn-sm" onclick="turnNext()" id="turnNextBtn" style="display:none;">&#x23ED; Siguiente</button>
+    </div>
+    <div id="turnOrderPreview" style="margin-top:10px;"></div>
+  </div>
   <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados Ne&oacute;n &middot; Verdad o Reto<br>Cartas &middot; Top 10 &middot; Cron&oacute;metro</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo</div></div>
 </div>
 
 <!-- RULETA -->
 <div class="page" id="page-ruleta">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F3A1; Ruleta</div></div>
+  <div class="turn-widget" id="tw-ruleta">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-ruleta-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-ruleta-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-ruleta-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
   <div class="card" style="padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Opciones</div><button class="btn-outline" id="ruletaOptsToggle" onclick="toggleCollapsible('ruletaOpts','ruletaOptsToggle')">&#x270F; Editar</button></div>
     <div class="collapsible-body" id="ruletaOpts"><div id="ruletaOptionsList" style="margin-top:10px;"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="ruletaInput" placeholder="Nueva opci&#xF3;n..." onkeydown="if(event.key==='Enter')addRuletaOption()"/><button class="btn btn-primary" onclick="addRuletaOption()">+</button></div><div id="memberImportRuleta" style="margin-top:8px;"></div></div>
@@ -344,6 +448,17 @@ input:focus{border-color:var(--accent);}
 <!-- DADOS -->
 <div class="page" id="page-dados">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F3B2; Dados</div><button class="btn btn-secondary btn-sm" onclick="openCatalog()">&#x1F3A8; Estilo</button></div>
+  <div class="turn-widget" id="tw-dados">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-dados-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-dados-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-dados-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
   <div class="card" style="padding:12px 15px;">
     <div class="sub-tabs"><div class="sub-tab active" onclick="diceSubTab('normal')">&#x1F3B2; Dados</div><div class="sub-tab" onclick="diceSubTab('custom')">&#x1F3AF; Dado Custom</div></div>
     <!-- NORMAL -->
@@ -367,13 +482,24 @@ input:focus{border-color:var(--accent);}
 <!-- VERDAD O RETO -->
 <div class="page" id="page-tor">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F525; Verdad o Reto</div></div>
+  <div class="turn-widget" id="tw-tor">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-tor-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-tor-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-tor-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
   <div class="card" style="padding:12px 15px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" onclick="torTab('dare')">&#x1F525; Fuertes</div><div class="tor-cat-tab" onclick="torTab('mild')">&#x1F60A; Suaves</div></div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
   <div class="card"><div class="card-title">Jugar</div><div id="memberPickTor" style="margin-bottom:8px;"></div><div class="tor-cat-tabs"><div class="tor-cat-tab active" id="torPlayTab1" onclick="torPlayCat('truth')">&#x1F4AC; Verdad</div><div class="tor-cat-tab" id="torPlayTab2" onclick="torPlayCat('dare')">&#x1F525; Fuerte</div><div class="tor-cat-tab" id="torPlayTab3" onclick="torPlayCat('mild')">&#x1F60A; Suave</div></div><div class="tor-result-box tor-truth" id="torResultBox">Elige categor&#xED;a y presiona el bot&#xF3;n</div><button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">&#x1F3B2; ELEGIR</button></div>
 </div>
 
 <!-- MAHJONG PAGE -->
 <div class="page" id="page-mahjong">
-  <div class="section-header" style="margin-top:6px;"><div class="section-title">🀄 Mahjong</div></div>
+  <div class="section-header" style="margin-top:6px;"><div class="section-title">🀄 Encuentra</div></div>
 
   <!-- Level selector -->
   <div class="card" style="padding:12px 15px;margin-bottom:10px;">
@@ -413,7 +539,7 @@ input:focus{border-color:var(--accent);}
   <!-- Board -->
   <div class="mj-board" id="mjBoard">
     <div class="mj-overlay show" id="mjOverlay">
-      <div class="mj-overlay-title">🀄 Mahjong</div>
+      <div class="mj-overlay-title">🀄 Encuentra</div>
       <div class="mj-overlay-sub">Encuentra 3 fichas iguales para eliminarlas.<br>Elige el nivel y presiona Iniciar.</div>
       <button class="btn btn-gold" style="padding:12px 28px;font-size:15px;" onclick="mjStart()">▶ Jugar</button>
     </div>
@@ -429,6 +555,17 @@ input:focus{border-color:var(--accent);}
 <!-- TODIS -->
 <div class="page" id="page-todis">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">🎰 TODIS</div></div>
+  <div class="turn-widget" id="tw-todis">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-todis-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-todis-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-todis-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
 
   <!-- Result display -->
   <div id="todisResult" style="
@@ -442,17 +579,14 @@ input:focus{border-color:var(--accent);}
   <!-- Members optional -->
   <div id="memberPickTodis" style="margin-bottom:16px;"></div>
 
-  <!-- TODIS buttons -->
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
-    <button class="todis-btn" onclick="playTodis('T')" style="background:linear-gradient(135deg,#e94560,#c0303f);">T</button>
-    <button class="todis-btn" onclick="playTodis('O')" style="background:linear-gradient(135deg,#f0a500,#c07800);">O</button>
-    <button class="todis-btn" onclick="playTodis('D')" style="background:linear-gradient(135deg,#00c48c,#008c63);">D</button>
-    <button class="todis-btn" onclick="playTodis('I')" style="background:linear-gradient(135deg,#2563eb,#1a44b0);">I</button>
-    <button class="todis-btn" onclick="playTodis('S')" style="background:linear-gradient(135deg,#7c3aed,#5a28b0);">S</button>
-  </div>
-
-  <div style="text-align:center;">
-    <button class="btn btn-gold" style="font-size:16px;padding:12px 36px;" onclick="playTodis()">🎰 LETRA ALEATORIA</button>
+  <!-- TODIS buttons - toca cualquiera para elegir al azar -->
+  <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;">Toca cualquier letra &mdash; se elige al azar</div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:4px;">
+    <button class="todis-btn todis-3d" onclick="playTodis()" style="background:linear-gradient(135deg,#e94560,#c0303f);">T</button>
+    <button class="todis-btn todis-3d" onclick="playTodis()" style="background:linear-gradient(135deg,#f0a500,#c07800);">O</button>
+    <button class="todis-btn todis-3d" onclick="playTodis()" style="background:linear-gradient(135deg,#00c48c,#008c63);">D</button>
+    <button class="todis-btn todis-3d" onclick="playTodis()" style="background:linear-gradient(135deg,#2563eb,#1a44b0);">I</button>
+    <button class="todis-btn todis-3d" onclick="playTodis()" style="background:linear-gradient(135deg,#7c3aed,#5a28b0);">S</button>
   </div>
 
   <!-- Reference -->
@@ -471,6 +605,17 @@ input:focus{border-color:var(--accent);}
 <!-- CARTAS -->
 <div class="page" id="page-cartas">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F0CF; Cartas</div></div>
+  <div class="turn-widget" id="tw-cartas">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-cartas-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-cartas-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-cartas-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
   <div class="card" style="padding:12px 15px;">
     <!-- Style selector -->
     <div class="card-title">Estilo de cartas</div>
@@ -524,6 +669,58 @@ input:focus{border-color:var(--accent);}
       <div class="card-result-box" id="customCardResult" style="margin-top:12px;">Presiona para sacar una carta</div>
       <div style="text-align:center;margin-top:10px;"><button class="btn btn-gold" style="font-size:16px;padding:12px 32px;" onclick="drawCustomCard()">&#x1F3B4; SACAR CARTA</button></div>
     </div>
+  </div>
+</div>
+
+<!-- YO NUNCA -->
+<div class="page" id="page-yonunca">
+  <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F645; Yo Nunca</div></div>
+  <div class="turn-widget" id="tw-yonunca">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-yonunca-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-yonunca-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-yonunca-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
+  <div class="card" style="padding:12px 15px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="card-title" style="margin-bottom:0;">Frases</div>
+      <button class="btn-outline" id="ynOptsToggle" onclick="toggleCollapsible('ynOpts','ynOptsToggle')">&#x270F; Editar</button>
+    </div>
+    <div class="collapsible-body" id="ynOpts">
+      <div style="margin-top:10px;" id="ynList"></div>
+      <div class="flex-row" style="margin-top:8px;">
+        <input type="text" id="ynInput" placeholder="Yo nunca nunca..." onkeydown="if(event.key==='Enter')ynAdd()"/>
+        <button class="btn btn-primary" onclick="ynAdd()">+</button>
+      </div>
+    </div>
+  </div>
+  <!-- Big result display -->
+  <div id="ynResult" style="
+    min-height:160px;border-radius:20px;margin-bottom:16px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--card);border:1px solid var(--border);
+    padding:24px 20px;text-align:center;gap:10px;
+    transition:background .4s,border-color .4s;">
+    <div style="font-size:15px;color:var(--muted);">Presiona el bot&#xF3;n para empezar</div>
+  </div>
+  <div style="text-align:center;">
+    <button class="btn btn-primary" style="font-size:18px;padding:15px 48px;border-radius:14px;box-shadow:0 4px 20px rgba(233,69,96,.4);" onclick="ynPick()">
+      &#x1F645; YO NUNCA NUNCA...
+    </button>
+  </div>
+  <!-- Scores -->
+  <div class="card" style="margin-top:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="card-title" style="margin-bottom:0;">Tragos tomados</div>
+      <button class="btn btn-secondary btn-sm" onclick="ynResetScores()">Reiniciar</button>
+    </div>
+    <div id="ynScores"></div>
+    <div style="margin-top:8px;font-size:12px;color:var(--muted);">Toca + cuando alguien SÍ lo haya hecho</div>
   </div>
 </div>
 
@@ -645,9 +842,6 @@ function toggleCollapsible(id,btnId){var b=document.getElementById(id);var btn=d
 // NAV - handled below with TODIS support
 
 // MEMBERS
-function renderMembers(){var el=document.getElementById('memberPills');el.innerHTML=members.length?members.map(function(m,i){return '<div class="member-pill">'+m+'<button onclick="removeMember('+i+')">\xD7</button></div>';}).join(''):'<span style="color:var(--muted);font-size:12px;">Sin integrantes a\xFAn</span>';}
-function addMember(){var inp=document.getElementById('memberInput');var v=inp.value.trim();if(!v)return;members.push(v);sv('members',members);inp.value='';renderMembers();updateImports();}
-function removeMember(i){members.splice(i,1);sv('members',members);renderMembers();updateImports();}
 function updateImports(){var ri=document.getElementById('memberImportRuleta');if(ri)ri.innerHTML=members.length?'<button class="btn btn-secondary btn-sm" onclick="importToRuleta()">\uD83D\uDCE5 Importar equipo</button>':'';var di=document.getElementById('memberImportDador');if(di)di.innerHTML=members.length?'<button class="btn btn-secondary btn-sm" onclick="importToDador()">\uD83D\uDCE5 Importar equipo</button>':'';}
 function importToRuleta(){members.forEach(function(m){if(!ruletaOpts.includes(m))ruletaOpts.push(m);});sv('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
 function importToDador(){members.forEach(function(m){if(!customFaces.includes(m))customFaces.push(m);});sv('customFaces',customFaces);renderCustomFaces();}
@@ -752,325 +946,284 @@ function renderTor(){var items=torData[torEditCat]||[];document.getElementById('
 function addTor(){var inp=document.getElementById('torInput');var v=inp.value.trim();if(!v)return;torData[torEditCat].push(v);sv('torData',torData);inp.value='';renderTor();}
 function removeTor(i){torData[torEditCat].splice(i,1);sv('torData',torData);renderTor();}
 function torPlayCat(cat){torPlayCategory=cat;['truth','dare','mild'].forEach(function(c,i){document.getElementById('torPlayTab'+(i+1)).classList.toggle('active',c===cat);});document.getElementById('torResultBox').className='tor-result-box tor-'+cat;}
-function pickTor(){var items=torData[torPlayCategory]||[];if(!items.length){ann('Sin elementos');return;}var picked=items[Math.floor(Math.random()*items.length)];document.getElementById('torResultBox').textContent=picked;var emojis={truth:'\uD83D\uDCAC',dare:'\uD83D\uDD25',mild:'\uD83D\uDE0A'};var labels={truth:'Verdad',dare:'\xA1Reto Fuerte!',mild:'Reto Suave'};showPopup(emojis[torPlayCategory],labels[torPlayCategory],'Tu turno...',picked);}
+function pickTor(){var items=torData[torPlayCategory]||[];if(!items.length){ann('Sin elementos');return;}var picked=items[Math.floor(Math.random()*items.length)];document.getElementById('torResultBox').textContent=picked;var emojis={truth:'\uD83D\uDCAC',dare:'\uD83D\uDD25',mild:'\uD83D\uDE0A'};var labels={truth:'Verdad',dare:'\xA1Reto Fuerte!',mild:'Reto Suave'};showPopup(emojis[torPlayCategory],labels[torPlayCategory],'Tu turno...',picked);turnAdvance();}
 
 // ===== MAHJONG =====
-const MJ_TILES = [
-  // Characters / Numbers
-  {id:'b1',e:'🀇',n:'1B'},{id:'b2',e:'🀈',n:'2B'},{id:'b3',e:'🀉',n:'3B'},
-  {id:'b4',e:'🀊',n:'4B'},{id:'b5',e:'🀋',n:'5B'},{id:'b6',e:'🀌',n:'6B'},
-  {id:'b7',e:'🀍',n:'7B'},{id:'b8',e:'🀎',n:'8B'},{id:'b9',e:'🀏',n:'9B'},
-  // Circles
-  {id:'c1',e:'🀙',n:'1C'},{id:'c2',e:'🀚',n:'2C'},{id:'c3',e:'🀛',n:'3C'},
-  {id:'c4',e:'🀜',n:'4C'},{id:'c5',e:'🀝',n:'5C'},{id:'c6',e:'🀞',n:'6C'},
-  {id:'c7',e:'🀟',n:'7C'},{id:'c8',e:'🀠',n:'8C'},{id:'c9',e:'🀡',n:'9C'},
-  // Winds
-  {id:'we',e:'🀀',n:'E'},{id:'ws',e:'🀁',n:'S'},{id:'ww',e:'🀂',n:'O'},
-  {id:'wn',e:'🀃',n:'N'},
-  // Dragons
-  {id:'dg',e:'🀄',n:'R'},{id:'db',e:'🀅',n:'V'},{id:'dw',e:'🀆',n:'B'},
-  // Emoji fallbacks (extra variety for higher levels)
-  {id:'f1',e:'🍀',n:'T1'},{id:'f2',e:'🌸',n:'T2'},{id:'f3',e:'🎋',n:'T3'},
-  {id:'f4',e:'🎑',n:'T4'},{id:'f5',e:'🦋',n:'T5'},{id:'f6',e:'🌺',n:'T6'},
+// Emoji pool for Encuentra
+var ENC_POOL=[
+  '😀','😂','😍','😡','😱',
+  '🥳','😈','🧐','😎','😕',
+  '🍕','🍔','🍞','🍬','🍺',
+  '🎸','🎲','🎰','⚽','🎱',
+  '🐶','🐱','🐮','🐷','🐼',
+  '🦖','🐬','🦎','🐢','🐪',
+  '🦄','🐍','🐻','🦊','🐙',
+  '🚀','👾','🤖','🏆','💥',
 ];
 
 const MJ_LEVELS = {
-  1: {tiles: 48,  time: 600, label:'Fácil'},
-  2: {tiles: 96,  time: 480, label:'Medio'},
-  3: {tiles: 180, time: 360, label:'Difícil'},
-  4: {tiles: 300, time: 600, label:'Extremo'},
+  1:{tiles:48, time:600},
+  2:{tiles:96, time:480},
+  3:{tiles:180,time:360},
+  4:{tiles:300,time:600},
 };
 
-let mjLevel = 1;
-let mjBoard = [];        // array of tile objects on board
-let mjSelected = [];     // up to 3 selected tile indices
-let mjTray = [];         // tiles held in tray (selected)
-let mjMatched = 0;
-let mjTimeLeft = 600;
-let mjTimerRef = null;
-let mjRunning = false;
-let mjTotalTiles = 0;
-let mjHintTiles = [];
+var mjLevel=1, mjBoardArr=[], mjSelected=[], mjTrayArr=[], mjMatched=0;
+var mjTimeLeft=600, mjTimerRef=null, mjRunning=false, mjTotalTiles=0, mjHintIdxs=[];
 
-function mjSetLevel(lvl) {
-  mjLevel = lvl;
-  [1,2,3,4].forEach(l => {
-    const btn = document.getElementById('mjlvl-'+l);
-    if(btn) btn.classList.toggle('active', l === lvl);
-  });
-}
-
-function mjBuildDeck(n) {
-  // Build a deck where every tile appears in multiples of 3
-  const deck = [];
-  let pool = [];
-  // Build large enough pool
-  while(pool.length < n + 30) {
-    pool = pool.concat(MJ_TILES);
-  }
-  // Shuffle pool, take n items making sure count is multiple of 3
-  pool = mjShuffle(pool);
-  // Count tiles by id to ensure groups of 3
-  const needed = Math.ceil(n / 3) * 3;
-  const grouped = [];
-  const usedCounts = {};
-  for(const t of pool) {
-    if(grouped.length >= needed) break;
-    usedCounts[t.id] = (usedCounts[t.id]||0) + 1;
-    grouped.push({...t, uid: t.id+'_'+usedCounts[t.id]});
-  }
-  // ensure each appears exactly 3x — rebuild properly
-  const finalDeck = [];
-  const counts = {};
-  for(const t of MJ_TILES) counts[t.id] = 0;
-  let tileTypes = mjShuffle([...MJ_TILES]);
-  let i = 0;
-  while(finalDeck.length < needed) {
-    const t = tileTypes[i % tileTypes.length];
-    finalDeck.push({...t, uid: t.id+'_'+(finalDeck.filter(x=>x.id===t.id).length+1)});
-    finalDeck.push({...t, uid: t.id+'_'+(finalDeck.filter(x=>x.id===t.id).length+1)});
-    finalDeck.push({...t, uid: t.id+'_'+(finalDeck.filter(x=>x.id===t.id).length+1)});
-    i++;
-  }
-  return _mjShuffle(finalDeck).slice(0, needed);
-}
-
-function _mjShuffle(arr) {
-  const a = [...arr];
-  for(let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
+// Pure shuffle — no naming conflict
+function mjRandShuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
   return a;
 }
 
-function mjStart() {
-  if(mjTimerRef) clearInterval(mjTimerRef);
-  const lvl = MJ_LEVELS[mjLevel];
-  mjBoard = mjBuildDeck(lvl.tiles);
-  mjTotalTiles = mjBoard.length;
-  mjSelected = [];
-  mjTray = [];
-  mjMatched = 0;
-  mjTimeLeft = lvl.time;
-  mjRunning = true;
-  mjHintTiles = [];
-
-  // hide overlay
-  const ov = document.getElementById('mjOverlay');
-  if(ov) ov.classList.remove('show');
-
-  mjRenderBoard();
-  mjRenderTray();
-  mjUpdateStats();
-
-  // start timer
-  mjTimerRef = setInterval(mjTick, 1000);
-}
-
-function mjTick() {
-  if(!mjRunning) return;
-  mjTimeLeft--;
-  mjUpdateStats();
-  if(mjTimeLeft <= 0) {
-    mjTimeLeft = 0;
-    mjGameOver(false);
+function mjBuildDeck(n){
+  var needed=Math.ceil(n/3)*3;
+  var types=mjRandShuffle(ENC_POOL.slice()).map(function(e){return {id:e,e:e,n:e};});
+  var deck=[];
+  var ti=0;
+  while(deck.length<needed){
+    var tile=types[ti%types.length];
+    deck.push(Object.assign({},tile,{uid:tile.id+'_a'}));
+    deck.push(Object.assign({},tile,{uid:tile.id+'_b'}));
+    deck.push(Object.assign({},tile,{uid:tile.id+'_c'}));
+    ti++;
   }
+  return mjRandShuffle(deck).slice(0,needed);
 }
 
-function mjFmtTime(s) {
+function mjSetLevel(lvl){
+  mjLevel=lvl;
+  [1,2,3,4].forEach(function(l){
+    var b=document.getElementById('mjlvl-'+l);
+    if(b)b.classList.toggle('active',l===lvl);
+  });
+}
+
+function mjStart(){
+  if(mjTimerRef)clearInterval(mjTimerRef);
+  var lvl=MJ_LEVELS[mjLevel];
+  mjBoardArr=mjBuildDeck(lvl.tiles);
+  mjTotalTiles=mjBoardArr.length;
+  mjSelected=[];mjTrayArr=[];mjMatched=0;
+  mjTimeLeft=lvl.time;mjRunning=true;mjHintIdxs=[];
+  var ov=document.getElementById('mjOverlay');
+  if(ov)ov.classList.remove('show');
+  mjRenderBoard();mjRenderTray();mjUpdateStats();
+  mjTimerRef=setInterval(mjTick,1000);
+}
+
+function mjTick(){
+  if(!mjRunning)return;
+  mjTimeLeft--;mjUpdateStats();
+  if(mjTimeLeft<=0){mjTimeLeft=0;mjGameOver(false);}
+}
+
+function mjFmtTime(s){
   return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
 }
 
-function mjUpdateStats() {
-  const lvl = MJ_LEVELS[mjLevel];
-  const rem = mjBoard.length;
-  document.getElementById('mjStatLeft').textContent = rem;
-  document.getElementById('mjStatMatched').textContent = mjMatched;
-  document.getElementById('mjStatTime').textContent = mjFmtTime(mjTimeLeft);
-  const pct = (mjTimeLeft / lvl.time) * 100;
-  const fill = document.getElementById('mjTimerFill');
-  if(fill) {
-    fill.style.width = pct + '%';
-    fill.style.background = pct > 50 ? 'var(--green)' : pct > 20 ? 'var(--gold)' : 'var(--accent)';
-  }
+function mjUpdateStats(){
+  var lvl=MJ_LEVELS[mjLevel];
+  var el;
+  el=document.getElementById('mjStatLeft');if(el)el.textContent=mjBoardArr.length;
+  el=document.getElementById('mjStatMatched');if(el)el.textContent=mjMatched;
+  el=document.getElementById('mjStatTime');if(el)el.textContent=mjFmtTime(mjTimeLeft);
+  var pct=(mjTimeLeft/lvl.time)*100;
+  var fill=document.getElementById('mjTimerFill');
+  if(fill){fill.style.width=pct+'%';fill.style.background=pct>50?'var(--green)':pct>20?'var(--gold)':'var(--accent)';}
 }
 
-function mjRenderBoard() {
-  const board = document.getElementById('mjBoard');
-  // Keep overlay
-  const ov = document.getElementById('mjOverlay');
-  board.innerHTML = '';
-  if(ov) board.appendChild(ov);
-
-  mjBoard.forEach((tile, idx) => {
-    const el = document.createElement('div');
-    el.className = 'mj-tile' + (mjHintTiles.includes(idx) ? ' selected' : '');
-    el.dataset.idx = idx;
-    el.dataset.id = tile.id;
-    el.innerHTML = '<span>'+tile.e+'</span><span class="tile-label">'+tile.n+'</span>';
-    el.onclick = () => mjSelectTile(idx);
+function mjRenderBoard(){
+  var board=document.getElementById('mjBoard');
+  var ov=document.getElementById('mjOverlay');
+  board.innerHTML='';
+  if(ov)board.appendChild(ov);
+  mjBoardArr.forEach(function(tile,idx){
+    var el=document.createElement('div');
+    el.className='mj-tile'+(mjHintIdxs.indexOf(idx)>=0?' selected':'');
+    el.setAttribute('data-idx',idx);
+    el.setAttribute('data-id',tile.id);
+    el.innerHTML='<span>'+tile.e+'</span><span class="tile-label">'+tile.n+'</span>';
+    el.onclick=(function(i){return function(){mjSelectTile(i);};})(idx);
     board.appendChild(el);
   });
 }
 
-function mjRenderTray() {
-  const tray = document.getElementById('mjTray');
-  if(!mjTray.length) {
-    tray.innerHTML = '<span style="color:var(--muted);font-size:13px;">Toca fichas del tablero...</span>';
+function mjRenderTray(){
+  var tray=document.getElementById('mjTray');
+  if(!tray)return;
+  if(!mjTrayArr.length){
+    tray.innerHTML='<span style="color:var(--muted);font-size:13px;">Toca fichas del tablero...</span>';
     return;
   }
-  tray.innerHTML = mjTray.map(t =>
-    '<div class="mj-tray-tile"><span>'+t.e+'</span></div>'
-  ).join('');
+  tray.innerHTML=mjTrayArr.map(function(t){
+    return '<div class="mj-tray-tile"><span>'+t.e+'</span></div>';
+  }).join('');
 }
 
-function mjSelectTile(idx) {
-  if(!mjRunning) return;
-  if(mjTray.length >= 3) return;
-
-  const tile = mjBoard[idx];
-  if(!tile) return;
-
-  // Check not already selected
-  if(mjSelected.includes(idx)) {
-    // deselect
-    mjSelected = mjSelected.filter(i => i !== idx);
-    mjTray = mjTray.filter(t => t.uid !== tile.uid);
+function mjSelectTile(idx){
+  if(!mjRunning)return;
+  var tile=mjBoardArr[idx];
+  if(!tile)return;
+  // deselect if already selected
+  var selPos=mjSelected.indexOf(idx);
+  if(selPos>=0){
+    mjSelected.splice(selPos,1);
+    mjTrayArr.splice(selPos,1);
     mjRenderTray();
-    const el = document.querySelector('.mj-tile[data-idx="'+idx+'"]');
-    if(el) el.classList.remove('selected');
+    var el=document.querySelector('.mj-tile[data-idx="'+idx+'"]');
+    if(el)el.classList.remove('selected');
     return;
   }
-
+  if(mjTrayArr.length>=3)return;
   mjSelected.push(idx);
-  mjTray.push(tile);
+  mjTrayArr.push(tile);
   mjRenderTray();
-
-  const el = document.querySelector('.mj-tile[data-idx="'+idx+'"]');
-  if(el) el.classList.add('selected');
-  mjHintTiles = [];
-
-  // Check for match when 3 selected
-  if(mjSelected.length === 3) {
-    setTimeout(mjCheckMatch, 200);
-  }
+  var el=document.querySelector('.mj-tile[data-idx="'+idx+'"]');
+  if(el)el.classList.add('selected');
+  mjHintIdxs=[];
+  if(mjSelected.length===3)setTimeout(mjCheckMatch,200);
 }
 
-function mjCheckMatch() {
-  const ids = mjSelected.map(i => mjBoard[i] ? mjBoard[i].id : null);
-  const allSame = ids[0] && ids[0] === ids[1] && ids[1] === ids[2];
-
-  if(allSame) {
-    // Match! animate and remove
-    mjSelected.forEach(idx => {
-      const el = document.querySelector('.mj-tile[data-idx="'+idx+'"]');
-      if(el) { el.classList.add('matched'); el.onclick = null; }
+function mjCheckMatch(){
+  var ids=mjSelected.map(function(i){return mjBoardArr[i]?mjBoardArr[i].id:null;});
+  var allSame=ids[0]&&ids[0]===ids[1]&&ids[1]===ids[2];
+  if(allSame){
+    mjSelected.forEach(function(idx){
+      var el=document.querySelector('.mj-tile[data-idx="'+idx+'"]');
+      if(el){el.classList.add('matched');el.onclick=null;}
     });
-    setTimeout(() => {
-      // Remove from board (mark as null, keep indices stable)
-      mjSelected.forEach(idx => { mjBoard[idx] = null; });
-      mjBoard = mjBoard.filter(t => t !== null);
-      mjMatched += 3;
-      mjSelected = [];
-      mjTray = [];
-      mjRenderBoard();
-      mjRenderTray();
-      mjUpdateStats();
-      if(mjBoard.length === 0) mjGameOver(true);
-    }, 450);
+    setTimeout(function(){
+      var toRemove=mjSelected.slice();
+      toRemove.sort(function(a,b){return b-a;});
+      toRemove.forEach(function(idx){mjBoardArr.splice(idx,1);});
+      mjMatched+=3;mjSelected=[];mjTrayArr=[];
+      mjRenderBoard();mjRenderTray();mjUpdateStats();
+      if(mjBoardArr.length===0)mjGameOver(true);
+    },450);
   } else {
-    // Wrong — flash tiles red
-    mjSelected.forEach(idx => {
-      const el = document.querySelector('.mj-tile[data-idx="'+idx+'"]');
-      if(el) { el.classList.remove('selected'); el.classList.add('wrong'); }
+    mjSelected.forEach(function(idx){
+      var el=document.querySelector('.mj-tile[data-idx="'+idx+'"]');
+      if(el){el.classList.remove('selected');el.classList.add('wrong');}
     });
-    // Shake board
-    const board = document.getElementById('mjBoard');
-    board.classList.add('shake');
-    setTimeout(() => {
-      board.classList.remove('shake');
-      mjSelected.forEach(idx => {
-        const el = document.querySelector('.mj-tile[data-idx="'+idx+'"]');
-        if(el) el.classList.remove('wrong');
+    var board=document.getElementById('mjBoard');
+    if(board)board.classList.add('shake');
+    setTimeout(function(){
+      if(board)board.classList.remove('shake');
+      mjSelected.forEach(function(idx){
+        var el=document.querySelector('.mj-tile[data-idx="'+idx+'"]');
+        if(el)el.classList.remove('wrong');
       });
-      mjSelected = [];
-      mjTray = [];
-      mjRenderTray();
-    }, 400);
+      mjSelected=[];mjTrayArr=[];mjRenderTray();
+    },400);
   }
 }
 
-function mjHint() {
-  if(!mjRunning || !mjBoard.length) return;
-  // Find a matching triplet
-  const counts = {};
-  mjBoard.forEach((t,i) => {
-    if(!t) return;
-    if(!counts[t.id]) counts[t.id] = [];
+function mjHint(){
+  if(!mjRunning||!mjBoardArr.length)return;
+  var counts={};
+  mjBoardArr.forEach(function(t,i){
+    if(!counts[t.id])counts[t.id]=[];
     counts[t.id].push(i);
   });
-  const triplet = Object.values(counts).find(arr => arr.length >= 3);
-  if(!triplet) { ann('No hay grupos disponibles. Mezcla las fichas.'); return; }
-  mjHintTiles = triplet.slice(0,3);
+  var triplet=null;
+  var keys=Object.keys(counts);
+  for(var k=0;k<keys.length;k++){
+    if(counts[keys[k]].length>=3){triplet=counts[keys[k]].slice(0,3);break;}
+  }
+  if(!triplet){ann('No hay grupos disponibles. Mezcla las fichas.');return;}
+  mjHintIdxs=triplet;
   mjRenderBoard();
-  setTimeout(() => { mjHintTiles = []; mjRenderBoard(); }, 2000);
+  setTimeout(function(){mjHintIdxs=[];mjRenderBoard();},2500);
 }
 
-function mjShuffle() {
-  if(!mjRunning) return;
-  mjBoard = _mjShuffle(mjBoard);
-  mjSelected = [];
-  mjTray = [];
-  mjRenderBoard();
-  mjRenderTray();
+function mjShuffle(){
+  if(!mjRunning)return;
+  mjBoardArr=mjRandShuffle(mjBoardArr);
+  mjSelected=[];mjTrayArr=[];
+  mjRenderBoard();mjRenderTray();
 }
 
-function mjGameOver(win) {
-  if(mjTimerRef) clearInterval(mjTimerRef);
-  mjRunning = false;
-  const ov = document.getElementById('mjOverlay');
-  if(!ov) return;
-  if(win) {
-    ov.innerHTML = '<div class="mj-overlay-title" style="color:var(--green);">🎉 ¡Ganaste!</div>'
+function mjGameOver(win){
+  if(mjTimerRef)clearInterval(mjTimerRef);
+  mjRunning=false;
+  var ov=document.getElementById('mjOverlay');
+  if(!ov)return;
+  if(win){
+    ov.innerHTML='<div class="mj-overlay-title" style="color:var(--green);">\uD83C\uDF89 \xA1Ganaste!</div>'
       +'<div class="mj-overlay-sub">Eliminaste todas las fichas<br>con '+mjFmtTime(mjTimeLeft)+' de sobra.</div>'
-      +'<button class="btn btn-gold" style="padding:12px 28px;font-size:15px;" onclick="mjStart()">▶ Jugar de nuevo</button>';
+      +'<button class="btn btn-gold" style="padding:12px 28px;font-size:15px;" onclick="mjStart()">\u25B6 Jugar de nuevo</button>';
   } else {
-    ov.innerHTML = '<div class="mj-overlay-title" style="color:var(--accent);">⏰ ¡Tiempo!</div>'
-      +'<div class="mj-overlay-sub">Quedaron '+mjBoard.length+' fichas por eliminar.</div>'
-      +'<button class="btn btn-gold" style="padding:12px 28px;font-size:15px;" onclick="mjStart()">▶ Intentar de nuevo</button>';
+    ov.innerHTML='<div class="mj-overlay-title" style="color:var(--accent);">\u23F0 \xA1Tiempo!</div>'
+      +'<div class="mj-overlay-sub">Quedaron '+mjBoardArr.length+' fichas por eliminar.</div>'
+      +'<button class="btn btn-gold" style="padding:12px 28px;font-size:15px;" onclick="mjStart()">\u25B6 Intentar de nuevo</button>';
   }
   ov.classList.add('show');
 }
 
+// ===== TURNOS =====
+var turnOrder=[];
+var turnIdx=0;
+var turnActive=false;
+var TURN_PAGES=['ruleta','dados','tor','todis','cartas','yonunca'];
+
+function turnStart(){
+  if(!members.length){ann('Agrega jugadores primero en la pestaña Jugadores');return;}
+  turnOrder=mjRandShuffle(members.slice());
+  turnIdx=0;turnActive=true;
+  turnRefresh();turnShowOrder();
+  var nb=document.getElementById('turnNextBtn');if(nb)nb.style.display='';
+  showPopup('&#x1F3AF;','Empezamos!','Primer turno: '+turnOrder[0],'',undefined);
+}
+
+function turnAdvance(){
+  if(!turnActive||!turnOrder.length)return;
+  turnIdx++;
+  if(turnIdx>=turnOrder.length){
+    turnOrder=mjRandShuffle(turnOrder);turnIdx=0;
+    ann('Nueva ronda! Orden mezclado');
+  }
+  turnRefresh();turnShowOrder();
+  var pos=turnIdx%turnOrder.length;
+  showPopup('&#x1F3AF;','Turno de: '+turnOrder[pos],'Turno '+(pos+1)+' de '+turnOrder.length,'',undefined);
+}
+
+function turnNext(){
+  if(!turnActive){ann('Inicia los turnos desde la pestana Equipo');return;}
+  turnAdvance();
+}
+
+function turnShowCurrent(){turnRefresh();}
+function turnUpdateWidgets(){turnRefresh();}
+
+function turnStop(){
+  turnActive=false;
+  var bar=document.getElementById('turnBar');if(bar)bar.classList.remove('active');
+  var nb=document.getElementById('turnNextBtn');if(nb)nb.style.display='none';
+  var op=document.getElementById('turnOrderPreview');if(op)op.innerHTML='';
+  TURN_PAGES.forEach(function(p){turnSetWidget(p,null,null);});
+}
+
+function turnShowOrder(){
+  var el=document.getElementById('turnOrderPreview');
+  if(!el||!turnOrder.length)return;
+  var pos=turnIdx%turnOrder.length;
+  el.innerHTML='<div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.7px;">Orden de esta ronda</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:6px;">'
+    +turnOrder.map(function(name,i){
+      var cur=(i===pos);
+      return '<div style="padding:5px 10px;border-radius:8px;font-size:13px;font-weight:'+(cur?800:600)+';'
+        +'background:'+(cur?'var(--accent)':'var(--card2)')+';color:'+(cur?'#fff':'var(--muted)')+';'
+        +'border:1px solid '+(cur?'var(--accent)':'var(--border)')+';'
+        +'">'+(cur?'> ':'')+(i+1)+'. '+name+'</div>';
+    }).join('')+'</div>';
+}
+
+
 
 // TODIS
-var TODIS_DATA={
-  T:{label:'T',action:'¡TODOS Toman!',sub:'Todos los jugadores toman',color:'#e94560',bg:'linear-gradient(135deg,#e94560,#c0303f)'},
-  O:{label:'O',action:'¡OBLIGA a Tomar!',sub:'Elige a quién obliga a tomar',color:'#f0a500',bg:'linear-gradient(135deg,#f0a500,#c07800)'},
-  D:{label:'D',action:'DERECHA Toma',sub:'La persona a tu derecha toma',color:'#00c48c',bg:'linear-gradient(135deg,#00c48c,#008c63)'},
-  I:{label:'I',action:'IZQUIERDA Toma',sub:'La persona a tu izquierda toma',color:'#2563eb',bg:'linear-gradient(135deg,#2563eb,#1a44b0)'},
-  S:{label:'S',action:'SOLO Toma',sub:'Solo tú tomas este turno',color:'#7c3aed',bg:'linear-gradient(135deg,#7c3aed,#5a28b0)'},
-};
-function playTodis(letter){
-  var letters=['T','O','D','I','S'];
-  var chosen=letter||letters[Math.floor(Math.random()*letters.length)];
-  var d=TODIS_DATA[chosen];
-  var res=document.getElementById('todisResult');
-  // brief flash animation — clear then set
-  res.innerHTML='';
-  res.style.background=d.bg;
-  res.style.border='none';
-  res.style.boxShadow='0 0 40px '+d.color+'55, 0 8px 32px rgba(0,0,0,.5)';
-  setTimeout(function(){
-    res.innerHTML=
-      '<div class="todis-big-letter" style="color:#fff;text-shadow:0 0 30px rgba(255,255,255,.4),0 4px 12px rgba(0,0,0,.4);">'+d.label+'</div>'
-      +'<div class="todis-action" style="color:#fff;">'+d.action+'</div>'
-      +'<div class="todis-sub">'+d.sub+'</div>';
-    // also show popup
-    showTodisPopup(d);
-  },80);
-}
 function showTodisPopup(d){
   var ia=document.getElementById('popupIconArea');
   ia.innerHTML='<div style="width:120px;height:120px;border-radius:24px;background:'+d.bg+';display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px '+d.color+'66,0 8px 24px rgba(0,0,0,.5);animation:bounceIn .4s ease;">'
@@ -1083,6 +1236,300 @@ function showTodisPopup(d){
   popOpen('popup3d');
 }
 
+// ===== JUGADORES / AVATARS =====
+var AVATAR_EMOJIS=[
+  '😀','😎','🥳','😈','🧐','👻','🤖','👽',
+  '🦄','🦊','🐼','🐶','🐱','🐮','🐷','🦁',
+  '🔥','💥','⚡','🌟','🏆','👑','💫','🌞',
+  '🎸','🎲','🚀','👾','💣','🔫','🐉','🧜'
+];
+
+var avPickingIdx=-1; // which player we are picking avatar for
+
+function memberName(m){return typeof m==='object'?m.name:m;}
+function memberAvatar(m){return typeof m==='object'?m.avatar:'';}
+function memberIsImg(m){return typeof m==='object'&&m.isImg;}
+
+function addMember(){
+  var inp=document.getElementById('memberInput');
+  var v=inp.value.trim();if(!v)return;
+  members.push({name:v,avatar:'',isImg:false});
+  sv('members',members);inp.value='';
+  renderMembers();updateImports();
+}
+function removeMember(i){
+  members.splice(i,1);sv('members',members);
+  renderMembers();updateImports();
+  if(turnActive)turnRefresh();
+}
+
+function renderMembers(){
+  var el=document.getElementById('memberPills');
+  if(!el)return;
+  if(!members.length){
+    el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:6px 0;">No hay jugadores aún</div>';
+    return;
+  }
+  el.innerHTML=members.map(function(m,i){
+    var name=memberName(m);
+    var av=memberAvatar(m);
+    var isImg=memberIsImg(m);
+    var avInner;
+    if(av&&isImg){
+      avInner='<img src="'+av+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;"/>';
+    } else if(av){
+      avInner='<span style="font-size:24px;line-height:1;">'+av+'</span>';
+    } else {
+      avInner='<span style="font-size:16px;font-weight:800;color:var(--accent);">'+name.charAt(0).toUpperCase()+'</span>';
+    }
+    return '<div class="player-card">'
+      +'<div class="player-avatar" onclick="openAvatarModal('+i+')" title="Toca para cambiar avatar">'+avInner+'</div>'
+      +'<div class="player-name">'+name+'</div>'
+      +'<button class="btn btn-secondary btn-sm" onclick="openAvatarModal('+i+')">&#x270F;</button>'
+      +'<button class="btn-icon" onclick="removeMember('+i+')">&#x1F5D1;</button>'
+      +'</div>';
+  }).join('');
+}
+
+function openAvatarModal(idx){
+  avPickingIdx=idx;
+  var name=memberName(members[idx]);
+  var t=document.getElementById('avModalTitle');
+  if(t)t.textContent='Avatar de '+name;
+  // Build emoji grid
+  var grid=document.getElementById('avEmojiGrid');
+  if(grid){
+    grid.innerHTML=AVATAR_EMOJIS.map(function(e){
+      return '<div onclick="setAvatarEmoji(\''+e+'\')" class="av-opt">'+e+'</div>';
+    }).join('');
+  }
+  var modal=document.getElementById('avatarModal');
+  if(modal){modal.style.display='flex';setTimeout(function(){modal.style.opacity='1';},10);}
+}
+
+function closeAvatarModal(){
+  var modal=document.getElementById('avatarModal');
+  if(modal)modal.style.display='none';
+  avPickingIdx=-1;
+}
+
+function avTakePhoto(){
+  document.getElementById('avCameraInput').click();
+}
+function avPickFile(){
+  document.getElementById('avFileInput').click();
+}
+function avFileChosen(input){
+  if(!input.files||!input.files[0]||avPickingIdx<0)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    setAvatarImg(e.target.result);
+  };
+  reader.readAsDataURL(input.files[0]);
+  // reset so same file can be chosen again
+  input.value='';
+}
+function setAvatarEmoji(emoji){
+  if(avPickingIdx<0)return;
+  if(typeof members[avPickingIdx]==='string')members[avPickingIdx]={name:members[avPickingIdx],avatar:emoji,isImg:false};
+  else{members[avPickingIdx].avatar=emoji;members[avPickingIdx].isImg=false;}
+  sv('members',members);
+  closeAvatarModal();
+  renderMembers();
+  if(turnActive)turnRefresh();
+}
+function setAvatarImg(dataUrl){
+  if(avPickingIdx<0)return;
+  if(typeof members[avPickingIdx]==='string')members[avPickingIdx]={name:members[avPickingIdx],avatar:dataUrl,isImg:true};
+  else{members[avPickingIdx].avatar=dataUrl;members[avPickingIdx].isImg=true;}
+  sv('members',members);
+  closeAvatarModal();
+  renderMembers();
+  if(turnActive)turnRefresh();
+}
+
+// Avatar HTML for turn widgets and score boards
+function avatarHTML(m,size){
+  size=size||40;
+  var av=memberAvatar(m);
+  var isImg=memberIsImg(m);
+  if(!av){
+    return '<span style="font-size:'+Math.round(size*.42)+'px;font-weight:800;">'+memberName(m).charAt(0).toUpperCase()+'</span>';
+  }
+  if(isImg){
+    return '<img src="'+av+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;"/>';
+  }
+  return '<span style="font-size:'+Math.round(size*.55)+'px;line-height:1;">'+av+'</span>';
+}
+
+// Override turnSetWidget to include avatar
+function turnSetWidget(page,name,sub,memberObj){
+  var w=document.getElementById('tw-'+page);
+  var av=document.getElementById('tw-'+page+'-av');
+  var nm=document.getElementById('tw-'+page+'-name');
+  var sb=document.getElementById('tw-'+page+'-sub');
+  if(!w)return;
+  if(name){
+    w.classList.add('active');
+    if(av){
+      av.style.overflow='hidden';
+      av.innerHTML=memberObj?avatarHTML(memberObj,40):name.charAt(0).toUpperCase();
+    }
+    if(nm)nm.textContent='Turno de: '+name;
+    if(sb)sb.textContent=sub;
+  } else {
+    w.classList.remove('active');
+    if(av){av.innerHTML='?';av.style.overflow='';}
+    if(nm)nm.textContent='Sin turno activo';
+    if(sb)sb.textContent='Ve a Jugadores e inicia los turnos';
+  }
+}
+
+// Override turnRefresh to pass member objects
+function turnRefresh(){
+  var bar=document.getElementById('turnBar');
+  var nameEl=document.getElementById('turnBarName');
+  var TPAGES=['ruleta','dados','tor','todis','cartas','yonunca'];
+  if(!turnActive||!turnOrder.length){
+    if(bar)bar.classList.remove('active');
+    TPAGES.forEach(function(p){turnSetWidget(p,null,null,null);});
+    return;
+  }
+  var pos=turnIdx%turnOrder.length;
+  var mObj=turnOrder[pos];
+  var name=memberName(mObj);
+  var sub='Turno '+(pos+1)+' de '+turnOrder.length;
+  if(nameEl)nameEl.textContent=name+' ('+(pos+1)+'/'+turnOrder.length+')';
+  if(bar)bar.classList.add('active');
+  TPAGES.forEach(function(p){turnSetWidget(p,name,sub,mObj);});
+}
+
+// ===== YO NUNCA =====
+var ynData=ld('ynData',[
+  'Yo nunca nunca he llegado tarde a una cita',
+  'Yo nunca nunca he mentido para salir de una situaci\xF3n',
+  'Yo nunca nunca he llorado viendo una pel\xED cula',
+  'Yo nunca nunca he enviado un mensaje al destinatario equivocado',
+  'Yo nunca nunca he fingido estar enfermo para no ir al trabajo',
+  'Yo nunca nunca he cantado en la ducha',
+  'Yo nunca nunca he comido comida ca\xED da al suelo',
+  'Yo nunca nunca he espiado el tel\xE9fono de alguien',
+  'Yo nunca nunca me he enamorado a primera vista',
+  'Yo nunca nunca he hecho algo ilegal',
+]);
+var ynScores={};
+var ynUsed=[];
+
+function ynRenderList(){
+  var el=document.getElementById('ynList');if(!el)return;
+  el.innerHTML=ynData.map(function(t,i){
+    return '<div class="option-item"><span style="font-size:12px;">'+t+'</span><button class="btn-icon" onclick="ynRemove('+i+')">&#x1F5D1;</button></div>';
+  }).join('');
+}
+function ynAdd(){
+  var inp=document.getElementById('ynInput');var v=inp.value.trim();if(!v)return;
+  ynData.push(v);sv('ynData',ynData);inp.value='';ynRenderList();
+}
+function ynRemove(i){ynData.splice(i,1);sv('ynData',ynData);ynRenderList();}
+
+function ynPick(){
+  if(!ynData.length){ann('Agrega frases primero');return;}
+  // Reset used list when all used
+  if(ynUsed.length>=ynData.length)ynUsed=[];
+  var available=ynData.filter(function(_,i){return ynUsed.indexOf(i)<0;});
+  var idx=ynData.indexOf(available[Math.floor(Math.random()*available.length)]);
+  ynUsed.push(idx);
+  var phrase=ynData[idx];
+  var res=document.getElementById('ynResult');
+  res.style.background='linear-gradient(135deg,rgba(233,69,96,.15),rgba(124,58,237,.15))';
+  res.style.borderColor='rgba(233,69,96,.4)';
+  res.innerHTML=
+    '<div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Yo nunca nunca...</div>'
+    +'<div style="font-size:clamp(16px,4vw,22px);font-weight:800;color:var(--text);line-height:1.4;animation:todisIn .35s cubic-bezier(.34,1.56,.64,1);">'+phrase+'</div>'
+    +'<div style="font-size:12px;color:var(--muted);">Quien S\xCD lo ha hecho \u2192 toma un trago</div>';
+  ynRenderScores();
+}
+
+function ynRenderScores(){
+  var el=document.getElementById('ynScores');if(!el)return;
+  if(!members.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;">Agrega jugadores para llevar el conteo</div>';return;}
+  el.innerHTML=members.map(function(m,i){
+    var name=memberName(m);
+    var av=memberAvatar(m);
+    var avHTML=av?'<span style="font-size:20px;">'+av+'</span>':'<div style="width:32px;height:32px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;">'+name.charAt(0)+'</div>';
+    var count=ynScores[name]||0;
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">'
+      +'<div style="width:32px;height:32px;flex-shrink:0;">'+avHTML+'</div>'
+      +'<div style="flex:1;font-weight:600;font-size:14px;">'+name+'</div>'
+      +'<button class="count-btn" onclick="ynScore(\''+name+'\',-1)">&#x2212;</button>'
+      +'<div style="font-size:20px;font-weight:800;color:var(--accent);min-width:28px;text-align:center;">'+count+'</div>'
+      +'<button class="count-btn" onclick="ynScore(\''+name+'\',1)">+</button>'
+      +'</div>';
+  }).join('');
+}
+function ynScore(name,d){
+  ynScores[name]=Math.max(0,(ynScores[name]||0)+d);
+  ynRenderScores();
+}
+function ynResetScores(){
+  if(confirm('Reiniciar tragos?')){ynScores={};ynRenderScores();}
+}
+
+// ===== TODIS 3D FIX =====
+// Override playTodis with 3D popup effect
+var TODIS_DATA={
+  T:{label:'T',action:'\xA1TODOS Toman!',sub:'Todos los jugadores toman',color:'#e94560',bg:'linear-gradient(135deg,#e94560,#c0303f)'},
+  O:{label:'O',action:'\xA1OBLIGA a Tomar!',sub:'Elige a qui\xE9n obliga a tomar',color:'#f0a500',bg:'linear-gradient(135deg,#f0a500,#c07800)'},
+  D:{label:'D',action:'DERECHA Toma',sub:'La persona a tu derecha toma',color:'#00c48c',bg:'linear-gradient(135deg,#00c48c,#008c63)'},
+  I:{label:'I',action:'IZQUIERDA Toma',sub:'La persona a tu izquierda toma',color:'#2563eb',bg:'linear-gradient(135deg,#2563eb,#1a44b0)'},
+  S:{label:'S',action:'SOLO Toma',sub:'Solo t\xFA tomas este turno',color:'#7c3aed',bg:'linear-gradient(135deg,#7c3aed,#5a28b0)'},
+};
+
+function playTodis(){
+  var letters=['T','O','D','I','S'];
+  var chosen=letters[Math.floor(Math.random()*letters.length)];
+  var d=TODIS_DATA[chosen];
+  // Animate result card
+  var res=document.getElementById('todisResult');
+  res.style.transition='background .3s,box-shadow .3s';
+  res.style.background=d.bg;
+  res.style.border='none';
+  res.style.boxShadow='0 0 50px '+d.color+'66, 0 8px 32px rgba(0,0,0,.5)';
+  res.innerHTML='';
+  setTimeout(function(){
+    res.innerHTML=
+      '<div class="todis-big-letter" style="color:#fff;text-shadow:0 0 30px rgba(255,255,255,.5);">'+d.label+'</div>'
+      +'<div class="todis-action" style="color:#fff;">'+d.action+'</div>'
+      +'<div class="todis-sub" style="color:rgba(255,255,255,.8);">'+d.sub+'</div>';
+    // 3D popup
+    var ia=document.getElementById('popupIconArea');
+    var sz=130;
+    ia.innerHTML='<div style="perspective:500px;width:'+sz+'px;height:'+sz+'px;">'
+      +'<div style="width:'+sz+'px;height:'+sz+'px;position:relative;transform-style:preserve-3d;animation:todis3dSpin .6s cubic-bezier(.34,1.56,.64,1) forwards;">'
+      // front face
+      +'<div style="position:absolute;width:'+sz+'px;height:'+sz+'px;border-radius:24px;background:'+d.bg+';'
+      +'display:flex;align-items:center;justify-content:center;'
+      +'box-shadow:0 0 40px '+d.color+'88,0 8px 30px rgba(0,0,0,.6);'
+      +'backface-visibility:hidden;transform:translateZ('+Math.round(sz/2)+'px);">'
+      +'<span style="font-size:72px;font-weight:900;color:#fff;text-shadow:0 0 20px rgba(255,255,255,.5);">'+d.label+'</span>'
+      +'</div>'
+      // back/side faces for depth
+      +'<div style="position:absolute;width:'+sz+'px;height:'+sz+'px;border-radius:24px;'
+      +'background:'+d.color+'44;backface-visibility:hidden;transform:rotateY(90deg) translateZ('+Math.round(sz/2)+'px);"></div>'
+      +'<div style="position:absolute;width:'+sz+'px;height:'+sz+'px;border-radius:24px;'
+      +'background:'+d.color+'22;backface-visibility:hidden;transform:rotateY(-90deg) translateZ('+Math.round(sz/2)+'px);"></div>'
+      +'</div></div>';
+    document.getElementById('popupTitle').textContent=d.action;
+    document.getElementById('popupSub').textContent=d.sub;
+    var re=document.getElementById('popupResult');re.style.display='none';
+    document.getElementById('popupBox').style.maxWidth='340px';
+    popOpen('popup3d');
+    turnAdvance();
+  },100);
+}
+
+
+
 // update goPage to include todis
 function goPage(id){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
@@ -1094,6 +1541,9 @@ function goPage(id){
   if(id==='tor'){renderTor();renderMemberPick('memberPickTor');}
   if(id==='mahjong'){/* ready */}
   if(id==='todis'){renderMemberPick('memberPickTodis');}
+  if(id==='members'){renderMembers();if(turnActive)turnShowOrder();}
+  if(id==='yonunca'){ynRenderList();ynRenderScores();}
+  turnRefresh();
   if(id==='cartas'){renderMemberPick('memberPickCartas');renderCustomCardsList();updateHandCountBtns();}
   if(id==='top10')renderTop10();
   if(id==='timer')renderTimers();
@@ -1150,7 +1600,7 @@ function cardGame(mode){
 function drawRandomCard(){
   var deck=shuffle(makeDeck());var c=deck[0];
   document.getElementById('randomCardResult').innerHTML=buildCard(c,100,150,44,12);
-  showCardPopup(c);
+  showCardPopup(c);turnAdvance();
 }
 function updateHandCountBtns(){document.getElementById('handCountBtns').innerHTML=[1,2,3,4,5,7].map(function(n){return '<button class="dcb'+(n===handCount?' active':'')+'" onclick="setHandCount('+n+')">'+n+'</button>';}).join('');}
 function setHandCount(n){handCount=n;updateHandCountBtns();}
