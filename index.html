@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v15</title>
+<title>🎉 Party Hub v17</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -106,6 +106,16 @@ input:focus{border-color:var(--accent);}
 .wheel-cylinder-side{position:absolute;top:12px;left:0;width:300px;height:300px;border-radius:50%;background:linear-gradient(180deg,rgba(30,10,20,.0) 0%,rgba(10,0,8,.95) 100%);transform:translateZ(-22px);z-index:1;box-shadow:0 0 40px rgba(233,69,96,.3);}
 .wheel-ptr{position:absolute;right:-18px;top:50%;transform:translateY(-60%);z-index:10;filter:drop-shadow(0 0 6px rgba(240,165,0,.8));}
 /* TOR */
+.cat-pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.cat-pill{flex:1;min-width:72px;text-align:center;padding:9px 6px;border-radius:11px;background:var(--card2);border:1px solid var(--border);font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;transition:transform .15s,background .2s,color .2s,border-color .2s;user-select:none;}
+.cat-pill:hover{border-color:rgba(255,255,255,.25);}
+.cat-pill.sm{flex:0 1 auto;padding:6px 10px;font-size:11px;min-width:0;}
+.cat-pill.active{color:#fff;transform:translateY(-2px);box-shadow:0 5px 16px rgba(0,0,0,.35);}
+.cat-pill.active[data-c="aburrido"]{background:linear-gradient(135deg,#3f7bbf,#2a5486);border-color:#67a0dd;}
+.cat-pill.active[data-c="hot"]{background:linear-gradient(135deg,#e94560,#a82340);border-color:#ff7a8c;}
+.cat-pill.active[data-c="extremo"]{background:linear-gradient(135deg,#7c3aed,#4a1d95);border-color:#a78bfa;}
+.cat-pill.active[data-c="mixto"]{background:linear-gradient(135deg,#f0a500,#bd7a00);border-color:#ffd166;color:#141414;}
+.cat-hint{font-size:11px;color:var(--muted);margin:-4px 0 10px;}
 .tor-cat-tabs{display:flex;gap:5px;margin-bottom:10px;}
 .tor-cat-tab{flex:1;padding:8px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--muted);cursor:pointer;font-size:12px;font-weight:700;text-align:center;transition:all .15s;}
 .tor-cat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
@@ -266,6 +276,89 @@ input:focus{border-color:var(--accent);}
 .mj-time-inputs input{width:58px;text-align:center;padding:7px 6px;}
 .mj-time-inputs span{font-size:11px;color:var(--muted);font-weight:700;}
 .mj-time-lbl{font-size:12px;font-weight:800;color:var(--gold);margin-left:auto;}
+/* BOMBA */
+.bomba-presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.bomba-preset{flex:1;min-width:52px;text-align:center;padding:8px 4px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;transition:.15s;}
+.bomba-preset.active{background:linear-gradient(135deg,#f0a500,#c07800);color:#141414;border-color:#ffd166;transform:translateY(-2px);}
+.bomba-time-lbl{font-size:13px;font-weight:800;color:var(--gold);}
+.bomba-arena{
+  position:relative;height:250px;border-radius:20px;margin-bottom:14px;overflow:hidden;
+  background:radial-gradient(90% 70% at 50% 30%,#241a2e 0%,var(--card) 70%);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  transition:box-shadow .3s,border-color .3s;
+}
+.bomba-arena.urgente{border-color:rgba(233,69,96,.6);box-shadow:0 0 40px rgba(233,69,96,.35) inset;animation:bombaPulso .5s infinite;}
+@keyframes bombaPulso{0%,100%{box-shadow:0 0 30px rgba(233,69,96,.25) inset;}50%{box-shadow:0 0 60px rgba(233,69,96,.5) inset;}}
+.bomba-arena.salvado{border-color:rgba(0,196,140,.6);box-shadow:0 0 50px rgba(0,196,140,.3) inset;}
+.bomba-arena.boom{animation:arenaShake .55s cubic-bezier(.36,.07,.19,.97);}
+@keyframes arenaShake{10%,90%{transform:translate(-2px,1px);}20%,80%{transform:translate(4px,-2px);}30%,50%,70%{transform:translate(-7px,2px);}40%,60%{transform:translate(7px,-1px);}}
+.bomba-escena{position:relative;width:190px;height:210px;display:flex;align-items:flex-end;justify-content:center;}
+.bomba-fuse{position:absolute;top:6px;left:0;width:190px;height:96px;overflow:visible;}
+.bomba-body{
+  position:relative;width:118px;height:118px;border-radius:50%;
+  background:radial-gradient(circle at 34% 28%,#5b5b6e 0%,#2a2a35 38%,#111119 75%,#08080d 100%);
+  box-shadow:0 14px 30px rgba(0,0,0,.7),inset -10px -12px 26px rgba(0,0,0,.75),inset 8px 8px 20px rgba(255,255,255,.10);
+  margin-bottom:14px;transition:opacity .12s,transform .12s;
+}
+.bomba-body::after{
+  content:'';position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+  width:34px;height:22px;border-radius:5px 5px 3px 3px;
+  background:linear-gradient(180deg,#4a4a58,#22222c);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.14);
+}
+.bomba-body.tick{animation:bombaLatido 1s ease-in-out infinite;}
+@keyframes bombaLatido{0%,100%{transform:scale(1);}50%{transform:scale(1.045);}}
+.bomba-body.gone{opacity:0;transform:scale(1.5);}
+.bomba-time{
+  position:absolute;top:14px;right:16px;
+  font-size:34px;font-weight:900;color:var(--gold);
+  text-shadow:0 0 18px rgba(240,165,0,.5);font-variant-numeric:tabular-nums;
+}
+.bomba-arena.urgente .bomba-time{color:var(--accent);text-shadow:0 0 22px rgba(233,69,96,.7);}
+#bombaParts{position:absolute;inset:0;pointer-events:none;}
+.bomba-part{position:absolute;top:50%;left:50%;border-radius:50%;display:block;
+  transform:translate(-50%,-50%);animation:partFly .95s cubic-bezier(.15,.7,.4,1) forwards;}
+@keyframes partFly{
+  0%{transform:translate(-50%,-50%) rotate(var(--a)) translateX(0) scale(1.2);opacity:1;}
+  100%{transform:translate(-50%,-50%) rotate(var(--a)) translateX(var(--d)) scale(.15);opacity:0;}
+}
+.bomba-flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 52%,#fff 0%,#ffd07a 28%,rgba(255,120,0,.5) 48%,transparent 72%);}
+.bomba-flash.show{animation:flashBoom .55s ease-out forwards;}
+@keyframes flashBoom{0%{opacity:0;}10%{opacity:.95;}100%{opacity:0;}}
+.bomba-big{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px;opacity:0;pointer-events:none;}
+.bomba-big.show{animation:bigBoom 1.1s cubic-bezier(.2,1.4,.5,1) forwards;}
+@keyframes bigBoom{0%{opacity:0;transform:scale(.2);}18%{opacity:1;transform:scale(1.25);}60%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(1.1);}}
+.bomba-q{
+  min-height:74px;border-radius:16px;padding:16px;margin-bottom:12px;
+  background:var(--card);border:1px solid var(--border);
+  font-size:clamp(15px,4vw,19px);font-weight:800;text-align:center;line-height:1.4;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+}
+.bomba-who{font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;}
+.bomba-ok{font-size:13px;font-weight:800;color:var(--green);}
+.bomba-boom-txt{font-size:19px;font-weight:900;color:var(--accent);}
+.bomba-castigo{font-size:22px;font-weight:900;color:var(--text);}
+.bomba-resp{font-size:12px;color:var(--muted);font-weight:700;}
+.bomba-opts{display:flex;flex-direction:column;gap:8px;}
+.bomba-opt{
+  display:flex;align-items:center;gap:10px;text-align:left;
+  padding:13px 14px;border-radius:13px;cursor:pointer;
+  background:linear-gradient(160deg,#2c2c48,#1e1e34);
+  border:1px solid rgba(255,255,255,.12);color:var(--text);
+  font-size:15px;font-weight:700;
+  box-shadow:0 3px 0 #14142a,0 8px 16px rgba(0,0,0,.45);
+  transition:transform .12s,box-shadow .12s,background .2s;
+}
+.bomba-opt:hover{transform:translateY(-2px);box-shadow:0 4px 0 #14142a,0 12px 22px rgba(0,0,0,.5);}
+.bomba-opt:active{transform:translateY(2px);box-shadow:0 1px 0 #14142a;}
+.bomba-letra{display:flex;align-items:center;justify-content:center;width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,.1);font-weight:900;font-size:13px;}
+.bomba-opt.ok{background:linear-gradient(160deg,#0d6b4e,#064733);border-color:var(--green);box-shadow:0 0 22px rgba(0,196,140,.4);}
+.bomba-opt.bad{background:linear-gradient(160deg,#7a1d2e,#4a0f1c);border-color:var(--accent);box-shadow:0 0 22px rgba(233,69,96,.4);}
+.bomba-form input[type=text]{margin-bottom:6px;}
+.bomba-op-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bomba-op-row input[type=radio]{width:18px;height:18px;accent-color:var(--green);flex-shrink:0;cursor:pointer;}
+.bomba-op-row label{font-size:10px;color:var(--muted);font-weight:700;cursor:pointer;}
 /* Board — pila desordenada */
 .mj-board{
   display:block;position:relative;
@@ -418,6 +511,7 @@ input:focus{border-color:var(--accent);}
   <button class="nav-btn" onclick="goPage('tor')" id="tab-tor"><span>&#x1F525;</span>V/Reto</button>
   <button class="nav-btn" onclick="goPage('mahjong')" id="tab-mahjong"><span>🔍</span>Encuentra</button>
   <button class="nav-btn" onclick="goPage('todis')" id="tab-todis"><span>🎰</span>TODIS</button>
+  <button class="nav-btn" onclick="goPage('bomba')" id="tab-bomba"><span>💣</span>Bomba</button>
   <button class="nav-btn" onclick="goPage('cartas')" id="tab-cartas"><span>&#x1F0CF;</span>Cartas</button>
   <button class="nav-btn" onclick="goPage('yonunca')" id="tab-yonunca"><span>&#x1F645;</span>Yo Nunca</button>
   <button class="nav-btn" onclick="goPage('top10')" id="tab-top10"><span>&#x1F3C6;</span>Top 10</button>
@@ -475,7 +569,7 @@ input:focus{border-color:var(--accent);}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados Ne&oacute;n &middot; Verdad o Reto<br>Cartas &middot; Top 10 &middot; Cron&oacute;metro</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v15</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v17</div></div>
 </div>
 
 <!-- RULETA -->
@@ -492,9 +586,10 @@ input:focus{border-color:var(--accent);}
     <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
+  <div class="cat-pills" id="catRuleta"></div>
   <div class="card" style="padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Opciones</div><button class="btn-outline" id="ruletaOptsToggle" onclick="toggleCollapsible('ruletaOpts','ruletaOptsToggle')">&#x270F; Editar</button></div>
-    <div class="collapsible-body" id="ruletaOpts"><div id="ruletaOptionsList" style="margin-top:10px;"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="ruletaInput" placeholder="Nueva opci&#xF3;n..." onkeydown="if(event.key==='Enter')addRuletaOption()"/><button class="btn btn-primary" onclick="addRuletaOption()">+</button></div><div id="memberImportRuleta" style="margin-top:8px;"></div></div>
+    <div class="collapsible-body" id="ruletaOpts"><div class="cat-pills" id="ruletaEditPills" style="margin-top:10px;"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="ruletaOptionsList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="ruletaInput" placeholder="Nueva opci&#xF3;n..." onkeydown="if(event.key==='Enter')phAddItem('ruleta','ruletaInput')"/><button class="btn btn-primary" onclick="phAddItem('ruleta','ruletaInput')">+</button></div><div id="memberImportRuleta" style="margin-top:8px;"></div></div>
   </div>
   <div class="wheel-wrap" onclick="spinWheel()">
     <div class="wheel-3d-scene" id="wheel3dScene">
@@ -557,8 +652,9 @@ input:focus{border-color:var(--accent);}
     <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
-  <div class="card" style="padding:12px 15px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" onclick="torTab('dare')">&#x1F525; Fuertes</div><div class="tor-cat-tab" onclick="torTab('mild')">&#x1F60A; Suaves</div></div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
-  <div class="card"><div class="card-title">Jugar</div><div class="tor-cat-tabs"><div class="tor-cat-tab active" id="torPlayTab1" onclick="torPlayCat('truth')">&#x1F4AC; Verdad</div><div class="tor-cat-tab" id="torPlayTab2" onclick="torPlayCat('dare')">&#x1F525; Fuerte</div><div class="tor-cat-tab" id="torPlayTab3" onclick="torPlayCat('mild')">&#x1F60A; Suave</div></div><div class="tor-result-box tor-truth" id="torResultBox">Elige categor&#xED;a y presiona el bot&#xF3;n</div><button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">&#x1F3B2; ELEGIR</button></div>
+  <div class="cat-pills" id="catTor"></div>
+  <div class="card" style="padding:12px 15px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" id="torEditTab1" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" id="torEditTab2" onclick="torTab('dare')">&#x1F525; Retos</div></div><div class="cat-pills" id="torEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
+  <div class="card"><div class="card-title">Jugar</div><div class="tor-cat-tabs"><div class="tor-cat-tab active" id="torPlayTab1" onclick="torPlayCat('truth')">&#x1F4AC; Verdad</div><div class="tor-cat-tab" id="torPlayTab2" onclick="torPlayCat('dare')">&#x1F525; Reto</div></div><div class="tor-result-box tor-truth" id="torResultBox">Elige categor&#xED;a y presiona el bot&#xF3;n</div><button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">&#x1F3B2; ELEGIR</button></div>
 </div>
 
 <!-- MAHJONG PAGE -->
@@ -622,6 +718,77 @@ input:focus{border-color:var(--accent);}
   <div class="mj-tray-wrap" style="margin-top:10px;">
     <div class="mj-tray-lbl">Seleccionadas (elige 3 iguales)</div>
     <div class="mj-tray" id="mjTray"><span style="color:var(--muted);font-size:13px;">Toca fichas del tablero...</span></div>
+  </div>
+</div>
+
+<!-- BOMBA -->
+<div class="page" id="page-bomba">
+  <div class="section-header" style="margin-top:6px;"><div class="section-title">💣 Bomba</div></div>
+  <div class="turn-widget" id="tw-bomba">
+    <div class="turn-widget-left">
+      <div class="turn-widget-avatar" id="tw-bomba-av">?</div>
+      <div>
+        <div class="turn-widget-name" id="tw-bomba-name">Sin turno activo</div>
+        <div class="turn-widget-sub" id="tw-bomba-sub">Ve a Jugadores e inicia los turnos</div>
+      </div>
+    </div>
+    <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
+    <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
+  </div>
+
+  <div class="cat-pills" id="catBomba"></div>
+
+  <div class="card" style="padding:12px 15px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="card-title" style="margin-bottom:0;">Tiempo por pregunta</div>
+      <div class="bomba-time-lbl" id="bombaTimeLbl">15 s</div>
+    </div>
+    <div class="bomba-presets" id="bombaPresets"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+      <input type="number" id="bombaSecs" min="3" max="120" value="15" style="width:84px;text-align:center;" oninput="bombaSetSecs(this.value)"/>
+      <span style="font-size:11px;color:var(--muted);font-weight:700;">segundos (3 a 120)</span>
+    </div>
+  </div>
+
+  <div class="bomba-arena" id="bombaArena">
+    <div class="bomba-time" id="bombaTime">15</div>
+    <div class="bomba-escena">
+      <svg class="bomba-fuse" viewBox="0 0 190 96">
+        <path id="fuseBase" d="M95 92 C 104 58, 132 60, 146 22" stroke="#4a3a28" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path id="fuseBurn" d="M95 92 C 104 58, 132 60, 146 22" stroke="#c9a227" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <circle id="fuseSpark" cx="146" cy="22" r="7" fill="#fff6c9" style="filter:drop-shadow(0 0 10px #f0a500) drop-shadow(0 0 22px #ff6b00);"/>
+      </svg>
+      <div class="bomba-body" id="bombaBody"></div>
+    </div>
+    <div class="bomba-flash" id="bombaFlash"></div>
+    <div id="bombaParts"></div>
+    <div class="bomba-big" id="bombaBig">💥</div>
+  </div>
+
+  <div class="bomba-q" id="bombaQtext">Elige la categoría y presiona JUGAR</div>
+  <div class="bomba-opts" id="bombaOpts"></div>
+  <div style="text-align:center;margin-top:14px;">
+    <button class="btn btn-primary" id="bombaBtn" style="font-size:17px;padding:14px 42px;box-shadow:0 4px 20px rgba(233,69,96,.4);" onclick="bombaStart()">💣 JUGAR</button>
+  </div>
+
+  <div class="card" style="margin-top:16px;padding:12px 15px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="card-title" style="margin-bottom:0;">Preguntas</div>
+      <button class="btn-outline" id="bombaEditToggle" onclick="toggleCollapsible('bombaEditBody','bombaEditToggle')">&#x270F; Editar</button>
+    </div>
+    <div class="collapsible-body" id="bombaEditBody">
+      <div class="cat-pills" id="bombaEditPills" style="margin-top:10px;"></div>
+      <div class="cat-hint">Editas la categoría seleccionada aquí arriba</div>
+      <div id="bombaList" style="margin-bottom:10px;"></div>
+      <div class="bomba-form">
+        <input type="text" id="bqPregunta" placeholder="Escribe la pregunta..."/>
+        <div class="bomba-op-row"><input type="radio" name="bqOk" id="bqOk1" checked/><label for="bqOk1">OK</label><input type="text" id="bqOp1" placeholder="Opción 1"/></div>
+        <div class="bomba-op-row"><input type="radio" name="bqOk" id="bqOk2"/><label for="bqOk2">OK</label><input type="text" id="bqOp2" placeholder="Opción 2"/></div>
+        <div class="bomba-op-row"><input type="radio" name="bqOk" id="bqOk3"/><label for="bqOk3">OK</label><input type="text" id="bqOp3" placeholder="Opción 3"/></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Marca el círculo de la respuesta correcta</div>
+        <button class="btn btn-primary" style="width:100%;" onclick="bombaAdd()">+ Agregar pregunta</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -734,8 +901,9 @@ input:focus{border-color:var(--accent);}
     </div>
     <!-- Cartas custom -->
     <div class="game-panel" id="gpCustom">
+      <div class="cat-pills" id="catCartas"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Mis cartas</div><button class="btn-outline" id="customCardsToggle" onclick="toggleCollapsible('customCardsEdit','customCardsToggle')">&#x270F; Editar</button></div>
-      <div class="collapsible-body" id="customCardsEdit"><div id="customCardsList" style="margin-bottom:8px;"></div><div class="flex-row"><input type="text" id="customCardInput" placeholder="Texto de la carta..." onkeydown="if(event.key==='Enter')addCustomCard()"/><button class="btn btn-primary" onclick="addCustomCard()">+</button></div></div>
+      <div class="collapsible-body" id="customCardsEdit"><div class="cat-pills" id="cartasEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="customCardsList" style="margin-bottom:8px;"></div><div class="flex-row"><input type="text" id="customCardInput" placeholder="Texto de la carta..." onkeydown="if(event.key==='Enter')phAddItem('cartas','customCardInput')"/><button class="btn btn-primary" onclick="phAddItem('cartas','customCardInput')">+</button></div></div>
       <div class="card-result-box" id="customCardResult" style="margin-top:12px;">Presiona para sacar una carta</div>
       <div style="text-align:center;margin-top:10px;"><button class="btn btn-gold" style="font-size:16px;padding:12px 32px;" onclick="drawCustomCard()">&#x1F3B4; SACAR CARTA</button></div>
     </div>
@@ -756,16 +924,19 @@ input:focus{border-color:var(--accent);}
     <button class="turn-widget-btn" onclick="turnNext()">&#x23ED; Siguiente turno</button>
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
+  <div class="cat-pills" id="catYn"></div>
   <div class="card" style="padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Frases</div>
       <button class="btn-outline" id="ynOptsToggle" onclick="toggleCollapsible('ynOpts','ynOptsToggle')">&#x270F; Editar</button>
     </div>
     <div class="collapsible-body" id="ynOpts">
-      <div style="margin-top:10px;" id="ynList"></div>
+      <div class="cat-pills" id="ynEditPills" style="margin-top:10px;"></div>
+      <div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div>
+      <div id="ynList"></div>
       <div class="flex-row" style="margin-top:8px;">
-        <input type="text" id="ynInput" placeholder="Yo nunca nunca..." onkeydown="if(event.key==='Enter')ynAdd()"/>
-        <button class="btn btn-primary" onclick="ynAdd()">+</button>
+        <input type="text" id="ynInput" placeholder="Yo nunca nunca..." onkeydown="if(event.key==='Enter')phAddItem('yn','ynInput')"/>
+        <button class="btn btn-primary" onclick="phAddItem('yn','ynInput')">+</button>
       </div>
     </div>
   </div>
@@ -848,11 +1019,446 @@ function popOpen(id){const ov=document.getElementById(id);ov.classList.add('open
 let members=ld('members',[]),ruletaOpts=ld('ruletaOpts',['Opci\xF3n A','Opci\xF3n B','Opci\xF3n C']),diceCount=1;
 let customFaces=ld('customFaces',['Cara A','Cara B','Cara C','Cara D','Cara E','Cara F']);
 let torData=ld('torData',{truth:['\xBFCu\xE1l es tu mayor secreto?','\xBFA qui\xE9n le tienes envidia?'],dare:['Haz 10 sentadillas','Toma un shot'],mild:['Muestra tu \xFAltima foto','Di un halago']});
-let torEditCat='truth',torPlayCategory='truth',top10=ld('top10',[]),timers=ld('timers',[]);
+var torEditType='truth';let torEditCat='truth',torPlayCategory='truth',top10=ld('top10',[]),timers=ld('timers',[]);
 let wSpin=false,wAngle=0,tInts={};
 let holDeck=[],holCurrent=null,holStreak=0,handCount=3;
 let customCards=ld('customCards',['Toma 2 shots','Elige a alguien','Verdad o reto','Toma 1 shot','Reparte 3 shots','Todos toman']);
 var cardStyle='classic';
+
+
+// ===== CATEGORIAS Y CONTENIDO PREDETERMINADO (v16) =====
+var PH_CATS=['aburrido','hot','extremo'];
+var PH_CATLBL={aburrido:'😴 Aburrido',hot:'🔥 Hot',extremo:'💀 Extremo',mixto:'🎲 Mixto'};
+
+var PH_DEFAULTS={
+bomba:{
+aburrido:[
+{q:'¿Cuántos días tiene una semana?',o:['7','5','10'],c:0},
+{q:'¿Cuál es la capital de Francia?',o:['París','Roma','Berlín'],c:0},
+{q:'¿Cuántas patas tiene una araña?',o:['8','6','10'],c:0},
+{q:'¿De qué fruta se hace el vino?',o:['Uva','Manzana','Pera'],c:0},
+{q:'¿Cuántos colores tiene el arcoíris?',o:['7','5','9'],c:0},
+{q:'¿Cuál es el océano más grande?',o:['Pacífico','Atlántico','Índico'],c:0},
+{q:'¿Cuántos jugadores tiene un equipo de fútbol en cancha?',o:['11','9','13'],c:0},
+{q:'¿En qué continente está Bolivia?',o:['Sudamérica','Europa','África'],c:0},
+{q:'¿De qué metal es la medalla del primer lugar?',o:['Oro','Plata','Bronce'],c:0},
+{q:'¿Cuántos meses tiene un año?',o:['12','10','14'],c:0},
+{q:'¿Qué animal es el mejor amigo del hombre?',o:['El perro','El gato','El caballo'],c:0},
+{q:'¿Cuál es el animal más grande del mundo?',o:['La ballena azul','El elefante','La jirafa'],c:0}
+],
+hot:[
+{q:'¿Cómo se llama la protagonista de Titanic?',o:['Rose','Daisy','Lucy'],c:0},
+{q:'¿Qué pareja de Friends termina junta al final?',o:['Ross y Rachel','Joey y Phoebe','Chandler y Rachel'],c:0},
+{q:'¿Qué flor simboliza el amor?',o:['La rosa roja','El girasol','El tulipán'],c:0},
+{q:'¿Quién canta Despacito?',o:['Luis Fonsi','Maluma','Nicky Jam'],c:0},
+{q:'¿En qué ciudad vivían Romeo y Julieta?',o:['Verona','Venecia','Nápoles'],c:0},
+{q:'¿Qué día se celebra San Valentín?',o:['14 de febrero','14 de enero','2 de febrero'],c:0},
+{q:'¿Cuál es la llamada hormona del amor?',o:['Oxitocina','Insulina','Adrenalina'],c:0},
+{q:'¿Qué significa hacer ghosting?',o:['Desaparecer sin explicar','Volver con tu ex','Coquetear en grupo'],c:0},
+{q:'¿Quién canta Hips Don\'t Lie?',o:['Shakira','Rihanna','Beyoncé'],c:0},
+{q:'¿En qué película dicen "soy el rey del mundo"?',o:['Titanic','Avatar','El Rey León'],c:0},
+{q:'¿Qué app de citas tiene un fuego como logo?',o:['Tinder','Bumble','Badoo'],c:0},
+{q:'¿Qué ave es símbolo del amor para toda la vida?',o:['El cisne','El loro','La gaviota'],c:0}
+],
+extremo:[
+{q:'¿Cuál es el país más pequeño del mundo?',o:['El Vaticano','Mónaco','Malta'],c:0},
+{q:'¿Cuántos huesos tiene un adulto?',o:['206','180','250'],c:0},
+{q:'¿Cuál es el planeta más caliente del sistema solar?',o:['Venus','Mercurio','Marte'],c:0},
+{q:'¿En qué año llegó el hombre a la Luna?',o:['1969','1959','1972'],c:0},
+{q:'¿Cuál es la capital constitucional de Bolivia?',o:['Sucre','La Paz','Cochabamba'],c:0},
+{q:'¿Cómo se llama el salar más grande del mundo?',o:['Uyuni','Atacama','Coipasa'],c:0},
+{q:'¿Qué lago comparten Bolivia y Perú?',o:['Titicaca','Poopó','Nicaragua'],c:0},
+{q:'¿Qué elemento químico es el Au?',o:['Oro','Plata','Aluminio'],c:0},
+{q:'¿Quién pintó La noche estrellada?',o:['Van Gogh','Picasso','Dalí'],c:0},
+{q:'¿Cuál es el animal terrestre más rápido?',o:['El guepardo','El león','El caballo'],c:0},
+{q:'¿Qué país ganó el Mundial de 2022?',o:['Argentina','Francia','Brasil'],c:0},
+{q:'¿Cuántas caras tiene un icosaedro?',o:['20','12','16'],c:0}
+]
+},
+ruleta:{
+aburrido:['Toma 1 trago','Pasa tu turno','Elige quién toma','Todos toman','Cuenta un chiste','Te salvas, no tomas','Toma 2 sorbos','El de tu izquierda toma','El de tu derecha toma','Imita a alguien del grupo','Baila 10 segundos','Reparte 2 tragos'],
+hot:['Cuenta tu peor cita','Confiesa un crush del grupo','Piropea al de tu derecha','Muestra tu foto más coqueta','Baila sensual 15 segundos','Di el nombre de tu ex más loco','Cambia de lugar con quien elijas','Cuenta tu mayor vergüenza en una cita','Manda un corazón a tu chat 3','Elige a alguien y hazle un cumplido atrevido','Cuenta cómo fue tu primer beso','Toma 2 tragos o cuenta un secreto'],
+extremo:['Toma 3 tragos seguidos','Deja que lean tu último mensaje','Confiesa algo que nadie sabe','El grupo elige quién toma 3','Cuenta tu peor borrachera','Deja el celular en la mesa 10 minutos','Haz 15 sentadillas o toma 3','Di 3 verdades incómodas del grupo','Deja que elijan tu foto de perfil','Manda \'hola\' a tu ex','Imita a alguien hasta que adivinen','Elige: verdad brutal o 4 tragos']
+},
+truth:{
+aburrido:['¿Cuál fue tu último mensaje enviado?','¿Cuál es tu mayor miedo?','¿Qué canción escuchas en secreto?','¿Cuál fue tu peor corte de pelo?','¿Qué comida odias que a todos les gusta?','¿Cuál es tu serie culposa?','¿A quién llamarías a las 3 am?','¿Cuál fue tu mayor vergüenza en el colegio?','¿Qué aplicación usas más?','¿Cuál es tu manía más rara?','¿Qué talento oculto tienes?','¿Cuál fue tu primer trabajo?'],
+hot:['¿Cuál es tu tipo ideal?','¿Con quién del grupo saldrías?','¿Cuál fue tu beso más memorable?','¿Qué es lo más atrevido que hiciste?','¿Alguna vez te gustó alguien prohibido?','¿Cómo sería tu cita perfecta?','¿Qué te enamora primero de alguien?','¿Le mandaste mensaje a alguien estando tomado?','¿Cuál fue tu peor cita?','¿Sigues a algún ex en redes?','¿Qué famoso es tu crush?','¿Alguna vez fingiste que te gustaba alguien?'],
+extremo:['¿Cuál es el secreto que jurabas no contar?','¿Alguna vez traicionaste a un amigo?','¿Qué es lo peor que hiciste y nadie sabe?','¿A quién del grupo no soportas a veces?','¿Mentiste alguna vez sobre algo grave?','¿Cuál es tu mayor arrepentimiento?','¿Te robaste algo alguna vez?','¿Cuál fue tu peor borrachera?','¿Qué harías por diez mil dólares?','¿Revisaste el celular de tu pareja?','¿Cuál es la mentira más grande que dijiste?','¿Qué opinas de verdad del último que habló?']
+},
+dare:{
+aburrido:['Haz 10 sentadillas','Imita a un animal 20 segundos','Canta el coro de tu canción favorita','Habla sin usar la letra A por 1 minuto','Baila sin música 15 segundos','Cuenta un chiste malo','Haz una pose de yoga','Habla con acento hasta tu próximo turno','Deja que te despeinen','Haz 5 flexiones','Di el abecedario al revés','Imita al anfitrión de la fiesta'],
+hot:['Baila sensual 15 segundos','Dale un cumplido atrevido al de tu izquierda','Manda un corazón a tu chat 5','Muestra la última foto de tu galería','Haz tu mejor mirada seductora','Susúrrale algo al oído al de tu derecha','Cambia de asiento con quien más te guste','Manda un audio cantando a un contacto','Imita cómo coqueteas','Deja que alguien escriba tu estado','Pide un masaje de hombros de 20 segundos','Di 3 cosas que te atraen de alguien del grupo'],
+extremo:['Deja que lean tu último chat','Llama a un contacto y cántale','Publica la historia que el grupo elija','Deja tu celular desbloqueado 2 minutos','Manda "te extraño" a tu último chat','Deja que elijan tu foto de perfil','Imita a alguien hasta que adivinen quién es','Cuenta el secreto más grande que sepas','Come una cucharada de lo que elijan','Deja que te peinen sin mirar','Graba un video bailando y muéstralo','Responde 3 preguntas sin poder mentir']
+},
+yn:{
+aburrido:['Yo nunca nunca he cantado en la ducha','Yo nunca nunca he llegado tarde a propósito','Yo nunca nunca he mentido sobre mi edad','Yo nunca nunca he comido algo del suelo','Yo nunca nunca he olvidado un cumpleaños importante','Yo nunca nunca he fingido estar enfermo','Yo nunca nunca he llorado con una película','Yo nunca nunca he hablado solo','Yo nunca nunca me he dormido en el cine','Yo nunca nunca he perdido las llaves de casa','Yo nunca nunca he bailado sin música','Yo nunca nunca he stalkeado a alguien en redes'],
+hot:['Yo nunca nunca he besado a un amigo','Yo nunca nunca he tenido una cita a ciegas','Yo nunca nunca me he enamorado a primera vista','Yo nunca nunca he mandado un mensaje coqueto arrepintiéndome','Yo nunca nunca he vuelto con un ex','Yo nunca nunca he tenido un crush de alguien de este grupo','Yo nunca nunca me he hecho el dormido para no hablar','Yo nunca nunca he coqueteado para conseguir algo','Yo nunca nunca he besado en un lugar público','Yo nunca nunca he revisado el perfil de mi ex hoy','Yo nunca nunca he mentido sobre mis planes para ver a alguien','Yo nunca nunca he tenido una cita doble'],
+extremo:['Yo nunca nunca he mentido en algo grave','Yo nunca nunca he traicionado a un amigo','Yo nunca nunca me he robado algo','Yo nunca nunca he pasado la noche fuera sin avisar','Yo nunca nunca he revisado el celular de mi pareja','Yo nunca nunca me he peleado a golpes','Yo nunca nunca he faltado al trabajo por resaca','Yo nunca nunca he borrado fotos para que nadie las vea','Yo nunca nunca he inventado una historia para caer bien','Yo nunca nunca he llorado por alguien que no valía','Yo nunca nunca me he colado en una fiesta','Yo nunca nunca he dicho te quiero sin sentirlo']
+},
+cartas:{
+aburrido:['Toma 1 trago','Reparte 2 tragos','Todos toman','Pasa tu turno','Cuenta un chiste','Elige quién toma','Te salvas de esta','Imita a un animal','Canta 10 segundos','El último en levantar la mano toma','Cuenta hasta 10 al revés','Haz 5 sentadillas'],
+hot:['Piropea al de tu derecha','Cuenta tu peor cita','Baila 15 segundos','Confiesa un crush','Muestra tu última foto','Manda un corazón a tu chat 3','Di qué te atrae de alguien aquí','Cambia de lugar con quien elijas','Cuenta tu primer beso','Haz tu mejor mirada seductora','Susurra un piropo al oído','Elige: cuenta un secreto o toma 2'],
+extremo:['Toma 3 tragos','Deja que lean tu último chat','Confiesa algo que nadie sabe','El grupo elige tu castigo','Deja el celular en la mesa 5 minutos','Cuenta tu peor borrachera','Responde 3 preguntas sin mentir','Manda \'hola\' a tu ex','Deja que elijan tu foto de perfil','Di 3 verdades incómodas','Imita a alguien hasta que adivinen','Elige: verdad brutal o 4 tragos']
+}
+};
+
+var phData=ld('phData',null);
+var phCat=ld('phCat',{ruleta:'mixto',tor:'mixto',yn:'mixto',cartas:'mixto',bomba:'mixto'});
+if(!phCat.bomba)phCat.bomba='mixto';
+var phEditCat={ruleta:'aburrido',truth:'aburrido',dare:'aburrido',yn:'aburrido',cartas:'aburrido',bomba:'aburrido'};
+var torPlayType=ld('torPlayType','truth');
+
+function phSave(){sv('phData',phData);}
+function phSaveCat(){sv('phCat',phCat);}
+
+function phSeed(){
+  var primeraVez=!phData||typeof phData!=='object';
+  if(primeraVez)phData={};
+  // completa lo que falte (asi las versiones nuevas suman juegos sin borrar lo tuyo)
+  Object.keys(PH_DEFAULTS).forEach(function(g){
+    if(!phData[g])phData[g]={};
+    PH_CATS.forEach(function(c){
+      if(!Array.isArray(phData[g][c]))phData[g][c]=(PH_DEFAULTS[g][c]||[]).slice();
+    });
+  });
+  if(!primeraVez){phSave();return;}
+  // rescata el contenido que el usuario ya tenia de versiones anteriores
+  var viejasRuleta=ld('ruletaOpts',[]);
+  var viejoTor=ld('torData',null);
+  var viejasYn=ld('ynData',[]);
+  var viejasCartas=ld('customCards',[]);
+  var basura=['Opcion A','Opcion B','Opcion C','Opción A','Opción B','Opción C'];
+  function meter(g,c,arr){
+    if(!arr||!arr.length)return;
+    arr.forEach(function(v){
+      if(typeof v!=='string')return;
+      if(basura.indexOf(v)>=0)return;
+      var yaEsta=PH_CATS.some(function(cc){return phData[g][cc].indexOf(v)>=0;});
+      if(!yaEsta)phData[g][c].push(v);
+    });
+  }
+  meter('ruleta','aburrido',viejasRuleta);
+  meter('yn','aburrido',viejasYn);
+  meter('cartas','aburrido',viejasCartas);
+  if(viejoTor){
+    meter('truth','aburrido',viejoTor.truth);
+    meter('dare','extremo',viejoTor.dare);
+    meter('dare','aburrido',viejoTor.mild);
+  }
+  phSave();
+}
+
+function phItems(game,cat){
+  if(!phData||!phData[game])return [];
+  if(cat==='mixto'){
+    var out=[];
+    PH_CATS.forEach(function(c){out=out.concat(phData[game][c]||[]);});
+    return out;
+  }
+  return (phData[game][cat]||[]).slice();
+}
+
+// pastillas de categoria para jugar
+function phPills(key,elId,onpick){
+  var el=document.getElementById(elId);
+  if(!el)return;
+  var cur=phCat[key];
+  el.innerHTML=['aburrido','hot','extremo','mixto'].map(function(c){
+    return '<div class="cat-pill'+(c===cur?' active':'')+'" data-c="'+c+'" onclick="'+onpick+'(\''+c+'\')">'+PH_CATLBL[c]+'</div>';
+  }).join('');
+}
+// pastillas de categoria para editar (sin mixto)
+function phEditPills(game,elId,onpick){
+  var el=document.getElementById(elId);
+  if(!el)return;
+  var cur=phEditCat[game];
+  el.innerHTML=PH_CATS.map(function(c){
+    return '<div class="cat-pill sm'+(c===cur?' active':'')+'" data-c="'+c+'" onclick="'+onpick+'(\''+c+'\')">'+PH_CATLBL[c]+'</div>';
+  }).join('')+'<button class="btn-outline" style="margin-left:auto;" onclick="phRestore(\''+game+'\')" title="Volver a agregar las predeterminadas">&#x21BA; Restaurar</button>';
+}
+
+function phRestore(game){
+  var c=phEditCat[game],add=0;
+  PH_DEFAULTS[game][c].forEach(function(v){
+    if(phData[game][c].indexOf(v)<0){phData[game][c].push(v);add++;}
+  });
+  phSave();phRefresh(game);
+  ann(add?('Se agregaron '+add+' predeterminadas'):'Ya tienes todas las predeterminadas');
+}
+
+function phAddItem(game,inputId){
+  var inp=document.getElementById(inputId);
+  var v=inp.value.trim();if(!v)return;
+  phData[game][phEditCat[game]].push(v);
+  phSave();inp.value='';phRefresh(game);
+}
+function phDelItem(game,i){
+  phData[game][phEditCat[game]].splice(i,1);
+  phSave();phRefresh(game);
+}
+function phList(game,elId,vacio){
+  var el=document.getElementById(elId);if(!el)return;
+  var arr=phData[game][phEditCat[game]]||[];
+  el.innerHTML=arr.length?arr.map(function(t,i){
+    return '<div class="option-item"><span style="font-size:12px;">'+t+'</span><button class="btn-icon" onclick="phDelItem(\''+game+'\','+i+')">&#x1F5D1;</button></div>';
+  }).join(''):'<div class="empty-state" style="padding:8px 0;">'+(vacio||'Sin elementos.')+'</div>';
+}
+
+// refresca todo lo que depende de un grupo de contenido
+function phRefresh(game){
+  if(game==='ruleta'){phEditPills('ruleta','ruletaEditPills','ruletaEditCat');phList('ruleta','ruletaOptionsList','Agrega al menos 2.');syncRuleta();}
+  if(game==='truth'||game==='dare'){phEditPills(game,'torEditPills','torEditCatSet');phList(game,'torList');}
+  if(game==='yn'){phEditPills('yn','ynEditPills','ynEditCat');phList('yn','ynList');syncYN();}
+  if(game==='cartas'){phEditPills('cartas','cartasEditPills','cartasEditCat');phList('cartas','customCardsList','Agrega cartas.');syncCartas();}
+}
+
+// ---- sincroniza las listas activas de cada juego ----
+function syncRuleta(){
+  ruletaOpts=phItems('ruleta',phCat.ruleta);
+  sv('ruletaOpts',ruletaOpts);
+  renderWheel();updateImports();
+}
+function syncYN(){
+  ynData=phItems('yn',phCat.yn);ynUsed=[];
+}
+function syncCartas(){
+  customCards=phItems('cartas',phCat.cartas);
+}
+function phSyncAll(){syncRuleta();syncYN();syncCartas();}
+
+// ---- cambios de categoria desde la interfaz ----
+function ruletaCat(c){phCat.ruleta=c;phSaveCat();phPills('ruleta','catRuleta','ruletaCat');syncRuleta();ann('Ruleta: '+PH_CATLBL[c]);}
+function torCat(c){phCat.tor=c;phSaveCat();phPills('tor','catTor','torCat');ann('Verdad o Reto: '+PH_CATLBL[c]);}
+function ynCat(c){phCat.yn=c;phSaveCat();phPills('yn','catYn','ynCat');syncYN();ann('Yo nunca: '+PH_CATLBL[c]);}
+function cartasCat(c){phCat.cartas=c;phSaveCat();phPills('cartas','catCartas','cartasCat');syncCartas();ann('Cartas: '+PH_CATLBL[c]);}
+
+function ruletaEditCat(c){phEditCat.ruleta=c;phRefresh('ruleta');}
+function ynEditCat(c){phEditCat.yn=c;phRefresh('yn');}
+function cartasEditCat(c){phEditCat.cartas=c;phRefresh('cartas');}
+function torEditCatSet(c){phEditCat.truth=c;phEditCat.dare=c;phRefresh(torEditType);}
+
+// ===== BOMBA (v17): preguntas con 3 opciones + cronometro =====
+var bombaCfg=ld('bombaCfg',{secs:15});
+var bombaQ=null,bombaTimerRef=null,bombaLeft=0,bombaTotal=15,bombaOn=false,bombaUsed=[],bombaFuseLen=0;
+
+function bombaSecs(){
+  var v=parseInt(bombaCfg.secs);
+  if(isNaN(v))v=15;
+  if(v<3)v=3;
+  if(v>120)v=120;
+  return v;
+}
+function bombaSetSecs(v){
+  bombaCfg.secs=parseInt(v)||15;
+  sv('bombaCfg',bombaCfg);
+  bombaRenderCfg();
+}
+function bombaPreset(n){
+  bombaCfg.secs=n;sv('bombaCfg',bombaCfg);
+  var i=document.getElementById('bombaSecs');if(i)i.value=n;
+  bombaRenderCfg();
+}
+function bombaRenderCfg(){
+  var s=bombaSecs();
+  var lbl=document.getElementById('bombaTimeLbl');if(lbl)lbl.textContent=s+' s';
+  var pr=document.getElementById('bombaPresets');
+  if(pr)pr.innerHTML=[10,15,20,30,45].map(function(n){
+    return '<div class="bomba-preset'+(n===s?' active':'')+'" onclick="bombaPreset('+n+')">'+n+'s</div>';
+  }).join('');
+  var inp=document.getElementById('bombaSecs');
+  if(inp&&document.activeElement!==inp)inp.value=s;
+  if(!bombaOn){var t=document.getElementById('bombaTime');if(t)t.textContent=s;bombaFuse(1);}
+}
+
+// ---- mecha ----
+function bombaFuse(frac){
+  var path=document.getElementById('fuseBurn');
+  var spark=document.getElementById('fuseSpark');
+  if(!path)return;
+  if(!bombaFuseLen)bombaFuseLen=path.getTotalLength();
+  var L=bombaFuseLen;
+  var keep=Math.max(0,Math.min(1,frac))*L;
+  path.style.strokeDasharray=keep+' '+(L+2);
+  if(spark){
+    if(keep<=0.5){spark.style.opacity='0';}
+    else{
+      var p=path.getPointAtLength(keep);
+      spark.style.opacity='1';
+      spark.setAttribute('cx',p.x);spark.setAttribute('cy',p.y);
+    }
+  }
+}
+
+// ---- juego ----
+function bombaPreguntas(){
+  var arr=phItems('bomba',phCat.bomba);
+  return arr.filter(function(q){return q&&q.q&&q.o&&q.o.length===3;});
+}
+
+function bombaStart(){
+  var todas=bombaPreguntas();
+  if(!todas.length){ann('Sin preguntas en esta categoría');return;}
+  if(bombaOn)return;
+  if(bombaUsed.length>=todas.length)bombaUsed=[];
+  var libres=todas.filter(function(q){return bombaUsed.indexOf(q.q)<0;});
+  bombaQ=libres[Math.floor(Math.random()*libres.length)];
+  bombaUsed.push(bombaQ.q);
+
+  bombaTotal=bombaSecs();bombaLeft=bombaTotal;bombaOn=true;
+  var arena=document.getElementById('bombaArena');
+  if(arena){arena.classList.remove('boom');}
+  var body=document.getElementById('bombaBody');
+  if(body){body.classList.remove('gone');body.classList.add('tick');}
+  var parts=document.getElementById('bombaParts');if(parts)parts.innerHTML='';
+  var big=document.getElementById('bombaBig');if(big)big.classList.remove('show');
+
+  var quien=bombaJugador();
+  var qt=document.getElementById('bombaQtext');
+  if(qt)qt.innerHTML=(quien?'<div class="bomba-who">Responde: '+quien+'</div>':'')+bombaQ.q;
+
+  var orden=mjRandShuffle([0,1,2]);   // barajado parejo (Fisher-Yates)
+  var op=document.getElementById('bombaOpts');
+  if(op)op.innerHTML=orden.map(function(oi,pos){
+    return '<button class="bomba-opt" id="bopt'+oi+'" onclick="bombaAnswer('+oi+')">'
+      +'<span class="bomba-letra">'+'ABC'.charAt(pos)+'</span>'+bombaQ.o[oi]+'</button>';
+  }).join('');
+
+  var btn=document.getElementById('bombaBtn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Respondiendo...';}
+  bombaFuse(1);
+  var t=document.getElementById('bombaTime');if(t)t.textContent=bombaLeft;
+  if(bombaTimerRef)clearInterval(bombaTimerRef);
+  bombaTimerRef=setInterval(bombaTick,100);
+}
+
+function bombaJugador(){
+  if(!turnActive||!turnOrder.length)return '';
+  return memberName(turnOrder[turnIdx%turnOrder.length]);
+}
+
+var bombaT0=0;
+function bombaTick(){
+  if(!bombaOn)return;
+  bombaLeft-=0.1;
+  if(bombaLeft<0)bombaLeft=0;
+  var t=document.getElementById('bombaTime');
+  if(t)t.textContent=Math.ceil(bombaLeft);
+  var frac=bombaLeft/bombaTotal;
+  bombaFuse(frac);
+  var arena=document.getElementById('bombaArena');
+  if(arena)arena.classList.toggle('urgente',frac<=0.25);
+  if(bombaLeft<=0)bombaBoom(null);
+}
+
+function bombaAnswer(i){
+  if(!bombaOn||!bombaQ)return;
+  if(i===bombaQ.c)bombaBien(i);
+  else bombaBoom(i);
+}
+
+function bombaFin(){
+  bombaOn=false;
+  if(bombaTimerRef)clearInterval(bombaTimerRef);
+  var body=document.getElementById('bombaBody');
+  if(body)body.classList.remove('tick');
+  var arena=document.getElementById('bombaArena');
+  if(arena)arena.classList.remove('urgente');
+  var spark=document.getElementById('fuseSpark');
+  if(spark)spark.style.opacity='0';
+  document.querySelectorAll('.bomba-opt').forEach(function(b){b.onclick=null;});
+  var btn=document.getElementById('bombaBtn');
+  if(btn){btn.disabled=false;btn.textContent='💣 SIGUIENTE';}
+}
+
+function bombaBien(i){
+  bombaFin();
+  var el=document.getElementById('bopt'+i);
+  if(el)el.classList.add('ok');
+  var arena=document.getElementById('bombaArena');
+  if(arena)arena.classList.add('salvado');
+  setTimeout(function(){if(arena)arena.classList.remove('salvado');},900);
+  var qt=document.getElementById('bombaQtext');
+  if(qt)qt.innerHTML='<div class="bomba-ok">✅ ¡Correcto! Mecha apagada</div>'+bombaQ.q;
+  turnAdvance(true);
+}
+
+function bombaBoom(elegida){
+  bombaFin();
+  if(elegida!==null&&elegida!==undefined){
+    var mal=document.getElementById('bopt'+elegida);
+    if(mal)mal.classList.add('bad');
+  }
+  var ok=document.getElementById('bopt'+bombaQ.c);
+  if(ok)ok.classList.add('ok');
+
+  var arena=document.getElementById('bombaArena');
+  var body=document.getElementById('bombaBody');
+  if(body)body.classList.add('gone');
+  if(arena)arena.classList.add('boom');
+  bombaFuse(0);
+
+  // metralla
+  var parts=document.getElementById('bombaParts');
+  if(parts){
+    var html='';
+    for(var k=0;k<16;k++){
+      var ang=Math.round(Math.random()*360);
+      var dist=60+Math.round(Math.random()*90);
+      var sz=6+Math.round(Math.random()*10);
+      var col=['#f0a500','#e94560','#fff3c4','#ff7b39'][k%4];
+      html+='<i class="bomba-part" style="--a:'+ang+'deg;--d:'+dist+'px;width:'+sz+'px;height:'+sz+'px;background:'+col+';animation-delay:'+(Math.random()*90)+'ms;"></i>';
+    }
+    parts.innerHTML=html;
+  }
+  var fl=document.getElementById('bombaFlash');
+  if(fl){fl.classList.remove('show');void fl.offsetWidth;fl.classList.add('show');}
+  var big=document.getElementById('bombaBig');
+  if(big){big.classList.remove('show');void big.offsetWidth;big.classList.add('show');}
+
+  var quien=bombaJugador();
+  var qt=document.getElementById('bombaQtext');
+  var motivo=(elegida===null||elegida===undefined)?'Se acabó el tiempo':'Respuesta incorrecta';
+  if(qt)qt.innerHTML='<div class="bomba-boom-txt">💥 ¡BOOM! '+motivo+'</div>'
+    +'<div class="bomba-castigo">'+(quien?quien+' toma':'Toma quien no adivinó')+'</div>'
+    +'<div class="bomba-resp">Era: '+bombaQ.o[bombaQ.c]+'</div>';
+  ann('💥 ¡BOOM! '+(quien?quien+' toma':'Toma el que falló'));
+  setTimeout(function(){if(arena)arena.classList.remove('boom');},1500);
+  turnAdvance(true);
+}
+
+// ---- editor de preguntas ----
+function bombaCat(c){phCat.bomba=c;phSaveCat();phPills('bomba','catBomba','bombaCat');bombaUsed=[];ann('Bomba: '+PH_CATLBL[c]);}
+function bombaEditCat(c){phEditCat.bomba=c;bombaRenderEdit();}
+function bombaRenderEdit(){
+  phEditPills('bomba','bombaEditPills','bombaEditCat');
+  var el=document.getElementById('bombaList');
+  if(!el)return;
+  var arr=phData.bomba[phEditCat.bomba]||[];
+  el.innerHTML=arr.length?arr.map(function(q,i){
+    return '<div class="option-item" style="align-items:flex-start;">'
+      +'<span style="font-size:12px;"><b>'+q.q+'</b><br><span style="color:var(--green);">✔ '+q.o[q.c]+'</span>'
+      +'<span style="color:var(--muted);"> · '+q.o.filter(function(_,k){return k!==q.c;}).join(' · ')+'</span></span>'
+      +'<button class="btn-icon" onclick="bombaDel('+i+')">&#x1F5D1;</button></div>';
+  }).join(''):'<div class="empty-state" style="padding:8px 0;">Sin preguntas.</div>';
+}
+function bombaDel(i){
+  phData.bomba[phEditCat.bomba].splice(i,1);phSave();bombaRenderEdit();bombaUsed=[];
+}
+function bombaAdd(){
+  var q=document.getElementById('bqPregunta').value.trim();
+  var o=[document.getElementById('bqOp1').value.trim(),document.getElementById('bqOp2').value.trim(),document.getElementById('bqOp3').value.trim()];
+  if(!q||!o[0]||!o[1]||!o[2]){ann('Completa la pregunta y las 3 opciones');return;}
+  var c=0;
+  document.querySelectorAll('input[name="bqOk"]').forEach(function(r,i){if(r.checked)c=i;});
+  phData.bomba[phEditCat.bomba].push({q:q,o:o,c:c});
+  phSave();
+  document.getElementById('bqPregunta').value='';
+  document.getElementById('bqOp1').value='';
+  document.getElementById('bqOp2').value='';
+  document.getElementById('bqOp3').value='';
+  bombaRenderEdit();bombaUsed=[];
+  ann('Pregunta agregada a '+PH_CATLBL[phEditCat.bomba]);
+}
 
 // POPUP
 function showPopup(emoji,title,sub,result,diceVal){
@@ -913,15 +1519,15 @@ function toggleCollapsible(id,btnId){var b=document.getElementById(id);var btn=d
 
 // MEMBERS
 function updateImports(){var ri=document.getElementById('memberImportRuleta');if(ri)ri.innerHTML=members.length?'<button class="btn btn-secondary btn-sm" onclick="importToRuleta()">\uD83D\uDCE5 Importar equipo</button>':'';var di=document.getElementById('memberImportDador');if(di)di.innerHTML=members.length?'<button class="btn btn-secondary btn-sm" onclick="importToDador()">\uD83D\uDCE5 Importar equipo</button>':'';}
-function importToRuleta(){members.forEach(function(m){if(!ruletaOpts.includes(m))ruletaOpts.push(m);});sv('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
+function importToRuleta(){var c=phEditCat.ruleta;members.forEach(function(m){var n=memberName(m);if(phData.ruleta[c].indexOf(n)<0)phData.ruleta[c].push(n);});phSave();phRefresh('ruleta');ann('Equipo agregado a '+PH_CATLBL[c]);}
 function importToDador(){members.forEach(function(m){if(!customFaces.includes(m))customFaces.push(m);});sv('customFaces',customFaces);renderCustomFaces();}
 function importMembersTop10(){members.forEach(function(m){if(!top10.find(function(p){return p.name===m;}))top10.push({name:m,count:0});});sv('top10',top10);renderTop10();}
 function importMembersTimer(){var min=parseInt(document.getElementById('timerMin').value)||1;var sec=parseInt(document.getElementById('timerSec').value)||0;var tot=min*60+sec||60;members.forEach(function(m){if(!timers.find(function(t){return t.name===m;}))timers.push({name:m,total:tot,remaining:tot,running:false,done:false});});sv('timers',timers);renderTimers();}
 
 // RULETA
-function renderRuletaOpts(){var el=document.getElementById('ruletaOptionsList');el.innerHTML=ruletaOpts.length?ruletaOpts.map(function(o,i){return '<div class="option-item"><div class="opt-color" style="background:'+RCOLORS[i%RCOLORS.length]+'"></div><span>'+o+'</span><button class="btn-icon" onclick="removeRuletaOpt('+i+')">\uD83D\uDDD1</button></div>';}).join(''):'<div class="empty-state" style="padding:8px 0;">Agrega al menos 2.</div>';updateImports();}
-function addRuletaOption(){var inp=document.getElementById('ruletaInput');var v=inp.value.trim();if(!v)return;ruletaOpts.push(v);sv('ruletaOpts',ruletaOpts);inp.value='';renderRuletaOpts();renderWheel();}
-function removeRuletaOpt(i){ruletaOpts.splice(i,1);sv('ruletaOpts',ruletaOpts);renderRuletaOpts();renderWheel();}
+function renderRuletaOpts(){phEditPills('ruleta','ruletaEditPills','ruletaEditCat');phList('ruleta','ruletaOptionsList','Agrega al menos 2.');updateImports();}
+function addRuletaOption(){phAddItem('ruleta','ruletaInput');}
+function removeRuletaOpt(i){phDelItem('ruleta',i);}
 function renderWheel(){
   var canvas=document.getElementById('canvas-ruleta');var ctx=canvas.getContext('2d');var W=300,H=300,cx=150,cy=150,r=145;ctx.clearRect(0,0,W,H);
   var n=ruletaOpts.length;if(!n){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle='#1a0a14';ctx.fill();return;}
@@ -1010,12 +1616,21 @@ function removeCustomFace(i){customFaces.splice(i,1);sv('customFaces',customFace
 function rollCustomDie(){if(customFaces.length<2){ann('Agrega al menos 2 caras');return;}var cube=document.getElementById('customDieCube');cube.classList.remove('rolling');void cube.offsetWidth;cube.classList.add('rolling');['f','b','r','l','u','d'].forEach(function(f){document.getElementById('cdf-'+f).textContent='?';});setTimeout(function(){var sh=[].concat(customFaces).sort(function(){return Math.random()-.5;});['f','b','r','l','u','d'].forEach(function(f,fi){document.getElementById('cdf-'+f).textContent=sh[fi%sh.length];});cube.classList.remove('rolling');showPopupCustomDie(sh[0]);},680);}
 
 // TOR
-function torTab(cat){torEditCat=cat;document.querySelectorAll('#torEditTabs .tor-cat-tab').forEach(function(t,i){t.classList.toggle('active',['truth','dare','mild'][i]===cat);});renderTor();}
-function renderTor(){var items=torData[torEditCat]||[];document.getElementById('torList').innerHTML=items.length?items.map(function(t,i){return '<div class="option-item"><span style="font-size:12px;">'+t+'</span><button class="btn-icon" onclick="removeTor('+i+')">\uD83D\uDDD1</button></div>';}).join(''):'<div class="empty-state" style="padding:8px 0;">Sin elementos.</div>';}
-function addTor(){var inp=document.getElementById('torInput');var v=inp.value.trim();if(!v)return;torData[torEditCat].push(v);sv('torData',torData);inp.value='';renderTor();}
-function removeTor(i){torData[torEditCat].splice(i,1);sv('torData',torData);renderTor();}
-function torPlayCat(cat){torPlayCategory=cat;['truth','dare','mild'].forEach(function(c,i){document.getElementById('torPlayTab'+(i+1)).classList.toggle('active',c===cat);});document.getElementById('torResultBox').className='tor-result-box tor-'+cat;}
-function pickTor(){var items=torData[torPlayCategory]||[];if(!items.length){ann('Sin elementos');return;}var picked=items[Math.floor(Math.random()*items.length)];document.getElementById('torResultBox').textContent=picked;var emojis={truth:'\uD83D\uDCAC',dare:'\uD83D\uDD25',mild:'\uD83D\uDE0A'};var labels={truth:'Verdad',dare:'\xA1Reto Fuerte!',mild:'Reto Suave'};showPopup(emojis[torPlayCategory],labels[torPlayCategory],'Tu turno...',picked);turnAdvance();}
+function torTab(tipo){torEditType=tipo;var t1=document.getElementById('torEditTab1'),t2=document.getElementById('torEditTab2');if(t1)t1.classList.toggle('active',tipo==='truth');if(t2)t2.classList.toggle('active',tipo==='dare');renderTor();}
+function renderTor(){phEditPills(torEditType,'torEditPills','torEditCatSet');phList(torEditType,'torList');}
+function addTor(){phAddItem(torEditType,'torInput');}
+function removeTor(i){phDelItem(torEditType,i);}
+function torPlayCat(tipo){torPlayType=tipo;sv('torPlayType',tipo);var t1=document.getElementById('torPlayTab1'),t2=document.getElementById('torPlayTab2');if(t1)t1.classList.toggle('active',tipo==='truth');if(t2)t2.classList.toggle('active',tipo==='dare');document.getElementById('torResultBox').className='tor-result-box tor-'+tipo;}
+function pickTor(){
+  var items=phItems(torPlayType,phCat.tor);
+  if(!items.length){ann('Sin elementos en esta categoria');return;}
+  var picked=items[Math.floor(Math.random()*items.length)];
+  document.getElementById('torResultBox').textContent=picked;
+  var emojis={truth:'\uD83D\uDCAC',dare:'\uD83D\uDD25'};
+  var labels={truth:'Verdad',dare:'\xA1Reto!'};
+  showPopup(emojis[torPlayType],labels[torPlayType],PH_CATLBL[phCat.tor],picked);
+  turnAdvance();
+}
 
 // ===== MAHJONG =====
 // Emoji pool for Encuentra
@@ -1574,7 +2189,7 @@ function turnSetWidget(page,name,sub,memberObj){
 function turnRefresh(){
   var bar=document.getElementById('turnBar');
   var nameEl=document.getElementById('turnBarName');
-  var TPAGES=['ruleta','dados','tor','todis','cartas','yonunca'];
+  var TPAGES=['ruleta','dados','tor','todis','cartas','yonunca','bomba'];
   if(!turnActive||!turnOrder.length){
     if(bar)bar.classList.remove('active');
     TPAGES.forEach(function(p){turnSetWidget(p,null,null,null);});
@@ -1605,20 +2220,12 @@ var ynData=ld('ynData',[
 var ynScores={};
 var ynUsed=[];
 
-function ynRenderList(){
-  var el=document.getElementById('ynList');if(!el)return;
-  el.innerHTML=ynData.map(function(t,i){
-    return '<div class="option-item"><span style="font-size:12px;">'+t+'</span><button class="btn-icon" onclick="ynRemove('+i+')">&#x1F5D1;</button></div>';
-  }).join('');
-}
-function ynAdd(){
-  var inp=document.getElementById('ynInput');var v=inp.value.trim();if(!v)return;
-  ynData.push(v);sv('ynData',ynData);inp.value='';ynRenderList();
-}
-function ynRemove(i){ynData.splice(i,1);sv('ynData',ynData);ynRenderList();}
+function ynRenderList(){phEditPills('yn','ynEditPills','ynEditCat');phList('yn','ynList');}
+function ynAdd(){phAddItem('yn','ynInput');}
+function ynRemove(i){phDelItem('yn',i);}
 
 function ynPick(){
-  if(!ynData.length){ann('Agrega frases primero');return;}
+  if(!ynData.length){ann('Sin frases en esta categoria');return;}
   // Reset used list when all used
   if(ynUsed.length>=ynData.length)ynUsed=[];
   var available=ynData.filter(function(_,i){return ynUsed.indexOf(i)<0;});
@@ -1748,15 +2355,16 @@ function goPage(id){
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('page-'+id).classList.add('active');
   document.getElementById('tab-'+id).classList.add('active');
-  if(id==='ruleta'){renderRuletaOpts();renderWheel();}
+  if(id==='ruleta'){phPills('ruleta','catRuleta','ruletaCat');renderRuletaOpts();renderWheel();}
   if(id==='dados'){renderDiceArea();renderDiceCountSel();renderCustomFaces();}
-  if(id==='tor'){renderTor();}
+  if(id==='tor'){phPills('tor','catTor','torCat');renderTor();}
   if(id==='mahjong'){mjUpdateTimeLabel();mjUpdateHelpers();}
+  if(id==='bomba'){phPills('bomba','catBomba','bombaCat');bombaRenderCfg();bombaRenderEdit();}
   
   if(id==='members'){renderMembers();if(turnActive)turnShowOrder();}
-  if(id==='yonunca'){ynRenderList();ynRenderScores();}
+  if(id==='yonunca'){phPills('yn','catYn','ynCat');ynRenderList();ynRenderScores();}
   turnRefresh();
-  if(id==='cartas'){renderCustomCardsList();updateHandCountBtns();}
+  if(id==='cartas'){phPills('cartas','catCartas','cartasCat');renderCustomCardsList();updateHandCountBtns();}
   if(id==='top10')renderTop10();
   if(id==='timer')renderTimers();
   if(id==='members')renderMembers();
@@ -1855,10 +2463,10 @@ function holGuess(g){
     var nc2=document.getElementById('nextCard');if(nc2)nc2.innerHTML=buildCardBack(76,114);
   },1400);
 }
-function renderCustomCardsList(){var el=document.getElementById('customCardsList');if(!el)return;el.innerHTML=customCards.length?customCards.map(function(c,i){return '<div class="option-item"><span>'+c+'</span><button class="btn-icon" onclick="removeCustomCard('+i+')">\uD83D\uDDD1</button></div>';}).join(''):'<div class="empty-state" style="padding:8px 0;">Agrega cartas.</div>';}
-function addCustomCard(){var inp=document.getElementById('customCardInput');var v=inp.value.trim();if(!v)return;customCards.push(v);sv('customCards',customCards);inp.value='';renderCustomCardsList();}
-function removeCustomCard(i){customCards.splice(i,1);sv('customCards',customCards);renderCustomCardsList();}
-function drawCustomCard(){if(!customCards.length){ann('Agrega cartas primero');return;}var v=customCards[Math.floor(Math.random()*customCards.length)];document.getElementById('customCardResult').textContent=v;showPopup('\uD83C\uDFB4','\xA1Carta!','Tu carta dice...',v);}
+function renderCustomCardsList(){phEditPills('cartas','cartasEditPills','cartasEditCat');phList('cartas','customCardsList','Agrega cartas.');}
+function addCustomCard(){phAddItem('cartas','customCardInput');}
+function removeCustomCard(i){phDelItem('cartas',i);}
+function drawCustomCard(){if(!customCards.length){ann('Sin cartas en esta categoria');return;}var v=customCards[Math.floor(Math.random()*customCards.length)];document.getElementById('customCardResult').textContent=v;showPopup('\uD83C\uDFB4','\xA1Carta!','Tu carta dice...',v);}
 
 // TOP 10
 function addTop10Person(){var inp=document.getElementById('top10NameInput');var v=inp.value.trim();if(!v)return;if(top10.find(function(p){return p.name===v;})){ann('Ya existe');return;}top10.push({name:v,count:0});sv('top10',top10);inp.value='';renderTop10();}
@@ -1877,6 +2485,12 @@ function updateTimerDisplay(i){var se=document.getElementById('tsvg-'+i);var de=
 function renderTimers(){var el=document.getElementById('timerList');if(!timers.length){el.innerHTML='<div class="empty-state">Agrega un cron\xF3metro arriba</div>';return;}el.innerHTML=timers.map(function(t,i){return '<div class="timer-card"><div style="text-align:center;font-size:15px;font-weight:700;margin-bottom:8px;">'+t.name+'</div><div class="clock-svg-wrap"><div id="tsvg-'+i+'">'+clockSVG(t.remaining,t.total,t.done)+'</div><div class="clock-time-overlay"><div class="clock-digits'+(t.done?' done':'')+'" id="tdig-'+i+'">'+fmtTime(t.remaining)+'</div><div class="clock-name-label">'+fmtTime(t.total)+'</div></div></div><div class="timer-controls"><button class="btn btn-primary" id="tbtn-'+i+'" onclick="toggleTimer('+i+')">'+(t.done?'\u2713 Listo':t.running?'\u23F8 Pausar':'\u25B6 Iniciar')+'</button><button class="btn btn-secondary" onclick="resetTimer('+i+')">\u21BA Reset</button><button class="btn-icon" onclick="removeTimer('+i+')">\uD83D\uDDD1</button></div></div>';}).join('');timers.forEach(function(t,i){if(t.running&&!tInts[i])toggleTimer(i);});}
 
 // INIT
+phSeed();phSyncAll();
+phPills('ruleta','catRuleta','ruletaCat');phPills('tor','catTor','torCat');
+phPills('yn','catYn','ynCat');phPills('cartas','catCartas','cartasCat');
+phPills('bomba','catBomba','bombaCat');bombaRenderCfg();bombaRenderEdit();
+renderRuletaOpts();renderTor();ynRenderList();renderCustomCardsList();
+torPlayCat(torPlayType);
 mjInitTime();
 renderMembers();renderWheel();updateImports();
 setDiceCSS(1);renderDiceCountSel();renderDiceArea();renderCustomFaces();
