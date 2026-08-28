@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v17</title>
+<title>🎉 Party Hub v22</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -14,7 +14,90 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
-nav{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+nav{display:none;}
+/* Barra superior */
+.appbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px;padding:11px 12px;
+  background:rgba(16,16,28,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.ab-back{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:10px;
+  padding:7px 13px;font-size:13px;font-weight:800;cursor:pointer;flex-shrink:0;transition:.15s;}
+.ab-back:hover{background:var(--card);border-color:rgba(255,255,255,.25);}
+.ab-title{font-size:15px;font-weight:800;letter-spacing:.2px;}
+.perfil-fila{display:flex;align-items:center;gap:14px;}
+.perfil-av{position:relative;width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;background:var(--card2);border:2px solid var(--border);
+  font-size:22px;font-weight:800;color:var(--accent);transition:border-color .2s,transform .15s;}
+.perfil-av:hover{border-color:var(--gold);transform:scale(1.05);}
+.perfil-cam{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;
+  background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--card);}
+.sala-tag.host{background:var(--violeta,#7c3aed);color:#fff;}
+.sala-cerrada{font-size:12px;font-weight:800;color:var(--gold);margin-top:6px;}
+.hist-fila{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;
+  background:var(--card2);border:1px solid var(--border);margin-bottom:7px;}
+.hist-datos{flex:1;min-width:0;}
+.hist-nom{font-weight:800;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-sub{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-avs{display:flex;gap:-4px;margin-top:5px;}
+.hist-av{width:26px;height:26px;border-radius:50%;overflow:hidden;margin-right:-6px;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
+  background:var(--card);border:1px solid var(--border);color:var(--accent);}
+.sala-estado{display:flex;align-items:center;gap:12px;justify-content:center;padding:26px;color:var(--muted);font-weight:700;}
+.sala-spin{width:22px;height:22px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:salaGira .8s linear infinite;}
+@keyframes salaGira{to{transform:rotate(360deg);}}
+.sala-codigo-caja{text-align:center;padding:16px;border-radius:16px;background:var(--card2);border:1px solid var(--border);}
+.sala-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);font-weight:800;}
+.sala-codigo{font-size:44px;font-weight:900;letter-spacing:9px;color:var(--gold);line-height:1.2;
+  text-shadow:0 0 26px rgba(240,165,0,.35);font-variant-numeric:tabular-nums;padding-left:9px;}
+.sala-fila{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;
+  background:var(--card2);border:1px solid var(--border);margin-bottom:6px;}
+.sala-fila.yo{border-color:rgba(240,165,0,.5);}
+.sala-av{width:34px;height:34px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background:var(--card);border:1px solid var(--border);font-weight:800;color:var(--accent);}
+.sala-nom{flex:1;font-weight:700;font-size:14px;}
+.sala-tag{font-size:9px;font-weight:900;background:var(--gold);color:#141414;padding:2px 6px;border-radius:6px;}
+.sala-punto{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(0,196,140,.8);
+  animation:salaLatido 2s ease-in-out infinite;}
+@keyframes salaLatido{0%,100%{opacity:1;}50%{opacity:.35;}}
+.sala-sep{text-align:center;color:var(--muted);font-size:12px;font-weight:700;margin:16px 0 10px;position:relative;}
+.aviso-rojo{border-left:3px solid var(--accent);background:rgba(233,69,96,.1);padding:11px 14px;
+  border-radius:0 10px 10px 0;margin-bottom:14px;font-size:13px;line-height:1.6;}
+.ab-sala{margin-left:auto;font-family:inherit;font-size:12px;font-weight:800;color:var(--gold);
+  background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.4);border-radius:9px;padding:5px 10px;cursor:pointer;}
+.menu-sala{display:flex;align-items:center;gap:12px;padding:14px 16px;margin-bottom:12px;border-radius:16px;cursor:pointer;
+  background:linear-gradient(135deg,rgba(0,196,140,.14),rgba(37,99,235,.12)),var(--card);
+  border:1px solid rgba(0,196,140,.35);transition:transform .15s,border-color .2s;}
+.menu-sala:hover{transform:translateY(-2px);border-color:rgba(0,196,140,.6);}
+.menu-sala-ico{font-size:26px;}
+.menu-sala-txt{flex:1;}
+.menu-sala-t{font-weight:800;font-size:15px;}
+.menu-sala-s{font-size:12px;color:var(--muted);}
+.share-card{margin-top:18px;}
+.qr-caja{background:#fff;border-radius:16px;padding:12px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 26px rgba(0,0,0,.45);margin:0 auto 12px;max-width:250px;}
+.qr-caja img{width:100%;display:block;image-rendering:pixelated;border-radius:6px;}
+.qr-link{font-size:11px;color:var(--muted);text-align:center;word-break:break-all;margin-bottom:12px;line-height:1.5;}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.share-btns .btn{flex:1;min-width:120px;}
+.share-edit{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+/* Menu principal */
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.menu-card{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;
+  background:var(--card);border:1px solid var(--border);
+  box-shadow:0 8px 22px rgba(0,0,0,.45);
+  transition:transform .16s cubic-bezier(.34,1.4,.64,1),box-shadow .16s,border-color .16s;}
+.menu-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 16px 34px rgba(0,0,0,.6);border-color:rgba(255,255,255,.25);}
+.menu-card:active{transform:translateY(0) scale(.98);}
+.menu-img{width:100%;aspect-ratio:1;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;}
+.menu-ph{position:relative;}
+.menu-ph::after{content:'';position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 32%,rgba(255,255,255,.22),transparent 70%);}
+.menu-ph span{font-size:clamp(46px,15vw,72px);filter:drop-shadow(0 6px 14px rgba(0,0,0,.55));z-index:1;}
+.menu-nombre{padding:11px 10px;text-align:center;font-size:14px;font-weight:800;letter-spacing:.2px;
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));}
+.menu-edit{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(10,10,18,.62);backdrop-filter:blur(4px);color:#fff;font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.15s;}
+.menu-edit:hover{background:rgba(233,69,96,.85);transform:scale(1.08);}
+.menu-tip{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 4px;line-height:1.6;}
+/* BOMBA */
 .nav-inner{max-width:900px;margin:0 auto;padding:0 6px;display:flex;overflow-x:auto;gap:2px;scrollbar-width:none;}
 .nav-inner::-webkit-scrollbar{display:none;}
 .nav-btn{flex-shrink:0;background:none;border:none;color:var(--muted);font-size:11px;padding:10px 9px 8px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px;}
@@ -124,12 +207,50 @@ input:focus{border-color:var(--accent);}
 .tor-dare{background:rgba(233,69,96,.18);color:#f87a8a;border:1px solid rgba(233,69,96,.28);}
 .tor-mild{background:rgba(0,196,140,.13);color:var(--green);border:1px solid rgba(0,196,140,.23);}
 /* TOP 10 */
-.top-item{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--card2);border-radius:11px;border:1px solid var(--border);margin-bottom:7px;}
-.top-rank{font-size:16px;font-weight:800;min-width:26px;color:var(--muted);}
-.top-rank.r1{color:var(--gold);}.top-rank.r2{color:#ccc;}.top-rank.r3{color:#cd7f32;}
-.top-name{flex:1;font-weight:600;font-size:14px;}
-.count-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .15s;}
+/* TOP 10 — marcador dinamico */
+.podio{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:16px;padding:14px 6px 0;}
+.podio-col{flex:1;max-width:118px;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.podio-medalla{font-size:22px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));}
+.podio-av{width:48px;height:48px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background:var(--card2);border:2px solid var(--border);font-size:18px;font-weight:800;color:var(--accent);}
+.podio-av.lider{border-color:var(--gold);box-shadow:0 0 18px rgba(240,165,0,.55);}
+.podio-nom{font-size:11px;font-weight:800;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.podio-bloque{width:100%;border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 -4px 18px rgba(0,0,0,.35);animation:podioSube .5s cubic-bezier(.34,1.4,.6,1);transform-origin:bottom;}
+@keyframes podioSube{from{transform:scaleY(.2);opacity:.3;}to{transform:scaleY(1);opacity:1;}}
+.podio-bloque.p1{background:linear-gradient(180deg,#f0c419,#a97800);}
+.podio-bloque.p2{background:linear-gradient(180deg,#d7d7de,#8a8a95);}
+.podio-bloque.p3{background:linear-gradient(180deg,#d68a4e,#8a4d1f);}
+.podio-num{font-size:24px;font-weight:900;color:#1a1a1a;line-height:1;}
+.podio-pos{font-size:10px;font-weight:800;color:rgba(0,0,0,.55);}
+.top-row{position:relative;border-radius:12px;border:1px solid var(--border);background:var(--card2);
+  margin-bottom:7px;overflow:hidden;will-change:transform;}
+.top-row.lider{border-color:rgba(240,165,0,.55);box-shadow:0 0 22px rgba(240,165,0,.18);}
+.top-row.movio-sube{animation:filaSube .9s ease;}
+.top-row.movio-baja{animation:filaBaja .9s ease;}
+@keyframes filaSube{0%{box-shadow:0 0 0 rgba(0,196,140,0);}30%{box-shadow:0 0 26px rgba(0,196,140,.55);}100%{box-shadow:0 0 0 rgba(0,196,140,0);}}
+@keyframes filaBaja{0%{box-shadow:0 0 0 rgba(233,69,96,0);}30%{box-shadow:0 0 22px rgba(233,69,96,.4);}100%{box-shadow:0 0 0 rgba(233,69,96,0);}}
+.top-barra{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(233,69,96,.34),rgba(124,58,237,.22));
+  transition:width .6s cubic-bezier(.3,1,.4,1);}
+.top-row.lider .top-barra{background:linear-gradient(90deg,rgba(240,165,0,.4),rgba(233,69,96,.2));}
+.top-cont{position:relative;display:flex;align-items:center;gap:8px;padding:9px 11px;}
+.top-pos{font-size:15px;font-weight:900;min-width:26px;text-align:center;color:var(--muted);}
+.top-pos.m1,.top-pos.m2,.top-pos.m3{font-size:19px;}
+.top-dif{font-size:10px;font-weight:800;min-width:22px;}
+.top-dif.sube{color:var(--green);}
+.top-dif.baja{color:var(--accent);}
+.top-dif.igual{color:rgba(255,255,255,.18);}
+.top-av{width:34px;height:34px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:var(--card);border:1px solid var(--border);font-weight:800;color:var(--accent);font-size:14px;}
+.top-nombre{flex:1;font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.top-corona{font-size:9px;font-weight:900;color:#141414;background:var(--gold);padding:2px 6px;border-radius:6px;vertical-align:middle;letter-spacing:.5px;}
+.top-num{font-size:21px;font-weight:900;color:var(--accent);min-width:32px;text-align:center;font-variant-numeric:tabular-nums;}
+.top-row.lider .top-num{color:var(--gold);}
+.top-num.flash{animation:numPop .45s cubic-bezier(.34,1.6,.6,1);}
+@keyframes numPop{0%{transform:scale(1);}45%{transform:scale(1.55);}100%{transform:scale(1);}}
+.count-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .15s;flex-shrink:0;}
 .count-btn:hover{background:var(--accent);border-color:var(--accent);}
+.count-btn.mas:hover{background:var(--green);border-color:var(--green);}
 /* TIMER */
 .timer-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;}
 .clock-svg-wrap{position:relative;width:180px;height:180px;margin:0 auto;}
@@ -479,6 +600,30 @@ input:focus{border-color:var(--accent);}
   </div>
 </div>
 
+<!-- Avatar picker modal (inline) -->
+  <div id="avatarModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:400;align-items:flex-end;justify-content:center;padding:0;">
+    <div style="background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 16px 32px;border-top:1px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:800;" id="avModalTitle">Elige avatar</div>
+        <button class="btn-icon" onclick="closeAvatarModal()">&#x2715;</button>
+      </div>
+      <!-- Photo/File buttons -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="btn btn-secondary" style="flex:1;gap:6px;" onclick="avTakePhoto()">
+          &#x1F4F8; C&#xE1;mara
+        </button>
+        <button class="btn btn-secondary" style="flex:1;gap:6px;" onclick="avPickFile()">
+          &#x1F5BC; Galería
+        </button>
+        <input type="file" id="avCameraInput" accept="image/*" capture="user" style="display:none;" onchange="avFileChosen(this)"/>
+        <input type="file" id="avFileInput" accept="image/*" style="display:none;" onchange="avFileChosen(this)"/>
+      </div>
+      <div class="card-title">O elige un emoji</div>
+      <div id="avEmojiGrid" style="display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
+      <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:12px;" onclick="closeAvatarModal()">Sin avatar por ahora</button>
+    </div>
+  </div>
+
 <!-- CATALOG POPUP -->
 <div class="popup-overlay" id="catalogPopup" onclick="closeCatalog(event)">
   <div class="popup-box" style="max-width:420px;max-height:90vh;overflow-y:auto;">
@@ -504,6 +649,79 @@ input:focus{border-color:var(--accent);}
     <button class="turn-close-btn" onclick="turnStop()">&#x2715;</button>
   </div>
 </div>
+<div class="appbar">
+  <button class="ab-back" id="abBack" onclick="goPage('menu')">&#x2190; Men&uacute;</button>
+  <div class="ab-title" id="abTitle">🎉 Party Hub</div>
+  <button class="ab-sala" id="abSala" style="display:none;" onclick="goPage('sala')">📡</button>
+</div>
+
+<!-- SALA EN LINEA -->
+<div class="page" id="page-sala">
+  <div class="section-header" style="margin-top:6px;"><div class="section-title">📡 Sala en línea</div></div>
+  <div class="card" id="salaCuerpo"></div>
+</div>
+
+<!-- MENU PRINCIPAL -->
+<div class="page active" id="page-menu">
+  <div class="section-header" style="margin-top:6px;">
+    <div class="section-title">🎉 Elige un juego</div>
+  </div>
+  <div class="menu-sala" onclick="goPage('sala')">
+    <div class="menu-sala-ico">📡</div>
+    <div class="menu-sala-txt">
+      <div class="menu-sala-t">Sala en l&iacute;nea</div>
+      <div class="menu-sala-s" id="menuSalaSub">Jueguen todos desde su propio celular</div>
+    </div>
+    <div style="color:var(--muted);font-size:20px;">&rsaquo;</div>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+  <div class="menu-tip">Toca el &#x1F4F7; de cada juego para poner tu propia imagen.<br>Se guardan en este dispositivo y las puedes cambiar cuando quieras.</div>
+
+  <div class="card share-card">
+    <div class="card-title">&#x1F4F2; Invitar a tus amigos</div>
+    <div class="qr-caja"><img id="qrImg" alt="C&oacute;digo QR del juego"/></div>
+    <div class="qr-link" id="qrTexto"></div>
+    <div id="qrAviso" style="display:none;color:var(--accent);font-size:12px;text-align:center;margin-bottom:10px;"></div>
+    <div class="share-btns">
+      <button class="btn btn-primary" onclick="shareNativo()">&#x1F4E4; Compartir</button>
+      <button class="btn btn-secondary" onclick="shareCopiar()">&#x1F4CB; Copiar link</button>
+    </div>
+    <div class="share-btns" style="margin-top:8px;">
+      <button class="btn btn-secondary btn-sm" onclick="shareDescargarQR()">&#x2B07; Guardar QR</button>
+      <button class="btn btn-secondary btn-sm" onclick="shareAbrirCaja()">&#x270F; Cambiar direcci&oacute;n</button>
+    </div>
+    <div class="share-edit" id="shareEditBox">
+      <div class="flex-row">
+        <input type="text" id="shareInput" placeholder="https://..." onchange="shareSetUrl(this.value)"/>
+        <button class="btn btn-primary" onclick="shareSetUrl(document.getElementById('shareInput').value)">OK</button>
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;" onclick="shareReset()">&#x21BA; Volver a la direcci&oacute;n de siempre</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      En iPhone el bot&oacute;n <b>Compartir</b> abre AirDrop y WhatsApp.<br>
+      El QR apunta a tu p&aacute;gina, as&iacute; que siempre entrega la &uacute;ltima versi&oacute;n que subas.
+    </div>
+  </div>
+</div>
+
+<!-- Modal de imagen del menu -->
+<div id="menuModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:400;align-items:flex-end;justify-content:center;">
+  <div style="background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 16px 34px;border-top:1px solid var(--border);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-size:16px;font-weight:800;" id="menuModalTitle">Imagen del juego</div>
+      <button class="btn-icon" onclick="menuCerrar()">&#x2715;</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="menuCamara()">&#x1F4F8; C&aacute;mara</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="menuGaleria()">&#x1F5BC; Galer&iacute;a</button>
+    </div>
+    <button class="btn btn-secondary btn-sm" id="menuQuitar" style="width:100%;" onclick="menuQuitar()">&#x1F5D1; Quitar imagen</button>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">La imagen se recorta cuadrada y se reduce sola para no ocupar espacio</div>
+    <input type="file" id="menuCamInput" accept="image/*" capture="environment" style="display:none;" onchange="menuArchivo(this)"/>
+    <input type="file" id="menuFileInput" accept="image/*" style="display:none;" onchange="menuArchivo(this)"/>
+  </div>
+</div>
+
 <nav><div class="nav-inner">
   <button class="nav-btn active" onclick="goPage('members')" id="tab-members"><span>&#x1F465;</span>Jugadores</button>
   <button class="nav-btn" onclick="goPage('ruleta')" id="tab-ruleta"><span>&#x1F3A1;</span>Ruleta</button>
@@ -519,7 +737,7 @@ input:focus{border-color:var(--accent);}
 </div></nav>
 
 <!-- MEMBERS -->
-<div class="page active" id="page-members">
+<div class="page" id="page-members">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F465; Jugadores</div></div>
 
   <!-- Add player -->
@@ -537,29 +755,6 @@ input:focus{border-color:var(--accent);}
     <div id="memberPills"><div style="color:var(--muted);font-size:13px;padding:6px 0;">No hay jugadores a&#xFA;n</div></div>
   </div>
 
-  <!-- Avatar picker modal (inline) -->
-  <div id="avatarModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:400;align-items:flex-end;justify-content:center;padding:0;">
-    <div style="background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 16px 32px;border-top:1px solid var(--border);">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div style="font-size:16px;font-weight:800;" id="avModalTitle">Elige avatar</div>
-        <button class="btn-icon" onclick="closeAvatarModal()">&#x2715;</button>
-      </div>
-      <!-- Photo/File buttons -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <button class="btn btn-secondary" style="flex:1;gap:6px;" onclick="avTakePhoto()">
-          &#x1F4F8; C&#xE1;mara
-        </button>
-        <button class="btn btn-secondary" style="flex:1;gap:6px;" onclick="avPickFile()">
-          &#x1F5BC; Galería
-        </button>
-        <input type="file" id="avCameraInput" accept="image/*" capture="user" style="display:none;" onchange="avFileChosen(this)"/>
-        <input type="file" id="avFileInput" accept="image/*" style="display:none;" onchange="avFileChosen(this)"/>
-      </div>
-      <div class="card-title">O elige un emoji</div>
-      <div id="avEmojiGrid" style="display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
-      <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:12px;" onclick="closeAvatarModal()">Sin avatar por ahora</button>
-    </div>
-  </div>
   <div class="card" style="padding:12px 15px;">
     <div class="card-title">Turnos aleatorios</div>
     <div style="color:var(--muted);font-size:13px;margin-bottom:10px;">Elige el orden al azar y cambia turno autom&aacute;ticamente en todos los juegos</div>
@@ -569,7 +764,7 @@ input:focus{border-color:var(--accent);}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v17</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v22</div></div>
 </div>
 
 <!-- RULETA -->
@@ -969,6 +1164,7 @@ input:focus{border-color:var(--accent);}
 <div class="page" id="page-top10">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F3C6; Top 10 Shots</div><button class="btn btn-secondary btn-sm" onclick="resetTop10()">Reiniciar</button></div>
   <div class="card"><div class="flex-row" style="margin-bottom:9px;"><input type="text" id="top10NameInput" placeholder="Agregar persona..." onkeydown="if(event.key==='Enter')addTop10Person()"/><button class="btn btn-primary" onclick="addTop10Person()">+</button></div><button class="btn btn-secondary btn-sm" onclick="importMembersTop10()">&#x1F4E5; Importar equipo</button></div>
+  <div id="topPodio"></div>
   <div id="topList"></div>
 </div>
 
@@ -979,6 +1175,9 @@ input:focus{border-color:var(--accent);}
   <div id="timerList"></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 const SUITS=['\u2660','\u2665','\u2666','\u2663'];
 const SUIT_RED=['\u2665','\u2666'];
@@ -1460,6 +1659,846 @@ function bombaAdd(){
   ann('Pregunta agregada a '+PH_CATLBL[phEditCat.bomba]);
 }
 
+// ===== MENU CON IMAGENES (v18) =====
+var MENU_JUEGOS=[
+  {k:'ruleta', n:'Ruleta',        e:'🎡', g:'linear-gradient(150deg,#e94560,#7c1d33)'},
+  {k:'tor',    n:'Verdad o Reto', e:'🔥', g:'linear-gradient(150deg,#ff7b39,#8a2b12)'},
+  {k:'bomba',  n:'Bomba',         e:'💣', g:'linear-gradient(150deg,#5b6478,#1c2230)'},
+  {k:'todis',  n:'TODIS',         e:'🎰', g:'linear-gradient(150deg,#f0a500,#7a5200)'},
+  {k:'mahjong',n:'Encuentra',     e:'🔍', g:'linear-gradient(150deg,#00c48c,#065f46)'},
+  {k:'dados',  n:'Dados',         e:'🎲', g:'linear-gradient(150deg,#7c3aed,#3b1076)'},
+  {k:'cartas', n:'Cartas',        e:'🃏', g:'linear-gradient(150deg,#2563eb,#122a6b)'},
+  {k:'yonunca',n:'Yo Nunca',      e:'🙅', g:'linear-gradient(150deg,#db2777,#6b1140)'},
+  {k:'top10',  n:'Top 10',        e:'🏆', g:'linear-gradient(150deg,#eab308,#78500a)'},
+  {k:'timer',  n:'Tiempo',        e:'⏱', g:'linear-gradient(150deg,#0891b2,#083f4d)'},
+  {k:'members',n:'Jugadores',     e:'👥', g:'linear-gradient(150deg,#64748b,#27303f)'}
+];
+var MENU_NOMBRE={sala:'Sala en línea'};MENU_JUEGOS.forEach(function(j){MENU_NOMBRE[j.k]=j.n;});
+var menuImgs=ld('menuImgs',{});
+var menuPickKey='';
+
+function menuGuardar(){
+  try{localStorage.setItem('ph_menuImgs',JSON.stringify(menuImgs));return true;}
+  catch(e){ann('⚠ Sin espacio: borra alguna imagen antes');return false;}
+}
+
+function renderMenu(){
+  var el=document.getElementById('menuGrid');
+  if(!el)return;
+  el.innerHTML=MENU_JUEGOS.map(function(j){
+    var img=menuImgs[j.k];
+    var fondo=img
+      ? '<div class="menu-img" style="background-image:url('+img+');"></div>'
+      : '<div class="menu-img menu-ph" style="background:'+j.g+';"><span>'+j.e+'</span></div>';
+    return '<div class="menu-card" onclick="goPage(\''+j.k+'\')">'
+      +fondo
+      +'<div class="menu-nombre">'+j.n+'</div>'
+      +'<button class="menu-edit" onclick="event.stopPropagation();menuAbrir(\''+j.k+'\')" title="Cambiar imagen">&#x1F4F7;</button>'
+      +'</div>';
+  }).join('');
+}
+
+function menuAbrir(k){
+  menuPickKey=k;
+  var t=document.getElementById('menuModalTitle');
+  if(t)t.textContent='Imagen de '+MENU_NOMBRE[k];
+  var q=document.getElementById('menuQuitar');
+  if(q)q.style.display=menuImgs[k]?'':'none';
+  var m=document.getElementById('menuModal');
+  if(m)m.style.display='flex';
+}
+function menuCerrar(){
+  var m=document.getElementById('menuModal');
+  if(m)m.style.display='none';
+  menuPickKey='';
+}
+function menuCamara(){document.getElementById('menuCamInput').click();}
+function menuGaleria(){document.getElementById('menuFileInput').click();}
+function menuQuitar(){
+  if(!menuPickKey)return;
+  delete menuImgs[menuPickKey];
+  menuGuardar();renderMenu();menuCerrar();
+  ann('Imagen quitada');
+}
+
+// recorta al centro en cuadrado y reduce para que quepa en el telefono
+function menuArchivo(input){
+  if(!input.files||!input.files[0]||!menuPickKey)return;
+  var destino=menuPickKey;
+  var r=new FileReader();
+  r.onload=function(ev){
+    var img=new Image();
+    img.onload=function(){
+      var S=420;
+      var c=document.createElement('canvas');c.width=S;c.height=S;
+      var ctx=c.getContext('2d');
+      var lado=Math.min(img.width,img.height);
+      ctx.drawImage(img,(img.width-lado)/2,(img.height-lado)/2,lado,lado,0,0,S,S);
+      var data=c.toDataURL('image/jpeg',0.82);
+      var previa=menuImgs[destino];
+      menuImgs[destino]=data;
+      if(menuGuardar()){renderMenu();ann('Imagen de '+MENU_NOMBRE[destino]+' actualizada');}
+      else{if(previa)menuImgs[destino]=previa;else delete menuImgs[destino];}
+      menuCerrar();
+    };
+    img.onerror=function(){ann('No se pudo leer la imagen');menuCerrar();};
+    img.src=ev.target.result;
+  };
+  r.readAsDataURL(input.files[0]);
+  input.value='';
+}
+
+// barra superior con el boton de volver
+function appbarSet(id){
+  var back=document.getElementById('abBack');
+  var tit=document.getElementById('abTitle');
+  if(!back||!tit)return;
+  if(id==='menu'){
+    back.style.visibility='hidden';
+    tit.textContent='🎉 Party Hub';
+  } else {
+    back.style.visibility='visible';
+    tit.textContent=MENU_NOMBRE[id]||'';
+  }
+}
+
+// ===== GENERADOR DE QR (v20) — nivel M, versiones 1 a 10, sin librerias =====
+var QR=(function(){
+  var EXP=[],LOG=[];
+  (function(){var x=1;for(var i=0;i<255;i++){EXP[i]=x;LOG[x]=i;x<<=1;if(x&256)x^=0x11d;}
+   for(var j=255;j<512;j++)EXP[j]=EXP[j-255];})();
+  function mul(a,b){return (a===0||b===0)?0:EXP[LOG[a]+LOG[b]];}
+  function genPoly(deg){
+    var p=[1];
+    for(var i=0;i<deg;i++){
+      var np=[];for(var z=0;z<=p.length;z++)np.push(0);
+      for(var j=0;j<p.length;j++){np[j]^=p[j];np[j+1]^=mul(p[j],EXP[i]);}
+      p=np;
+    }
+    return p;
+  }
+  function ecc(data,n){
+    var g=genPoly(n),res=[];
+    for(var i=0;i<n;i++)res.push(0);
+    for(var k=0;k<data.length;k++){
+      var f=data[k]^res[0];
+      res.shift();res.push(0);
+      for(var j=0;j<n;j++)res[j]^=mul(g[j+1],f);
+    }
+    return res;
+  }
+  var CAP=[0,14,26,42,62,84,106,122,152,180,213];
+  var BLK={1:[10,1,16,0,0],2:[16,1,28,0,0],3:[26,1,44,0,0],4:[18,2,32,0,0],5:[24,2,43,0,0],
+           6:[16,4,27,0,0],7:[18,4,31,0,0],8:[22,2,38,2,39],9:[22,3,36,2,37],10:[26,4,43,1,44]};
+  var ALIGN={1:[],2:[6,18],3:[6,22],4:[6,26],5:[6,30],6:[6,34],7:[6,22,38],8:[6,24,42],9:[6,26,46],10:[6,28,50]};
+  var VERINFO={7:0x07C94,8:0x085BC,9:0x09A99,10:0x0A4D3};
+  var FMT=[0x5412,0x5125,0x5E7C,0x5B4B,0x45F9,0x40CE,0x4F97,0x4AA0];
+
+  function utf8(str){
+    var out=[];
+    for(var i=0;i<str.length;i++){
+      var c=str.charCodeAt(i);
+      if(c<0x80)out.push(c);
+      else if(c<0x800)out.push(0xC0|(c>>6),0x80|(c&63));
+      else if(c>=0xD800&&c<0xDC00){
+        var c2=str.charCodeAt(++i);
+        var cp=0x10000+((c-0xD800)<<10)+(c2-0xDC00);
+        out.push(0xF0|(cp>>18),0x80|((cp>>12)&63),0x80|((cp>>6)&63),0x80|(cp&63));
+      } else out.push(0xE0|(c>>12),0x80|((c>>6)&63),0x80|(c&63));
+    }
+    return out;
+  }
+
+  function codewords(data,ver){
+    var bits=[];
+    function push(val,len){for(var i=len-1;i>=0;i--)bits.push((val>>i)&1);}
+    push(4,4);
+    push(data.length,ver<10?8:16);
+    for(var i=0;i<data.length;i++)push(data[i],8);
+    var blk=BLK[ver];
+    var totalData=blk[1]*blk[2]+blk[3]*blk[4];
+    var cap=totalData*8;
+    for(var t=0;t<4&&bits.length<cap;t++)bits.push(0);
+    while(bits.length%8)bits.push(0);
+    var pad=[0xEC,0x11],pi=0;
+    while(bits.length<cap)push(pad[pi++%2],8);
+    var dcw=[];
+    for(var j=0;j<bits.length;j+=8){
+      var v=0;for(var k=0;k<8;k++)v=(v<<1)|bits[j+k];
+      dcw.push(v);
+    }
+    var blocks=[],ecs=[],pos=0;
+    for(var g=0;g<2;g++){
+      var nb=g===0?blk[1]:blk[3],nd=g===0?blk[2]:blk[4];
+      for(var b=0;b<nb;b++){
+        var d=dcw.slice(pos,pos+nd);pos+=nd;
+        blocks.push(d);ecs.push(ecc(d,blk[0]));
+      }
+    }
+    var out=[],maxD=Math.max(blk[2],blk[4]);
+    for(var a=0;a<maxD;a++)for(var bb=0;bb<blocks.length;bb++)if(a<blocks[bb].length)out.push(blocks[bb][a]);
+    for(var e=0;e<blk[0];e++)for(var cc=0;cc<ecs.length;cc++)out.push(ecs[cc][e]);
+    return out;
+  }
+
+  function maskFn(k,r,c){
+    switch(k){
+      case 0:return (r+c)%2===0;
+      case 1:return r%2===0;
+      case 2:return c%3===0;
+      case 3:return (r+c)%3===0;
+      case 4:return (Math.floor(r/2)+Math.floor(c/3))%2===0;
+      case 5:return ((r*c)%2)+((r*c)%3)===0;
+      case 6:return (((r*c)%2)+((r*c)%3))%2===0;
+      default:return (((r+c)%2)+((r*c)%3))%2===0;
+    }
+  }
+
+  function penal(m,size){
+    var p=0,dark=0,i,j,run,color;
+    for(i=0;i<size;i++){
+      run=1;color=m[i][0];
+      for(j=1;j<size;j++){
+        if(m[i][j]===color)run++;
+        else{if(run>=5)p+=3+(run-5);color=m[i][j];run=1;}
+      }
+      if(run>=5)p+=3+(run-5);
+      run=1;color=m[0][i];
+      for(j=1;j<size;j++){
+        if(m[j][i]===color)run++;
+        else{if(run>=5)p+=3+(run-5);color=m[j][i];run=1;}
+      }
+      if(run>=5)p+=3+(run-5);
+    }
+    for(i=0;i<size-1;i++)for(j=0;j<size-1;j++){
+      var v=m[i][j];
+      if(v===m[i][j+1]&&v===m[i+1][j]&&v===m[i+1][j+1])p+=3;
+    }
+    var pat1=[1,0,1,1,1,0,1,0,0,0,0],pat2=[0,0,0,0,1,0,1,1,1,0,1];
+    function busca(arr){
+      var n=0;
+      for(var s=0;s+11<=arr.length;s++){
+        var ok1=true,ok2=true;
+        for(var q=0;q<11;q++){
+          if(arr[s+q]!==pat1[q])ok1=false;
+          if(arr[s+q]!==pat2[q])ok2=false;
+        }
+        if(ok1||ok2)n++;
+      }
+      return n;
+    }
+    for(i=0;i<size;i++){
+      var fila=[],col=[];
+      for(j=0;j<size;j++){fila.push(m[i][j]);col.push(m[j][i]);dark+=m[i][j];}
+      p+=40*(busca(fila)+busca(col));
+    }
+    var pct=dark*100/(size*size);
+    p+=Math.floor(Math.abs(pct-50)/5)*10;
+    return p;
+  }
+
+  function make(text){
+    var data=utf8(text),ver=0;
+    for(var v=1;v<=10;v++){if(data.length<=CAP[v]){ver=v;break;}}
+    if(!ver)return null;
+    var cw=codewords(data,ver);
+    var size=17+4*ver;
+    var m=[],fn=[],i,j;
+    for(i=0;i<size;i++){
+      m.push([]);fn.push([]);
+      for(j=0;j<size;j++){m[i].push(0);fn[i].push(0);}
+    }
+    function set(r,c,v){if(r<0||c<0||r>=size||c>=size)return;m[r][c]=v;fn[r][c]=1;}
+    // patrones de busqueda
+    var esquinas=[[0,0],[0,size-7],[size-7,0]];
+    for(var e=0;e<3;e++)for(var r=-1;r<=7;r++)for(var c=-1;c<=7;c++){
+      var d=(r>=0&&r<=6&&(c===0||c===6))||(c>=0&&c<=6&&(r===0||r===6))||(r>=2&&r<=4&&c>=2&&c<=4);
+      set(esquinas[e][0]+r,esquinas[e][1]+c,d?1:0);
+    }
+    // temporizacion
+    for(i=8;i<size-8;i++){set(6,i,i%2===0?1:0);set(i,6,i%2===0?1:0);}
+    // alineacion
+    var al=ALIGN[ver];
+    for(var a=0;a<al.length;a++)for(var b=0;b<al.length;b++){
+      var r0=al[a],c0=al[b];
+      if((r0<8&&c0<8)||(r0<8&&c0>size-9)||(r0>size-9&&c0<8))continue;
+      for(var dr=-2;dr<=2;dr++)for(var dc=-2;dc<=2;dc++)
+        set(r0+dr,c0+dc,Math.max(Math.abs(dr),Math.abs(dc))!==1?1:0);
+    }
+    // reserva del formato
+    for(i=0;i<9;i++){if(i!==6){set(8,i,0);set(i,8,0);}}
+    for(i=0;i<8;i++){set(8,size-1-i,0);set(size-1-i,8,0);}
+    set(size-8,8,1);
+    // version (7 en adelante)
+    if(ver>=7){
+      var vi=VERINFO[ver];
+      for(i=0;i<18;i++){
+        var bit=(vi>>i)&1;
+        var aa=size-11+i%3,bb2=Math.floor(i/3);
+        set(bb2,aa,bit);set(aa,bb2,bit);
+      }
+    }
+    // datos en zigzag
+    var idx=0;
+    for(var right=size-1;right>=1;right-=2){
+      if(right===6)right=5;
+      for(var vert=0;vert<size;vert++){
+        for(var jj=0;jj<2;jj++){
+          var x=right-jj;
+          var arriba=((right+1)&2)===0;
+          var y=arriba?size-1-vert:vert;
+          if(!fn[y][x]&&idx<cw.length*8){
+            m[y][x]=(cw[idx>>3]>>(7-(idx&7)))&1;
+            idx++;
+          }
+        }
+      }
+    }
+    // elige la mascara que menos penaliza
+    var mejor=null,mejorP=Infinity;
+    for(var k=0;k<8;k++){
+      var t=[];
+      for(i=0;i<size;i++){t.push(m[i].slice());}
+      for(i=0;i<size;i++)for(j=0;j<size;j++)if(!fn[i][j]&&maskFn(k,i,j))t[i][j]^=1;
+      var f=FMT[k];
+      for(i=0;i<15;i++){
+        var bt=(f>>i)&1;
+        if(i<6)t[i][8]=bt;
+        else if(i===6)t[7][8]=bt;
+        else if(i===7)t[8][8]=bt;
+        else if(i===8)t[8][7]=bt;
+        else t[8][14-i]=bt;
+        if(i<8)t[8][size-1-i]=bt;
+        else t[size-15+i][8]=bt;
+      }
+      t[size-8][8]=1;
+      var pen=penal(t,size);
+      if(pen<mejorP){mejorP=pen;mejor=t;}
+    }
+    return {size:size,mods:mejor,ver:ver};
+  }
+
+  // dibuja en un canvas y devuelve la imagen
+  function draw(canvas,text,px,margen){
+    var q=make(text);
+    if(!q)return null;
+    margen=(margen===undefined)?4:margen;
+    var total=q.size+margen*2;
+    var esc=Math.max(1,Math.floor(px/total));
+    canvas.width=total*esc;canvas.height=total*esc;
+    var ctx=canvas.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#0b0b14';
+    for(var r=0;r<q.size;r++)for(var c=0;c<q.size;c++)
+      if(q.mods[r][c])ctx.fillRect((c+margen)*esc,(r+margen)*esc,esc,esc);
+    return q;
+  }
+  return {make:make,draw:draw};
+})();
+
+// ===== COMPARTIR (v20) =====
+var LINK_DEFECTO='https://jmenachocntx.github.io/EntretenimientoCONTAX/';
+var shareUrl=ld('shareUrl',LINK_DEFECTO);
+
+function shareRender(){
+  var inp=document.getElementById('shareInput');
+  if(inp&&document.activeElement!==inp)inp.value=shareUrl;
+  var cv=document.createElement('canvas');
+  var q=QR.draw(cv,shareUrl,560,4);
+  var img=document.getElementById('qrImg');
+  var aviso=document.getElementById('qrAviso');
+  if(!q){
+    if(img)img.style.display='none';
+    if(aviso){aviso.style.display='';aviso.textContent='La dirección es demasiado larga para el QR';}
+    return;
+  }
+  if(aviso)aviso.style.display='none';
+  if(img){img.style.display='';img.src=cv.toDataURL('image/png');}
+  var t=document.getElementById('qrTexto');
+  if(t)t.textContent=shareUrl;
+}
+
+function shareSetUrl(v){
+  var u=(v||'').trim();
+  if(!u)u=LINK_DEFECTO;
+  shareUrl=u;sv('shareUrl',shareUrl);shareRender();
+}
+function shareReset(){shareSetUrl(LINK_DEFECTO);ann('Dirección restaurada');}
+
+function shareAbrirCaja(){
+  var c=document.getElementById('shareEditBox');
+  if(c)c.style.display=(c.style.display==='none'||!c.style.display)?'block':'none';
+}
+
+// Compartir con el sistema: en iPhone abre la hoja con AirDrop
+function shareNativo(){
+  var datos={title:'Party Hub',text:'Entra al juego 🎉',url:shareUrl};
+  if(navigator.share){
+    navigator.share(datos).catch(function(){});
+  } else {
+    shareCopiar();
+    ann('Este navegador no tiene compartir; copié el link');
+  }
+}
+function shareCopiar(){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(shareUrl).then(function(){ann('📋 Link copiado');},shareCopiarViejo);
+  } else shareCopiarViejo();
+}
+function shareCopiarViejo(){
+  var ta=document.createElement('textarea');
+  ta.value=shareUrl;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');ann('📋 Link copiado');}catch(e){ann('Copia el link a mano');}
+  document.body.removeChild(ta);
+}
+function shareDescargarQR(){
+  var img=document.getElementById('qrImg');
+  if(!img||!img.src)return;
+  var a=document.createElement('a');
+  a.href=img.src;a.download='party-hub-qr.png';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  ann('QR descargado');
+}
+
+
+// ===== SALA EN LINEA (v22) =====
+var FB_CONFIG={
+  apiKey:"AIzaSyCEvSb_-cQbnqoQgW_ADXoX5f3inlY2FBo",
+  authDomain:"app-juegos-nummeros.firebaseapp.com",
+  databaseURL:"https://app-juegos-nummeros-default-rtdb.firebaseio.com",
+  projectId:"app-juegos-nummeros",
+  storageBucket:"app-juegos-nummeros.firebasestorage.app",
+  messagingSenderId:"276469531960",
+  appId:"1:276469531960:web:c5ab9fc36e5012d5dc2dcd"
+};
+var SALA_ABC='ABCDEFGHJKMNPQRSTUVWXYZ23456789';   // sin letras que se confundan
+
+var fbDB=null,fbUid='',fbListo=false,fbFallo='';
+var salaEstado='off';          // off | conectando | on | error
+var salaCode='',salaRef=null,salaJugadores=[],salaAplicando=false;
+var salaNombreActual='',salaHost='',salaCerrada=false;
+var membersBackup=null,salaPendiente='';
+
+function salaCodigoNuevo(largo){
+  var s='';
+  for(var i=0;i<(largo||4);i++)s+=SALA_ABC.charAt(Math.floor(Math.random()*SALA_ABC.length));
+  return s;
+}
+function soyHost(){return !!fbUid&&salaHost===fbUid;}
+
+// ---- arranque de Firebase (si no carga, el juego sigue local) ----
+function fbInit(){
+  if(fbListo)return true;
+  if(typeof firebase==='undefined'){fbFallo='La librería de Firebase no cargó (¿sin internet?)';return false;}
+  try{
+    if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FB_CONFIG);
+    fbDB=firebase.database();
+    fbListo=true;
+    return true;
+  }catch(e){fbFallo='No se pudo iniciar Firebase: '+e.message;return false;}
+}
+function fbEntrar(){
+  if(fbUid)return Promise.resolve(fbUid);
+  if(!fbInit())return Promise.reject(new Error(fbFallo));
+  return firebase.auth().signInAnonymously().then(function(cred){
+    fbUid=(cred&&cred.user&&cred.user.uid)||('anon'+Date.now());
+    return fbUid;
+  });
+}
+
+// ---- avatar liviano para mandar a la sala ----
+function salaAvatarChico(m,listo){
+  var av=memberAvatar(m);
+  if(!av||!memberIsImg(m)){listo(av||'',false);return;}
+  var img=new Image();
+  img.onload=function(){
+    try{
+      var S=96,c=document.createElement('canvas');
+      c.width=S;c.height=S;
+      var lado=Math.min(img.width,img.height);
+      c.getContext('2d').drawImage(img,(img.width-lado)/2,(img.height-lado)/2,lado,lado,0,0,S,S);
+      listo(c.toDataURL('image/jpeg',0.7),true);
+    }catch(e){listo('',false);}
+  };
+  img.onerror=function(){listo('',false);};
+  img.src=av;
+}
+
+// ---- crear / entrar ----
+function salaCrear(){
+  if(!perfil.nombre){ann('Primero ponte un nombre en tu perfil');return;}
+  var nom=((document.getElementById('salaNombreNuevo')||{}).value||'').trim();
+  var priv=(document.getElementById('salaPrivada')||{}).checked;
+  salaIniciar(salaCodigoNuevo(priv?6:4),true,nom||('Sala de '+perfil.nombre));
+}
+function salaEntrar(){
+  if(!perfil.nombre){ann('Primero ponte un nombre en tu perfil');return;}
+  var c=((document.getElementById('salaCodigo')||{}).value||'').trim().toUpperCase();
+  if(c.length<4){ann('El código tiene 4 letras (o 6 si es privada)');return;}
+  salaIniciar(c,false,'');
+}
+
+function salaIniciar(codigo,creando,nombreSala){
+  salaEstado='conectando';salaRender();
+  fbEntrar().then(function(){
+    var ref=fbDB.ref('salas/'+codigo);
+    if(creando){
+      return ref.child('info').set({
+        creada:Date.now(),host:fbUid,nombre:nombreSala,cerrada:0
+      }).then(function(){return {ref:ref,codigo:codigo};});
+    }
+    // al entrar: primero revisamos que exista y que no este cerrada
+    return ref.child('info').once('value').then(function(sn){
+      var info=sn.val();
+      if(!info)throw new Error('NO_EXISTE');
+      if(info.cerrada)throw new Error('CERRADA');
+      return {ref:ref,codigo:codigo};
+    });
+  }).then(function(o){
+    salaCode=o.codigo;salaRef=o.ref;
+    if(membersBackup===null)membersBackup=members.slice();
+    var yo=perfilComoMiembro();
+    salaAvatarChico(yo,function(av,esImg){
+      var miRef=salaRef.child('jugadores/'+fbUid);
+      miRef.set({n:perfil.nombre,a:av||'',i:esImg?1:0,ts:Date.now()}).then(function(){
+        try{miRef.onDisconnect().remove();}catch(e){}
+        salaRef.on('value',salaAplicar);
+        salaEstado='on';salaRender();
+        ann(creando?('Sala '+salaCode+' creada'):('Entraste a '+salaCode));
+      }).catch(salaError);
+    });
+  }).catch(function(e){
+    var m=(e&&e.message)||'';
+    if(m==='NO_EXISTE'){salaEstado='off';salaRender();ann('No existe una sala con ese código');return;}
+    if(m==='CERRADA'){salaEstado='off';salaRender();ann('🔒 Esa sala está cerrada');return;}
+    salaError(e);
+  });
+}
+
+function salaError(e){
+  salaEstado='error';
+  fbFallo=(e&&e.message)?e.message:String(e);
+  salaRender();
+}
+
+function salaSalir(silencio){
+  if(salaCode)histRegistrar();
+  try{
+    if(salaRef){
+      salaRef.off('value');
+      salaRef.child('jugadores/'+fbUid).remove();
+    }
+  }catch(e){}
+  salaRef=null;salaCode='';salaEstado='off';salaJugadores=[];
+  salaHost='';salaCerrada=false;salaNombreActual='';
+  if(membersBackup!==null){members=membersBackup;membersBackup=null;sv('members',members);}
+  renderMembers();turnRefresh();salaRender();
+  if(!silencio)ann('Saliste de la sala');
+}
+
+// candado: nadie mas entra
+function salaCandado(){
+  if(!soyHost()){ann('Solo quien creó la sala puede cerrarla');return;}
+  var nuevo=salaCerrada?0:1;
+  salaRef.child('info/cerrada').set(nuevo);
+  ann(nuevo?'🔒 Sala cerrada: no entra nadie más':'🔓 Sala abierta');
+}
+
+// terminar: la borra de la nube para todos
+function salaTerminar(){
+  if(!soyHost()){ann('Solo quien creó la sala puede terminarla');return;}
+  if(!confirm('¿Terminar la sala? Se cierra para todos y se guarda en tu historial.'))return;
+  histRegistrar();
+  var ref=salaRef;
+  salaRef.off('value');
+  ref.remove().then(function(){
+    salaRef=null;   // la sala ya no existe: no hay nada mas que borrar
+    salaSalir(true);
+    ann('Sala terminada y guardada en el historial');
+  }).catch(function(){salaRef=ref;salaSalir(true);});
+}
+
+// ---- llega un cambio desde la nube ----
+function salaAplicar(snap){
+  var v=snap.val();
+  if(!v||!v.info){   // el anfitrion termino la sala
+    if(salaEstado==='on'){
+      histRegistrar();
+      salaRef&&salaRef.off('value');
+      salaRef=null;salaCode='';salaEstado='off';salaJugadores=[];salaHost='';salaCerrada=false;
+      if(membersBackup!==null){members=membersBackup;membersBackup=null;}
+      renderMembers();turnRefresh();salaRender();
+      ann('El anfitrión terminó la sala');
+    }
+    return;
+  }
+  salaHost=v.info.host||'';
+  salaCerrada=!!v.info.cerrada;
+  salaNombreActual=v.info.nombre||('Sala '+salaCode);
+
+  var js=v.jugadores||{};
+  salaJugadores=Object.keys(js).map(function(uid){
+    var j=js[uid];
+    return {uid:uid,name:j.n,avatar:j.a||'',isImg:!!j.i,ts:j.ts||0};
+  }).sort(function(a,b){return a.ts-b.ts;});
+
+  members=salaJugadores.map(function(j){return {name:j.name,avatar:j.avatar,isImg:j.isImg};});
+  renderMembers();
+
+  salaAplicaTurnos(v.turnos);
+  salaAplicaMarcador(v.marcador);
+  histRegistrar();
+  salaRender();
+}
+
+function salaAplicaTurnos(t){
+  salaAplicando=true;
+  if(!t||!t.activo){
+    turnActive=false;turnOrder=[];turnIdx=0;
+    var nb=document.getElementById('turnNextBtn');if(nb)nb.style.display='none';
+  } else {
+    turnActive=true;turnIdx=t.idx||0;
+    turnOrder=(t.orden||[]).map(function(n){
+      for(var i=0;i<members.length;i++)if(memberName(members[i])===n)return members[i];
+      return {name:n,avatar:'',isImg:false};
+    });
+    var nb2=document.getElementById('turnNextBtn');if(nb2)nb2.style.display='';
+  }
+  turnRefresh();turnShowOrder();
+  salaAplicando=false;
+}
+
+function salaPushTurnos(){
+  if(salaEstado!=='on'||!salaRef||salaAplicando)return;
+  salaRef.child('turnos').set({
+    activo:!!turnActive,
+    orden:turnOrder.map(function(m){return memberName(m);}),
+    idx:turnIdx,ts:Date.now()
+  });
+}
+
+// ---- pantalla ----
+function salaRender(){
+  var caja=document.getElementById('salaCuerpo');
+  var chip=document.getElementById('abSala');
+  var sub=document.getElementById('menuSalaSub');
+  if(chip){
+    if(salaEstado==='on'){chip.style.display='';chip.textContent='📡 '+salaCode;}
+    else chip.style.display='none';
+  }
+  if(sub)sub.textContent=(salaEstado==='on')
+    ? (salaNombreActual+' · '+salaJugadores.length+' conectados')
+    : 'Jueguen todos desde su propio celular';
+  if(!caja)return;
+
+  if(salaEstado==='conectando'){
+    caja.innerHTML='<div class="sala-estado"><div class="sala-spin"></div>Conectando…</div>';
+    return;
+  }
+
+  if(salaEstado==='on'){
+    var lista=salaJugadores.map(function(j){
+      var m={name:j.name,avatar:j.avatar,isImg:j.isImg};
+      var yo=(j.uid===fbUid),host=(j.uid===salaHost);
+      return '<div class="sala-fila'+(yo?' yo':'')+'">'
+        +'<div class="sala-av">'+avatarHTML(m,34)+'</div>'
+        +'<div class="sala-nom">'+j.name
+          +(yo?' <span class="sala-tag">vos</span>':'')
+          +(host?' <span class="sala-tag host">anfitrión</span>':'')+'</div>'
+        +'<div class="sala-punto"></div></div>';
+    }).join('');
+    caja.innerHTML=
+      '<div class="sala-codigo-caja">'
+        +'<div class="sala-lbl">'+salaNombreActual+'</div>'
+        +'<div class="sala-codigo">'+salaCode+'</div>'
+        +(salaCerrada?'<div class="sala-cerrada">🔒 Cerrada · no entra nadie más</div>':'')
+        +'<div class="qr-caja" style="max-width:180px;margin-top:12px;"><img id="salaQR" alt="QR para entrar"/></div>'
+        +'<div class="sala-lbl" style="margin-top:8px;">Que escaneen esto para entrar</div>'
+      +'</div>'
+      +'<div class="share-btns" style="margin:14px 0;">'
+        +'<button class="btn btn-primary" onclick="salaCompartir()">📤 Invitar</button>'
+        +(soyHost()?'<button class="btn btn-secondary" onclick="salaCandado()">'+(salaCerrada?'🔓 Abrir':'🔒 Cerrar')+'</button>':'')
+        +'<button class="btn btn-secondary" onclick="salaSalir()">🚪 Salir</button>'
+      +'</div>'
+      +'<div class="card-title">Conectados ('+salaJugadores.length+')</div>'
+      +(lista||'<div class="empty-state" style="padding:8px 0;">Nadie más todavía</div>')
+      +'<div class="card" style="margin-top:14px;padding:12px 15px;">'
+        +'<div class="card-title">Turnos compartidos</div>'
+        +'<div style="color:var(--muted);font-size:12.5px;margin-bottom:10px;">Los turnos y los puntajes se ven igual en todos los celulares</div>'
+        +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+          +'<button class="btn btn-primary" style="flex:1;" onclick="turnStart()">🎲 Iniciar turnos</button>'
+          +'<button class="btn btn-secondary" onclick="turnNext()">⏭ Siguiente</button>'
+        +'</div>'
+      +'</div>'
+      +(soyHost()?'<button class="btn btn-secondary btn-sm" style="width:100%;margin-top:12px;" onclick="salaTerminar()">🏁 Terminar sala y guardar en el historial</button>':'');
+    var im=document.getElementById('salaQR');
+    if(im){
+      var cv=document.createElement('canvas');
+      if(QR.draw(cv,salaLink(),400,4))im.src=cv.toDataURL('image/png');
+    }
+    return;
+  }
+
+  var aviso='';
+  if(salaEstado==='error')
+    aviso='<div class="aviso-rojo">No se pudo conectar.<br><small>'+fbFallo+'</small><br>'
+      +'<small>El juego funciona igual en este celular; la sala es un extra.</small></div>';
+
+  caja.innerHTML=aviso
+    +'<div id="perfilCaja"></div>'
+    +'<div class="sala-sep">crear una sala</div>'
+    +'<input type="text" id="salaNombreNuevo" placeholder="Nombre de la sala (opcional)" maxlength="26"/>'
+    +'<label class="mj-chk" style="margin:10px 0 12px;"><input type="checkbox" id="salaPrivada"/> 🔒 Sala privada (código de 6, más difícil de adivinar)</label>'
+    +'<button class="btn btn-primary" style="width:100%;" onclick="salaCrear()">✨ Crear sala</button>'
+    +'<div class="sala-sep">o entrar a una</div>'
+    +'<div class="flex-row">'
+      +'<input type="text" id="salaCodigo" maxlength="6" placeholder="CÓDIGO" style="text-transform:uppercase;letter-spacing:3px;font-weight:800;text-align:center;" value="'+(salaPendiente||'')+'"/>'
+      +'<button class="btn btn-secondary" onclick="salaEntrar()">Entrar</button>'
+    +'</div>'
+    +histHTML();
+  salaRenderPerfil();
+}
+
+function salaLink(){
+  var base=shareUrl.split('?')[0];
+  return base+'?sala='+salaCode;
+}
+function salaCompartir(){
+  var datos={title:'Party Hub',text:'Entra a la sala '+salaCode+' 🎉',url:salaLink()};
+  if(navigator.share)navigator.share(datos).catch(function(){});
+  else{
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(salaLink());
+    ann('📋 Link de la sala copiado');
+  }
+}
+function salaDesdeLink(){
+  try{
+    var m=(location.search||'').match(/[?&]sala=([A-Za-z0-9]{4,8})/);
+    if(m)salaPendiente=m[1].toUpperCase();
+  }catch(e){}
+}
+
+
+// ===== PERFIL PROPIO (v22) =====
+var perfil=ld('perfil',{nombre:'',avatar:'',isImg:false});
+function perfilGuardar(){sv('perfil',perfil);}
+function perfilComoMiembro(){return {name:perfil.nombre||'Yo',avatar:perfil.avatar||'',isImg:!!perfil.isImg};}
+function perfilSetNombre(v){
+  perfil.nombre=(v||'').trim().slice(0,18);
+  perfilGuardar();
+  if(salaEstado==='on'&&salaRef)salaRef.child('jugadores/'+fbUid+'/n').set(perfil.nombre||'Yo');
+  salaRenderPerfil();
+}
+function perfilAbrirAvatar(){openAvatarModal(-2);}   // -2 = mi perfil
+
+function salaRenderPerfil(){
+  var el=document.getElementById('perfilCaja');
+  if(!el)return;
+  var m=perfilComoMiembro();
+  el.innerHTML=
+    '<div class="perfil-fila">'
+      +'<div class="perfil-av" onclick="perfilAbrirAvatar()" title="Cambiar foto">'+avatarHTML(m,58)
+        +'<div class="perfil-cam">📷</div>'
+      +'</div>'
+      +'<div style="flex:1;">'
+        +'<div class="sala-lbl">Tu perfil</div>'
+        +'<input type="text" id="perfilNombre" placeholder="Tu nombre" maxlength="18" value="'
+          +(perfil.nombre||'').replace(/"/g,'&quot;')+'" oninput="perfilSetNombre(this.value)"/>'
+      +'</div>'
+    +'</div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-top:8px;">Se guarda en este celular y te acompaña a cualquier sala</div>';
+}
+
+function salaSubirAvatar(){
+  if(salaEstado!=='on'||!salaRef)return;
+  salaAvatarChico(perfilComoMiembro(),function(av,esImg){
+    salaRef.child('jugadores/'+fbUid).update({a:av||'',i:esImg?1:0});
+  });
+}
+
+// ===== HISTORIAL DE SALAS (v22) =====
+var salaHist=ld('salaHist',[]);
+function histGuardar(){try{sv('salaHist',salaHist);}catch(e){}}
+
+function histRegistrar(){
+  if(!salaCode)return;
+  var i=-1;
+  for(var k=0;k<salaHist.length;k++)if(salaHist[k].code===salaCode){i=k;break;}
+  var reg={
+    code:salaCode,
+    nombre:salaNombreActual||('Sala '+salaCode),
+    fecha:(i>=0?salaHist[i].fecha:Date.now()),
+    visto:Date.now(),
+    jugadores:salaJugadores.map(function(j){return {name:j.name,avatar:j.avatar,isImg:j.isImg};}),
+    top10:top10.map(function(p){return {name:p.name,count:p.count};}),
+    yn:JSON.parse(JSON.stringify(ynScores||{}))
+  };
+  if(i>=0)salaHist[i]=reg;else salaHist.unshift(reg);
+  if(salaHist.length>20)salaHist=salaHist.slice(0,20);
+  histGuardar();
+}
+function histBorrar(i){
+  if(!confirm('¿Borrar esta sala del historial?'))return;
+  salaHist.splice(i,1);histGuardar();salaRender();
+}
+function histVolver(i){
+  var h=salaHist[i];
+  if(!h)return;
+  if(!perfil.nombre){ann('Primero ponte un nombre en tu perfil');return;}
+  salaIniciar(h.code,false,h.nombre);
+}
+function histFecha(ts){
+  try{
+    var d=new Date(ts);
+    return d.toLocaleDateString('es',{day:'2-digit',month:'short'})+' · '+d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){return '';}
+}
+function histHTML(){
+  if(!salaHist.length)return '';
+  return '<div class="card-title" style="margin-top:22px;">Salas anteriores</div>'
+    +salaHist.map(function(h,i){
+      var avs=(h.jugadores||[]).slice(0,6).map(function(m){
+        return '<div class="hist-av">'+avatarHTML(m,26)+'</div>';
+      }).join('');
+      var lider=null;
+      (h.top10||[]).forEach(function(p){if(!lider||p.count>lider.count)lider=p;});
+      var resumen=[];
+      if((h.jugadores||[]).length)resumen.push((h.jugadores||[]).length+' jugadores');
+      if(lider&&lider.count>0)resumen.push('🏆 '+lider.name+' ('+lider.count+')');
+      return '<div class="hist-fila">'
+        +'<div class="hist-datos">'
+          +'<div class="hist-nom">'+h.nombre+'</div>'
+          +'<div class="hist-sub">'+h.code+' · '+histFecha(h.fecha)+(resumen.length?' · '+resumen.join(' · '):'')+'</div>'
+          +'<div class="hist-avs">'+avs+'</div>'
+        +'</div>'
+        +'<button class="btn btn-secondary btn-sm" onclick="histVolver('+i+')">Entrar</button>'
+        +'<button class="btn-icon" onclick="histBorrar('+i+')">&#x1F5D1;</button>'
+      +'</div>';
+    }).join('');
+}
+
+// ===== MARCADOR COMPARTIDO (v22) =====
+function salaPushMarcador(){
+  if(salaEstado!=='on'||!salaRef||salaAplicando)return;
+  salaRef.child('marcador').set({
+    top10:top10.map(function(p){return {name:p.name,count:p.count};}),
+    yn:ynScores||{},
+    ts:Date.now()
+  });
+}
+function salaAplicaMarcador(m){
+  if(!m)return;
+  salaAplicando=true;
+  if(m.top10){
+    top10=m.top10.map(function(p){return {name:p.name,count:p.count||0};});
+    sv('top10',top10);
+    if(document.getElementById('page-top10').classList.contains('active'))renderTop10();
+  }
+  if(m.yn){ynScores=m.yn;ynRenderScores();}
+  salaAplicando=false;
+}
+
 // POPUP
 function showPopup(emoji,title,sub,result,diceVal){
   const ia=document.getElementById('popupIconArea');
@@ -1520,9 +2559,9 @@ function toggleCollapsible(id,btnId){var b=document.getElementById(id);var btn=d
 // MEMBERS
 function updateImports(){var ri=document.getElementById('memberImportRuleta');if(ri)ri.innerHTML=members.length?'<button class="btn btn-secondary btn-sm" onclick="importToRuleta()">\uD83D\uDCE5 Importar equipo</button>':'';var di=document.getElementById('memberImportDador');if(di)di.innerHTML=members.length?'<button class="btn btn-secondary btn-sm" onclick="importToDador()">\uD83D\uDCE5 Importar equipo</button>':'';}
 function importToRuleta(){var c=phEditCat.ruleta;members.forEach(function(m){var n=memberName(m);if(phData.ruleta[c].indexOf(n)<0)phData.ruleta[c].push(n);});phSave();phRefresh('ruleta');ann('Equipo agregado a '+PH_CATLBL[c]);}
-function importToDador(){members.forEach(function(m){if(!customFaces.includes(m))customFaces.push(m);});sv('customFaces',customFaces);renderCustomFaces();}
-function importMembersTop10(){members.forEach(function(m){if(!top10.find(function(p){return p.name===m;}))top10.push({name:m,count:0});});sv('top10',top10);renderTop10();}
-function importMembersTimer(){var min=parseInt(document.getElementById('timerMin').value)||1;var sec=parseInt(document.getElementById('timerSec').value)||0;var tot=min*60+sec||60;members.forEach(function(m){if(!timers.find(function(t){return t.name===m;}))timers.push({name:m,total:tot,remaining:tot,running:false,done:false});});sv('timers',timers);renderTimers();}
+function importToDador(){members.forEach(function(m){var n=memberName(m);if(!customFaces.includes(n))customFaces.push(n);});sv('customFaces',customFaces);renderCustomFaces();}
+function importMembersTop10(){members.forEach(function(m){var n=memberName(m);if(!top10.find(function(p){return p.name===n;}))top10.push({name:n,count:0});});sv('top10',top10);renderTop10();}
+function importMembersTimer(){var min=parseInt(document.getElementById('timerMin').value)||1;var sec=parseInt(document.getElementById('timerSec').value)||0;var tot=min*60+sec||60;members.forEach(function(m){var n=memberName(m);if(!timers.find(function(t){return t.name===n;}))timers.push({name:n,total:tot,remaining:tot,running:false,done:false});});sv('timers',timers);renderTimers();}
 
 // RULETA
 function renderRuletaOpts(){phEditPills('ruleta','ruletaEditPills','ruletaEditCat');phList('ruleta','ruletaOptionsList','Agrega al menos 2.');updateImports();}
@@ -1986,6 +3025,7 @@ function turnStart(){
   turnRefresh();turnShowOrder();
   var nb=document.getElementById('turnNextBtn');if(nb)nb.style.display='';
   showPopup('&#x1F3AF;','Empezamos!','Primer turno: '+memberName(turnOrder[0]),'',undefined);
+  salaPushTurnos();
 }
 
 function turnAdvance(silent){
@@ -1997,6 +3037,7 @@ function turnAdvance(silent){
   }
   turnRefresh();turnShowOrder();
   var pos=turnIdx%turnOrder.length;
+  salaPushTurnos();
   if(silent){ann('\uD83C\uDFAF Turno de '+memberName(turnOrder[pos]));return;}
   showPopup('&#x1F3AF;','Turno de: '+memberName(turnOrder[pos]),'Turno '+(pos+1)+' de '+turnOrder.length,'',undefined);
 }
@@ -2050,6 +3091,7 @@ function memberAvatar(m){return typeof m==='object'?m.avatar:'';}
 function memberIsImg(m){return typeof m==='object'&&m.isImg;}
 
 function addMember(){
+  if(salaEstado==='on'){ann('En la sala, los jugadores son los celulares conectados');return;}
   var inp=document.getElementById('memberInput');
   var v=inp.value.trim();if(!v)return;
   members.push({name:v,avatar:'',isImg:false});
@@ -2058,6 +3100,7 @@ function addMember(){
   openAvatarModal(members.length-1);
 }
 function removeMember(i){
+  if(salaEstado==='on'){ann('En la sala, cada uno sale desde su propio celular');return;}
   members.splice(i,1);sv('members',members);
   renderMembers();updateImports();
   if(turnActive)turnRefresh();
@@ -2093,7 +3136,7 @@ function renderMembers(){
 
 function openAvatarModal(idx){
   avPickingIdx=idx;
-  var name=memberName(members[idx]);
+  var name=(idx===-2)?'tu perfil':memberName(members[idx]);
   var t=document.getElementById('avModalTitle');
   if(t)t.textContent='Avatar de '+name;
   // Build emoji grid
@@ -2120,16 +3163,32 @@ function avPickFile(){
   document.getElementById('avFileInput').click();
 }
 function avFileChosen(input){
-  if(!input.files||!input.files[0]||avPickingIdx<0)return;
+  if(!input.files||!input.files[0]||avPickingIdx===-1)return;
   var reader=new FileReader();
   reader.onload=function(e){
-    setAvatarImg(e.target.result);
+    // recorta cuadrado y achica: una foto de celular pesa demasiado para guardarla entera
+    var img=new Image();
+    img.onload=function(){
+      try{
+        var S=220,c=document.createElement('canvas');
+        c.width=S;c.height=S;
+        var lado=Math.min(img.width,img.height);
+        c.getContext('2d').drawImage(img,(img.width-lado)/2,(img.height-lado)/2,lado,lado,0,0,S,S);
+        setAvatarImg(c.toDataURL('image/jpeg',0.8));
+      }catch(err){setAvatarImg(e.target.result);}
+    };
+    img.onerror=function(){setAvatarImg(e.target.result);};
+    img.src=e.target.result;
   };
   reader.readAsDataURL(input.files[0]);
   // reset so same file can be chosen again
   input.value='';
 }
 function setAvatarEmoji(emoji){
+  if(avPickingIdx===-2){
+    perfil.avatar=emoji;perfil.isImg=false;perfilGuardar();
+    closeAvatarModal();salaRenderPerfil();salaSubirAvatar();return;
+  }
   if(avPickingIdx<0)return;
   if(typeof members[avPickingIdx]==='string')members[avPickingIdx]={name:members[avPickingIdx],avatar:emoji,isImg:false};
   else{members[avPickingIdx].avatar=emoji;members[avPickingIdx].isImg=false;}
@@ -2139,6 +3198,10 @@ function setAvatarEmoji(emoji){
   if(turnActive)turnRefresh();
 }
 function setAvatarImg(dataUrl){
+  if(avPickingIdx===-2){
+    perfil.avatar=dataUrl;perfil.isImg=true;perfilGuardar();
+    closeAvatarModal();salaRenderPerfil();salaSubirAvatar();return;
+  }
   if(avPickingIdx<0)return;
   if(typeof members[avPickingIdx]==='string')members[avPickingIdx]={name:members[avPickingIdx],avatar:dataUrl,isImg:true};
   else{members[avPickingIdx].avatar=dataUrl;members[avPickingIdx].isImg=true;}
@@ -2261,6 +3324,7 @@ function ynRenderScores(){
 }
 function ynScore(name,d){
   ynScores[name]=Math.max(0,(ynScores[name]||0)+d);
+  salaPushMarcador();
   ynRenderScores();
 }
 function ynResetScores(){
@@ -2353,8 +3417,14 @@ function todisReveal(d,idx){
 function goPage(id){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('page-'+id).classList.add('active');
-  document.getElementById('tab-'+id).classList.add('active');
+  var pg=document.getElementById('page-'+id);
+  if(pg)pg.classList.add('active');
+  var tb=document.getElementById('tab-'+id);
+  if(tb)tb.classList.add('active');
+  appbarSet(id);
+  window.scrollTo(0,0);
+  if(id==='menu'){renderMenu();shareRender();salaRender();turnRefresh();return;}
+  if(id==='sala'){salaRender();return;}
   if(id==='ruleta'){phPills('ruleta','catRuleta','ruletaCat');renderRuletaOpts();renderWheel();}
   if(id==='dados'){renderDiceArea();renderDiceCountSel();renderCustomFaces();}
   if(id==='tor'){phPills('tor','catTor','torCat');renderTor();}
@@ -2470,9 +3540,140 @@ function drawCustomCard(){if(!customCards.length){ann('Sin cartas en esta catego
 
 // TOP 10
 function addTop10Person(){var inp=document.getElementById('top10NameInput');var v=inp.value.trim();if(!v)return;if(top10.find(function(p){return p.name===v;})){ann('Ya existe');return;}top10.push({name:v,count:0});sv('top10',top10);inp.value='';renderTop10();}
-function changeCount(i,d){top10[i].count=Math.max(0,top10[i].count+d);sv('top10',top10);renderTop10();}
-function resetTop10(){if(confirm('\xBFReiniciar?')){top10.forEach(function(p){p.count=0;});sv('top10',top10);renderTop10();}}
-function renderTop10(){var sorted=[].concat(top10).sort(function(a,b){return b.count-a.count;}).slice(0,10);document.getElementById('topList').innerHTML=sorted.length?sorted.map(function(p,i){var oi=top10.findIndex(function(x){return x.name===p.name;});return '<div class="top-item"><div class="top-rank'+(i===0?' r1':i===1?' r2':i===2?' r3':'')+'">'+(['\uD83E\uDD47','\uD83E\uDD48','\uD83E\uDD49'][i]||'#'+(i+1))+'</div><div class="top-name">'+p.name+'</div><button class="count-btn" onclick="changeCount('+oi+',-1)">\u2212</button><div style="font-size:22px;font-weight:800;color:var(--accent);min-width:30px;text-align:center;">'+p.count+'</div><button class="count-btn" onclick="changeCount('+oi+',1)">+</button><button class="btn-icon" onclick="top10.splice('+oi+',1);sv(\'top10\',top10);renderTop10();">\uD83D\uDDD1</button></div>';}).join(''):'<div class="empty-state">Agrega personas para empezar</div>';}
+function changeCount(i,d){
+  top10[i].count=Math.max(0,top10[i].count+d);
+  topFlash[top10[i].name]=true;
+  sv('top10',top10);renderTop10();salaPushMarcador();
+}
+function resetTop10(){if(confirm('\xBFReiniciar todos los puntajes?')){top10.forEach(function(p){p.count=0;});sv('top10',top10);topPrevPos={};topDelta={};renderTop10();}}
+
+// ===== TOP 10 DINAMICO (v19) =====
+var topPrevPos={};      // posicion anterior de cada nombre
+var topFlash={};        // marcas para animar el numero
+var topDelta={};        // ultimo cambio de puesto (se muestra unos segundos)
+var topDeltaRef=null;
+var TOP_DELTA_MS=9000;
+
+function top10Orden(){
+  return top10.map(function(p,i){return {name:p.name,count:p.count,idx:i};})
+    .sort(function(a,b){
+      if(b.count!==a.count)return b.count-a.count;
+      return a.name.localeCompare(b.name);
+    });
+}
+
+// busca el avatar del jugador si tiene el mismo nombre en Jugadores
+function topAvatar(nombre){
+  for(var i=0;i<members.length;i++){
+    if(memberName(members[i])===nombre)return members[i];
+  }
+  return null;
+}
+
+function topPodio(orden){
+  var conPuntos=orden.filter(function(p){return p.count>0;});
+  if(conPuntos.length<3)return '';
+  var t3=orden.slice(0,3);
+  var alturas=[92,120,74];         // 2do, 1ro, 3ro
+  var puestos=[1,0,2];             // orden visual del podio
+  var medallas=['🥈','🥇','🥉'];
+  var clases=['p2','p1','p3'];
+  return '<div class="podio">'+puestos.map(function(pi,vis){
+    var p=t3[pi];
+    var av=topAvatar(p.name);
+    return '<div class="podio-col">'
+      +'<div class="podio-medalla">'+medallas[vis]+'</div>'
+      +'<div class="podio-av'+(pi===0?' lider':'')+'">'+(av?avatarHTML(av,44):p.name.charAt(0).toUpperCase())+'</div>'
+      +'<div class="podio-nom">'+p.name+'</div>'
+      +'<div class="podio-bloque '+clases[vis]+'" style="height:'+alturas[vis]+'px;">'
+        +'<div class="podio-num">'+p.count+'</div>'
+        +'<div class="podio-pos">'+(pi+1)+'º</div>'
+      +'</div></div>';
+  }).join('')+'</div>';
+}
+
+function renderTop10(){
+  var cont=document.getElementById('topList');
+  if(!cont)return;
+
+  // 1) donde esta cada fila ahora mismo
+  var antes={};
+  cont.querySelectorAll('.top-row').forEach(function(el){
+    antes[el.getAttribute('data-n')]=el.getBoundingClientRect().top;
+  });
+
+  var orden=top10Orden();
+  var podio=document.getElementById('topPodio');
+  if(podio)podio.innerHTML=topPodio(orden);
+
+  if(!orden.length){
+    cont.innerHTML='<div class="empty-state">Agrega personas para empezar</div>';
+    topPrevPos={};
+    return;
+  }
+  var maximo=Math.max(1,orden[0].count);
+
+  cont.innerHTML=orden.map(function(p,pos){
+    var antesPos=topPrevPos[p.name];
+    var dif=(antesPos===undefined)?0:antesPos-pos;   // + subio, - bajo
+    if(dif!==0)topDelta[p.name]={d:dif,t:Date.now()};
+    var reciente=topDelta[p.name];
+    if(reciente&&Date.now()-reciente.t>TOP_DELTA_MS){delete topDelta[p.name];reciente=null;}
+    var dd=reciente?reciente.d:0;
+    var flecha=dd>0?'<span class="top-dif sube">▲'+dd+'</span>'
+              :dd<0?'<span class="top-dif baja">▼'+(-dd)+'</span>'
+              :'<span class="top-dif igual">–</span>';
+    var av=topAvatar(p.name);
+    var pct=Math.round((p.count/maximo)*100);
+    var medalla=['🥇','🥈','🥉'][pos]||'';
+    return '<div class="top-row'+(pos===0&&p.count>0?' lider':'')+'" data-n="'+p.name+'">'
+      +'<div class="top-barra" style="width:'+(p.count>0?pct:0)+'%;"></div>'
+      +'<div class="top-cont">'
+        +'<div class="top-pos'+(pos<3?' m'+(pos+1):'')+'">'+(medalla||(pos+1))+'</div>'
+        +flecha
+        +'<div class="top-av">'+(av?avatarHTML(av,34):p.name.charAt(0).toUpperCase())+'</div>'
+        +'<div class="top-nombre">'+p.name+(pos===0&&p.count>0?' <span class="top-corona">LÍDER</span>':'')+'</div>'
+        +'<button class="count-btn" onclick="changeCount('+p.idx+',-1)">−</button>'
+        +'<div class="top-num'+(topFlash[p.name]?' flash':'')+'" id="tn-'+pos+'">'+p.count+'</div>'
+        +'<button class="count-btn mas" onclick="changeCount('+p.idx+',1)">+</button>'
+        +'<button class="btn-icon" onclick="delTop10('+p.idx+')">&#x1F5D1;</button>'
+      +'</div></div>';
+  }).join('');
+
+  // 2) que cada fila viaje desde donde estaba (tecnica FLIP)
+  cont.querySelectorAll('.top-row').forEach(function(el){
+    var n=el.getAttribute('data-n');
+    if(antes[n]===undefined)return;
+    var d=antes[n]-el.getBoundingClientRect().top;
+    if(Math.abs(d)<1)return;
+    el.style.transition='none';
+    el.style.transform='translateY('+d+'px)';
+    requestAnimationFrame(function(){
+      el.style.transition='transform .6s cubic-bezier(.34,1.25,.5,1)';
+      el.style.transform='';
+      el.classList.add(d>0?'movio-sube':'movio-baja');
+      setTimeout(function(){el.classList.remove('movio-sube','movio-baja');},900);
+    });
+  });
+
+  topPrevPos={};
+  orden.forEach(function(p,i){topPrevPos[p.name]=i;});
+  topFlash={};
+  // limpia las flechas cuando pase el tiempo
+  if(topDeltaRef)clearTimeout(topDeltaRef);
+  if(Object.keys(topDelta).length){
+    topDeltaRef=setTimeout(function(){
+      topDelta={};
+      if(document.getElementById('page-top10').classList.contains('active'))renderTop10();
+    },TOP_DELTA_MS+200);
+  }
+}
+
+function delTop10(i){
+  var n=top10[i]?top10[i].name:'';
+  delete topDelta[n];delete topPrevPos[n];
+  top10.splice(i,1);sv('top10',top10);renderTop10();
+}
 
 // TIMERS
 function fmtTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
@@ -2484,7 +3685,24 @@ function removeTimer(i){clearInterval(tInts[i]);delete tInts[i];timers.splice(i,
 function updateTimerDisplay(i){var se=document.getElementById('tsvg-'+i);var de=document.getElementById('tdig-'+i);var be=document.getElementById('tbtn-'+i);if(!se)return;var t=timers[i];se.innerHTML=clockSVG(t.remaining,t.total,t.done);de.textContent=fmtTime(t.remaining);de.className='clock-digits'+(t.done?' done':'');if(be)be.textContent=t.done?'\u2713 Listo':t.running?'\u23F8 Pausar':'\u25B6 Iniciar';}
 function renderTimers(){var el=document.getElementById('timerList');if(!timers.length){el.innerHTML='<div class="empty-state">Agrega un cron\xF3metro arriba</div>';return;}el.innerHTML=timers.map(function(t,i){return '<div class="timer-card"><div style="text-align:center;font-size:15px;font-weight:700;margin-bottom:8px;">'+t.name+'</div><div class="clock-svg-wrap"><div id="tsvg-'+i+'">'+clockSVG(t.remaining,t.total,t.done)+'</div><div class="clock-time-overlay"><div class="clock-digits'+(t.done?' done':'')+'" id="tdig-'+i+'">'+fmtTime(t.remaining)+'</div><div class="clock-name-label">'+fmtTime(t.total)+'</div></div></div><div class="timer-controls"><button class="btn btn-primary" id="tbtn-'+i+'" onclick="toggleTimer('+i+')">'+(t.done?'\u2713 Listo':t.running?'\u23F8 Pausar':'\u25B6 Iniciar')+'</button><button class="btn btn-secondary" onclick="resetTimer('+i+')">\u21BA Reset</button><button class="btn-icon" onclick="removeTimer('+i+')">\uD83D\uDDD1</button></div></div>';}).join('');timers.forEach(function(t,i){if(t.running&&!tInts[i])toggleTimer(i);});}
 
+// repara listas viejas donde se guardo el jugador entero en vez de su nombre
+function phFixNombres(){
+  var a=false;
+  top10.forEach(function(p){if(typeof p.name!=='string'){p.name=memberName(p.name);a=true;}});
+  if(a)sv('top10',top10);
+  var b=false;
+  timers.forEach(function(t){if(typeof t.name!=='string'){t.name=memberName(t.name);b=true;}});
+  if(b)sv('timers',timers);
+  var c=false;
+  customFaces=customFaces.map(function(f){if(typeof f!=='string'){c=true;return memberName(f);}return f;});
+  if(c)sv('customFaces',customFaces);
+}
+
 // INIT
+phFixNombres();
+salaDesdeLink();
+if(!perfil.nombre&&members.length)perfil.nombre=memberName(members[0]);
+renderMenu();shareRender();salaRender();
 phSeed();phSyncAll();
 phPills('ruleta','catRuleta','ruletaCat');phPills('tor','catTor','torCat');
 phPills('yn','catYn','ynCat');phPills('cartas','catCartas','cartasCat');
@@ -2495,6 +3713,8 @@ mjInitTime();
 renderMembers();renderWheel();updateImports();
 setDiceCSS(1);renderDiceCountSel();renderDiceArea();renderCustomFaces();
 holReset();updateHandCountBtns();
+goPage(salaPendiente?'sala':'menu');
+if(salaPendiente)ann('Escribe tu nombre y entra a la sala '+salaPendiente);
 </script>
 </body>
 </html>
