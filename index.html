@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v46</title>
+<title>🎉 Party Hub v47</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -2036,6 +2036,108 @@ input[type=email]:focus,input[type=password]:focus{
 }
 input[type=email]::placeholder,input[type=password]::placeholder{color:var(--muted);}
 
+
+/* ===== 🗳️ VOTACIÓN (v47) ===== */
+.vo-caja{
+  text-align:center;padding:26px 18px;border-radius:18px;
+  background:linear-gradient(150deg,rgba(56,189,248,.09),rgba(168,85,255,.06));
+  border:1px solid rgba(56,189,248,.26);
+}
+.vo-e{font-size:46px;margin-bottom:10px;}
+.vo-vacio{font-size:13px;line-height:1.7;color:var(--muted);}
+.vo-vacio b{color:var(--cian);}
+.vo-cab{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+.vo-ronda{
+  font-size:10.5px;font-weight:900;letter-spacing:.9px;text-transform:uppercase;
+  color:#0a0820;background:var(--cian);border-radius:20px;padding:4px 11px;
+  box-shadow:0 0 14px rgba(0,240,255,.5);
+}
+.vo-tipo{font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.4px;}
+.vo-q{
+  font-size:19px;font-weight:800;line-height:1.4;text-align:center;
+  padding:20px 16px;border-radius:16px;margin-bottom:14px;
+  background:var(--card);border:1px solid var(--border);
+  text-shadow:0 0 16px rgba(255,255,255,.14);
+}
+.vo-turno{
+  text-align:center;font-size:13.5px;color:var(--muted);margin-bottom:12px;font-weight:700;
+}
+.vo-turno b{color:var(--gold);font-size:16px;}
+.vo-turno.ok{color:var(--green);font-weight:800;}
+.vo-esp{font-size:12px;color:var(--muted);font-weight:600;margin-top:5px;}
+.vo-ops{display:flex;flex-direction:column;gap:9px;}
+.vo-ops.per{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.vo-op{
+  display:flex;align-items:center;gap:9px;justify-content:flex-start;
+  padding:12px 13px;border-radius:14px;cursor:pointer;
+  background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-size:14px;font-weight:800;font-family:inherit;text-align:left;
+  transition:transform .12s,border-color .18s,box-shadow .18s;
+}
+.vo-op:hover{border-color:var(--cian);box-shadow:0 0 16px rgba(0,240,255,.25);}
+.vo-op:active{transform:scale(.96);}
+.vo-op.grande{justify-content:center;text-align:center;font-size:16px;padding:18px 14px;}
+.vo-op-av{
+  width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;background:var(--card);
+  border:1px solid var(--border);
+}
+.vo-prog{text-align:center;font-size:11.5px;color:var(--muted);margin-top:12px;font-weight:700;}
+.vo-pasar{
+  text-align:center;padding:30px 18px;border-radius:18px;
+  background:linear-gradient(150deg,rgba(255,214,0,.1),rgba(255,45,149,.06));
+  border:1px solid rgba(255,214,0,.3);font-size:16px;line-height:1.6;
+}
+.vo-pasar-e{font-size:44px;margin-bottom:8px;}
+.vo-pasar b{color:var(--gold);text-shadow:0 0 12px rgba(255,214,0,.5);}
+.vo-pasar-s{font-size:12px;color:var(--muted);margin-top:8px;}
+
+.vo-res{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.vo-fila{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:12px;
+  background:var(--card2);border:1px solid var(--border);
+}
+.vo-fila.pierde{border-color:var(--accent);background:rgba(255,45,149,.09);}
+.vo-fila-t{flex:1;min-width:0;font-size:13.5px;font-weight:800;}
+.vo-quien{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.vo-barra{width:82px;height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;flex-shrink:0;}
+.vo-barra i{display:block;height:100%;border-radius:6px;background:var(--cian);
+  box-shadow:0 0 10px rgba(0,240,255,.7);transition:width .4s;}
+.vo-fila.pierde .vo-barra i{background:var(--accent);box-shadow:0 0 10px rgba(255,45,149,.7);}
+.vo-num{width:20px;text-align:right;font-size:14px;font-weight:900;color:var(--cian);flex-shrink:0;}
+.vo-fila.pierde .vo-num{color:var(--accent);}
+.vo-castigo{
+  text-align:center;padding:18px 16px;border-radius:16px;font-size:16px;line-height:1.5;
+  background:linear-gradient(150deg,rgba(255,45,149,.14),rgba(168,85,255,.08));
+  border:1px solid rgba(255,45,149,.35);
+}
+.vo-castigo b{color:var(--accent);text-shadow:0 0 12px rgba(255,45,149,.55);}
+.vo-castigo-e{font-size:30px;display:block;margin-bottom:6px;}
+.vo-castigo-s{font-size:11.5px;color:var(--muted);margin-top:7px;}
+.vo-castigo.empate{
+  background:rgba(255,255,255,.04);border-color:var(--border);
+  color:var(--muted);font-size:14px;
+}
+.vo-marc{
+  margin-top:14px;padding:11px 12px;border-radius:14px;
+  background:var(--card2);border:1px solid var(--border);
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+}
+.vo-marc-t{width:100%;font-size:10.5px;font-weight:900;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--muted);}
+.vo-marc-p{font-size:12.5px;font-weight:700;background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:4px 10px;}
+.vo-marc-p b{color:var(--gold);}
+.vo-marc-x{margin-left:auto;background:transparent;border:1px dashed var(--border);
+  color:var(--muted);border-radius:10px;padding:5px 10px;font-size:11px;cursor:pointer;}
+.vo-tr{
+  width:42px;height:38px;border-radius:11px;cursor:pointer;font-size:15px;font-weight:900;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted);margin-right:6px;
+}
+.vo-tr.on{border-color:var(--accent);color:var(--accent);background:rgba(255,45,149,.12);
+  box-shadow:0 0 12px rgba(255,45,149,.28);}
+
 </style>
 </head>
 <body>
@@ -2315,7 +2417,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v46</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v47</div></div>
 </div>
 
 <!-- RULETA -->
@@ -2464,6 +2566,55 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div class="mj-tray-wrap" style="margin-top:10px;">
     <div class="mj-tray-lbl">Seleccionadas (elige 3 iguales)</div>
     <div class="mj-tray" id="mjTray"><span style="color:var(--muted);font-size:13px;">Toca fichas del tablero...</span></div>
+  </div>
+</div>
+
+<!-- VOTACION -->
+<div class="page" id="page-votos">
+  <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F5F3;&#xFE0F; Votaci&oacute;n<button class="btn-reglas" onclick="verReglas('votos')" aria-label="Reglas de este juego">&#x1F4D6; Reglas</button></div></div>
+  <div class="pres-slot"></div>
+  <div class="lobby-slot"></div>
+  <div class="cat-pills cat-vieja" id="catVotos"></div>
+  <div id="voArena"></div>
+  <div style="text-align:center;margin-top:16px;">
+    <button class="btn btn-primary" id="voBtn" style="font-size:16px;padding:14px 30px;width:100%;max-width:340px;"></button>
+  </div>
+
+  <div class="card" style="margin-top:18px;padding:12px 15px;" data-cfg="votos">
+    <div class="card-title">Cu&aacute;ntos tragos toma el menos votado</div>
+    <div id="voTragosSel" style="display:flex;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="card" style="padding:12px 15px;" data-cfg="votos">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="card-title" style="margin-bottom:0;">&#xBF;Qui&eacute;n es m&aacute;s probable&hellip;?</div>
+      <button class="btn-outline solo-admin" id="voEditPToggle" onclick="toggleCollapsible('voEditPBody','voEditPToggle')">&#x270F; Editar</button>
+    </div>
+    <div class="collapsible-body" id="voEditPBody">
+      <div class="cat-pills" id="voPillsP" style="margin-top:10px;"></div>
+      <div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div>
+      <div id="voListaP"></div>
+      <div class="flex-row" style="margin-top:8px;">
+        <input type="text" id="voInputP" placeholder="&#xBF;Qui&eacute;n es m&aacute;s probable que...?" onkeydown="if(event.key==='Enter')phAddItem('votop','voInputP')"/>
+        <button class="btn btn-primary" onclick="phAddItem('votop','voInputP')">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:12px 15px;" data-cfg="votos">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="card-title" style="margin-bottom:0;">Temas con opciones</div>
+      <button class="btn-outline solo-admin" id="voEditTToggle" onclick="toggleCollapsible('voEditTBody','voEditTToggle')">&#x270F; Editar</button>
+    </div>
+    <div class="collapsible-body" id="voEditTBody">
+      <div class="cat-pills" id="voPillsT" style="margin-top:10px;"></div>
+      <div class="cat-hint">Se escribe as&iacute;: <b>pregunta | opci&oacute;n | opci&oacute;n</b></div>
+      <div id="voListaT"></div>
+      <div class="flex-row" style="margin-top:8px;">
+        <input type="text" id="voInputT" placeholder="&#xBF;Playa o monta&ntilde;a? | Playa | Monta&ntilde;a" onkeydown="if(event.key==='Enter')phAddItem('votot','voInputT')"/>
+        <button class="btn btn-primary" onclick="phAddItem('votot','voInputT')">+</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -4326,6 +4477,7 @@ function salaAplicar(snap){
   evAplicar(v.evento);
   adAplicar(v.adivina);
   boAplicar(v.botella);
+  if(typeof voAplicar==='function')voAplicar(v.votacion);
   if(typeof salaAplicarJuego==='function')salaAplicarJuego(v.juego);
   histRegistrar();
   salaRender();
@@ -7767,7 +7919,7 @@ function cfgAbrir(){
    'mjUpdateTimeLabel','mjUpdateHelpers'].forEach(function(f){
     if(typeof window[f]==='function'){try{window[f]();}catch(e){}}
   });
-  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella'].forEach(function(g){
+  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella','votop','votot'].forEach(function(g){
     if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
   });
   if(typeof updateImports==='function'){try{updateImports();}catch(e){}}
@@ -9790,6 +9942,7 @@ function goPage(id){
   if(id==='eventos')evAbrirPagina();
   if(id==='adivina')adAbrir();
   if(id==='botella')boAbrir();
+  if(id==='votos')voAbrir();
   
   if(id==='members'){renderMembers();if(turnActive)turnShowOrder();}
   if(id==='yonunca'){phPills('yn','catYn','ynCat');ynRenderList();ynRenderScores();}
@@ -10603,6 +10756,444 @@ function salaPintarAtajo(){
 }
 
 
+
+// ===== 🗳️ VOTACIÓN (v47) =====
+// Dos clases de ronda que se van turnando:
+//   · persona → "¿Quién es más probable que…?" y toma el MENOS votado
+//   · tema    → "¿Playa o montaña?" y toman los de la opción menos votada
+// Funciona pasando un solo celular o con cada uno en el suyo dentro de la sala.
+
+// ---------- contenido ----------
+PH_DEFAULTS.votop={
+aburrido:['¿Quién es más probable que se duerma primero en la fiesta?','¿Quién es más probable que llegue tarde a todo?','¿Quién es más probable que se pierda usando el mapa?','¿Quién es más probable que llore con una película?','¿Quién es más probable que cante en la ducha?','¿Quién es más probable que olvide un cumpleaños importante?','¿Quién es más probable que se haga famoso en TikTok?','¿Quién es más probable que coma algo del suelo?','¿Quién es más probable que gaste todo su sueldo en comida?','¿Quién es más probable que se quede sin batería siempre?','¿Quién es más probable que hable solo en voz alta?','¿Quién es más probable que adopte diez gatos?'],
+hot:['¿Quién es más probable que le escriba a su ex a las 3 am?','¿Quién es más probable que se enamore en una sola noche?','¿Quién es más probable que bese a un desconocido?','¿Quién es más probable que tenga un crush aquí adentro?','¿Quién es más probable que coquetee con el mesero?','¿Quién es más probable que revise el celular de su pareja?','¿Quién es más probable que mienta en una cita?','¿Quién es más probable que se saque una foto atrevida?','¿Quién es más probable que baile encima de la mesa?','¿Quién es más probable que diga "te amo" primero?','¿Quién es más probable que salga con dos a la vez?','¿Quién es más probable que se arrepienta mañana?'],
+extremo:['¿Quién es más probable que termine la noche en la comisaría?','¿Quién es más probable que se pelee por una tontería?','¿Quién es más probable que guarde el secreto más pesado del grupo?','¿Quién es más probable que haya mentido hoy en esta mesa?','¿Quién es más probable que se tatúe borracho?','¿Quién es más probable que despierte sin saber dónde está?','¿Quién es más probable que hable de más cuando toma?','¿Quién es más probable que haya llorado por alguien de aquí?','¿Quién es más probable que traicione al grupo por plata?','¿Quién es más probable que tenga la galería más comprometedora?','¿Quién es más probable que arruine una boda?','¿Quién es más probable que nos oculte algo grande?']
+};
+PH_DEFAULTS.votot={
+aburrido:['¿Playa o montaña? | Playa | Montaña','¿Perro o gato? | Perro | Gato','¿Dulce o salado? | Dulce | Salado','¿Café o té? | Café | Té','¿Madrugar o trasnochar? | Madrugar | Trasnochar','¿Pizza o hamburguesa? | Pizza | Hamburguesa','¿Cine o quedarse en casa? | Cine | En casa','¿Verano o invierno? | Verano | Invierno','¿Serie o película? | Serie | Película','¿Fiesta grande o junta chica? | Fiesta grande | Junta chica','¿En auto o caminando? | En auto | Caminando','¿Cerveza, vino o singani? | Cerveza | Vino | Singani'],
+hot:['¿Beso o abrazo? | Beso | Abrazo','¿Mensaje o llamada a las 3 am? | Mensaje | Llamada','¿Cita a ciegas o app de citas? | Cita a ciegas | App','¿Celoso o desconfiado? | Celoso | Desconfiado','¿Amor de verano o relación larga? | Amor de verano | Relación larga','¿Coqueteas primero o esperas? | Coqueteo | Espero','¿El ex que vuelve o alguien nuevo? | El ex | Alguien nuevo','¿Te enamoras rápido o lento? | Rápido | Lento','¿Bailar pegado o mirar de lejos? | Pegado | De lejos','¿Perdonar una infidelidad o cortar? | Perdonar | Cortar','¿Decir lo que sientes o guardártelo? | Decirlo | Guardármelo','¿Foto atrevida o audio atrevido? | Foto | Audio'],
+extremo:['¿Mentira piadosa o verdad que duele? | Mentira | Verdad','¿Traicionar o que te traicionen? | Traicionar | Que me traicionen','¿Leer el celular de tu pareja o no saber nunca? | Leerlo | No saber','¿Perder la memoria de una noche o que todos la recuerden? | Perderla | Que la recuerden','¿Contar tu peor secreto o tomar 5? | Lo cuento | Tomo 5','¿Que te dejen o dejar tú? | Que me dejen | Dejar yo','¿Volver con tu ex o un año solo? | Volver | Un año solo','¿Que publiquen tus chats o tus fotos? | Chats | Fotos','¿Deber plata o que te deban? | Deber | Que me deban','¿Pelear de frente o hablar por atrás? | De frente | Por atrás','¿Saber cuándo te mueres o cómo? | Cuándo | Cómo','¿Confesar un engaño o callar para siempre? | Confesar | Callar']
+};
+phEditCat.votop='aburrido';
+phEditCat.votot='aburrido';
+// la categoría global también manda en los dos grupos nuevos
+if(typeof phCat!=='undefined'){
+  if(phCat.votop===undefined)phCat.votop=(typeof phCatG!=='undefined'&&phCatG)?phCatG:'mixto';
+  if(phCat.votot===undefined)phCat.votot=(typeof phCatG!=='undefined'&&phCatG)?phCatG:'mixto';
+  phSaveCat();
+}
+MENU_NOMBRE.votos='🗳️ Votación';
+
+function voAsegurar(){
+  if(!phData)return;
+  ['votop','votot'].forEach(function(g){
+    if(!phData[g])phData[g]={};
+    PH_CATS.forEach(function(c){
+      if(!Array.isArray(phData[g][c]))phData[g][c]=(PH_DEFAULTS[g][c]||[]).slice();
+    });
+  });
+}
+
+// ---------- estado ----------
+var voEstado='listo';          // listo | votando | pasar | fin
+var voRonda=null;              // {n,tipo,q,ops[]}
+var voVotos={};                // nombre del votante -> voto
+var voTurno=0;                 // a quién le toca (un solo celular)
+var voMarcador=ld('voMarcador',{});
+var voTragos=ld('voTragos',2);
+var voUsadas={votop:[],votot:[]};
+var voCastigados=[];
+
+function voEnSala(){
+  return typeof phModo!=='undefined'&&phModo==='sala'
+    &&typeof salaEstado!=='undefined'&&salaEstado==='on'
+    &&salaJugadores.length>1;
+}
+function voJugadores(){
+  if(voEnSala())return salaJugadores.map(function(j){
+    return {name:j.name,avatar:j.avatar,isImg:j.isImg,uid:j.uid};
+  });
+  return members.map(function(m){
+    return {name:memberName(m),avatar:m.avatar||'',isImg:!!m.isImg,uid:''};
+  });
+}
+function voSetTragos(n){
+  voTragos=Math.max(1,Math.min(5,parseInt(n,10)||2));
+  sv('voTragos',voTragos);
+  voRenderCfg();
+}
+
+// ---------- armar la ronda ----------
+function voSacar(grupo){
+  voAsegurar();
+  var cat=(typeof phCat!=='undefined'&&phCat[grupo])?phCat[grupo]:(phCatG||'aburrido');
+  var todas=phItems(grupo,cat);
+  if(!todas.length)todas=phItems(grupo,'aburrido');
+  if(!todas.length)return '';
+  var libres=todas.filter(function(t){return voUsadas[grupo].indexOf(t)<0;});
+  if(!libres.length){voUsadas[grupo]=[];libres=todas;}
+  var t=libres[Math.floor(Math.random()*libres.length)];
+  voUsadas[grupo].push(t);
+  return t;
+}
+function voArmar(n){
+  var tipo=(n%2===1)?'persona':'tema';
+  if(tipo==='persona'){
+    var q=voSacar('votop');
+    if(!q)return null;
+    return {n:n,tipo:'persona',q:q,ops:[]};
+  }
+  var linea=voSacar('votot');
+  if(!linea)return null;
+  var p=String(linea).split('|').map(function(x){return x.trim();}).filter(Boolean);
+  var q2=p[0], ops=p.slice(1);
+  if(ops.length<2)ops=['Sí','No'];
+  return {n:n,tipo:'tema',q:q2,ops:ops.slice(0,4)};
+}
+
+// ---------- empezar ----------
+function voEmpezar(){
+  var js=voJugadores();
+  if(js.length<3){ann('Necesitas al menos 3 jugadores');return;}
+  var n=(voRonda?voRonda.n:0)+1;
+  var r=voArmar(n);
+  if(!r){ann('No hay preguntas en esta categoría');return;}
+  if(voEnSala()&&salaRef){
+    if(!soyHost()&&salaJugadores.length>1){
+      // cualquiera puede lanzar, pero avisamos que es del grupo
+    }
+    salaRef.child('votacion').set({r:n,tipo:r.tipo,q:r.q,ops:r.ops,ts:fbServerNow(),votos:null});
+    return;
+  }
+  voRonda=r;voVotos={};voTurno=0;voCastigados=[];
+  voEstado='votando';
+  voRender();
+}
+
+// ---------- votar ----------
+function voVotar(valor){
+  if(voEstado!=='votando'||!voRonda)return;
+  var js=voJugadores();
+  // el voto tiene que ir con el tipo de ronda, si no se ignora
+  if(voRonda.tipo==='persona'){
+    if(!js.filter(function(j){return j.name===valor;}).length)return;
+  } else {
+    var idx=parseInt(valor,10);
+    if(isNaN(idx)||idx<0||idx>=voRonda.ops.length)return;
+  }
+  if(voEnSala()){
+    if(voVotos[voYo()])return;
+    if(salaRef)salaRef.child('votacion/votos/'+fbUid).set(String(valor));
+    voVotos[voYo()]=String(valor);
+    voRender();
+    return;
+  }
+  var quien=js[voTurno];
+  if(!quien)return;
+  voVotos[quien.name]=String(valor);
+  voTurno++;
+  if(voTurno>=js.length){voCerrar();return;}
+  voEstado='pasar';
+  voRender();
+}
+function voYo(){
+  if(!voEnSala())return '';
+  var m=salaJugadores.filter(function(j){return j.uid===fbUid;})[0];
+  return m?m.name:'';
+}
+function voSigo(){
+  if(voEstado!=='pasar')return;
+  voEstado='votando';
+  voRender();
+}
+
+// ---------- contar ----------
+function voResultado(){
+  var js=voJugadores();
+  var filas=[],castigados=[];
+  if(voRonda.tipo==='persona'){
+    var cuenta={};
+    js.forEach(function(j){cuenta[j.name]=0;});
+    Object.keys(voVotos).forEach(function(v){
+      var elegido=voVotos[v];
+      if(cuenta[elegido]===undefined)return;
+      cuenta[elegido]++;
+    });
+    filas=js.map(function(j){return {t:j.name,n:cuenta[j.name],av:j};});
+    var vals=filas.map(function(f){return f.n;});
+    var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+    if(min!==max)castigados=filas.filter(function(f){return f.n===min;}).map(function(f){return f.t;});
+  } else {
+    var c2=voRonda.ops.map(function(){return 0;});
+    var quienes=voRonda.ops.map(function(){return [];});
+    Object.keys(voVotos).forEach(function(v){
+      var i=parseInt(voVotos[v],10);
+      if(isNaN(i)||i<0||i>=c2.length)return;
+      c2[i]++;quienes[i].push(v);
+    });
+    filas=voRonda.ops.map(function(o,i){return {t:o,n:c2[i],gente:quienes[i]};});
+    var conVoto=filas.filter(function(f){return f.n>0;});
+    if(conVoto.length>1){
+      var mn=Math.min.apply(null,conVoto.map(function(f){return f.n;}));
+      var mx=Math.max.apply(null,conVoto.map(function(f){return f.n;}));
+      if(mn!==mx){
+        conVoto.forEach(function(f){
+          if(f.n===mn)castigados=castigados.concat(f.gente);
+        });
+      }
+    }
+  }
+  return {filas:filas,castigados:castigados};
+}
+function voCerrar(){
+  if(voEstado==='fin')return;
+  voEstado='fin';
+  var r=voResultado();
+  voCastigados=r.castigados;
+  voCastigados.forEach(function(n){
+    voMarcador[n]=(voMarcador[n]||0)+voTragos;
+  });
+  sv('voMarcador',voMarcador);
+  voRender();
+}
+function voReiniciarMarcador(){
+  voMarcador={};sv('voMarcador',voMarcador);
+  voRender();ann('Marcador en cero');
+}
+
+// ---------- lo que llega de la sala ----------
+function voAplicar(v){
+  if(!voEnSala())return;
+  if(!v){return;}
+  if(v.r&&(!voRonda||v.r!==voRonda.n)){
+    voRonda={n:v.r,tipo:v.tipo||'persona',q:v.q||'',ops:v.ops||[]};
+    voVotos={};voCastigados=[];voEstado='votando';
+  }
+  if(!voRonda)return;
+  var vs=v.votos||{};
+  var mapa={};
+  salaJugadores.forEach(function(j){mapa[j.uid]=j.name;});
+  voVotos={};
+  Object.keys(vs).forEach(function(uid){
+    if(mapa[uid])voVotos[mapa[uid]]=String(vs[uid]);
+  });
+  if(voEstado==='votando'){
+    var faltan=salaJugadores.filter(function(j){return !voVotos[j.name];}).length;
+    if(!faltan)voCerrar();
+    else voRender();
+  } else voRender();
+}
+function voFaltan(){
+  if(!voEnSala())return [];
+  return salaJugadores.filter(function(j){return !voVotos[j.name];}).map(function(j){return j.name;});
+}
+
+// ---------- pantalla ----------
+function voBarraHTML(filas,castigados){
+  var max=Math.max(1,Math.max.apply(null,filas.map(function(f){return f.n;})));
+  return '<div class="vo-res">'+filas.slice().sort(function(a,b){return b.n-a.n;}).map(function(f){
+    var pierde=(castigados.indexOf(f.t)>=0)
+      ||(f.gente&&f.gente.length&&f.gente.every(function(g){return castigados.indexOf(g)>=0;})&&f.n>0);
+    return '<div class="vo-fila'+(pierde?' pierde':'')+'">'
+      +'<div class="vo-fila-t">'+esc(f.t)+(f.gente&&f.gente.length?'<span class="vo-quien">'+esc(f.gente.join(', '))+'</span>':'')+'</div>'
+      +'<div class="vo-barra"><i style="width:'+Math.round(f.n/max*100)+'%;"></i></div>'
+      +'<div class="vo-num">'+f.n+'</div>'
+      +'</div>';
+  }).join('')+'</div>';
+}
+function voMarcadorHTML(){
+  var ns=Object.keys(voMarcador).filter(function(n){return voMarcador[n]>0;});
+  if(!ns.length)return '';
+  ns.sort(function(a,b){return voMarcador[b]-voMarcador[a];});
+  return '<div class="vo-marc"><div class="vo-marc-t">🥃 Tragos de la noche</div>'
+    +ns.map(function(n){
+      return '<span class="vo-marc-p">'+esc(n)+' <b>'+voMarcador[n]+'</b></span>';
+    }).join('')
+    +'<button class="vo-marc-x" onclick="voReiniciarMarcador()">Reiniciar</button></div>';
+}
+function voRender(){
+  var el=document.getElementById('voArena');
+  if(!el)return;
+  var js=voJugadores();
+  var h='';
+
+  if(js.length<3){
+    el.innerHTML='<div class="vo-caja"><div class="vo-vacio">'
+      +'Este juego necesita al menos <b>3 jugadores</b>.<br>'
+      +(voEnSala()?'Esperen a que entren más a la sala.':'Agrégalos en la pestaña 👥 Jugadores.')
+      +'</div></div>';
+    voBoton('');
+    return;
+  }
+
+  if(voEstado==='listo'||!voRonda){
+    el.innerHTML='<div class="vo-caja"><div class="vo-e">🗳️</div>'
+      +'<div class="vo-vacio">Se vota en secreto y <b>el menos votado toma '+voTragos+'</b>.<br>'
+      +'Una ronda es <b>«¿quién es más probable…?»</b> y la otra es <b>elegir un lado</b>.</div></div>'
+      +voMarcadorHTML();
+    voBoton('🗳️ Empezar la votación','voEmpezar()');
+    return;
+  }
+
+  var etiqueta=(voRonda.tipo==='persona')?'¿Quién es más probable…?':'Elige tu lado';
+  h+='<div class="vo-cab"><span class="vo-ronda">Ronda '+voRonda.n+'</span>'
+    +'<span class="vo-tipo">'+etiqueta+'</span></div>';
+  h+='<div class="vo-q">'+esc(voRonda.q)+'</div>';
+
+  if(voEstado==='pasar'){
+    var sig=js[voTurno];
+    h+='<div class="vo-pasar"><div class="vo-pasar-e">👉</div>'
+      +'Pásale el celular a <b>'+esc(sig?sig.name:'')+'</b>'
+      +'<div class="vo-pasar-s">Que nadie vea el voto de los demás</div></div>';
+    el.innerHTML=h;
+    voBoton('Ya lo tengo','voSigo()');
+    return;
+  }
+
+  if(voEstado==='votando'){
+    var yaVote=voEnSala()&&!!voVotos[voYo()];
+    if(!voEnSala()){
+      var quien=js[voTurno];
+      h+='<div class="vo-turno">Vota <b>'+esc(quien?quien.name:'')+'</b></div>';
+    } else if(yaVote){
+      var f=voFaltan();
+      h+='<div class="vo-turno ok">✅ Ya votaste'
+        +(f.length?'<div class="vo-esp">Falta'+(f.length>1?'n':'')+': '+esc(f.join(', '))+'</div>':'')
+        +'</div>';
+    } else {
+      h+='<div class="vo-turno">Tu voto es secreto</div>';
+    }
+    if(!yaVote){
+      if(voRonda.tipo==='persona'){
+        var yo=voEnSala()?voYo():(js[voTurno]?js[voTurno].name:'');
+        h+='<div class="vo-ops per">'+js.filter(function(j){return j.name!==yo;}).map(function(j){
+          return '<button class="vo-op" onclick="voVotar('+JSON.stringify(j.name)+')">'
+            +'<span class="vo-op-av">'+avatarHTML(j,30)+'</span>'+esc(j.name)+'</button>';
+        }).join('')+'</div>';
+      } else {
+        h+='<div class="vo-ops">'+voRonda.ops.map(function(o,i){
+          return '<button class="vo-op grande" onclick="voVotar('+i+')">'+esc(o)+'</button>';
+        }).join('')+'</div>';
+      }
+    }
+    var votaron=Object.keys(voVotos).length;
+    h+='<div class="vo-prog">'+votaron+' de '+js.length+' votaron</div>';
+    el.innerHTML=h;
+    voBoton(voEnSala()&&yaVote&&voFaltan().length?'Cerrar y ver resultados':'','voCerrar()');
+    return;
+  }
+
+  // fin
+  var r=voResultado();
+  h+=voBarraHTML(r.filas,voCastigados);
+  if(voCastigados.length){
+    h+='<div class="vo-castigo"><span class="vo-castigo-e">🥃</span>'
+      +'<b>'+esc(voCastigados.join(' y '))+'</b> '
+      +(voCastigados.length>1?'toman':'toma')+' <b>'+voTragos+'</b>'
+      +'<div class="vo-castigo-s">'
+      +(voRonda.tipo==='persona'?'Quedó con menos votos':'Quedó en la minoría')+'</div></div>';
+  } else {
+    h+='<div class="vo-castigo empate">🤝 Empate: esta ronda no toma nadie</div>';
+  }
+  h+=voMarcadorHTML();
+  el.innerHTML=h;
+  voBoton('▶ Siguiente ronda','voEmpezar()');
+}
+function voBoton(txt,fn){
+  var b=document.getElementById('voBtn');
+  if(!b)return;
+  b.style.display=txt?'':'none';
+  b.textContent=txt||'';
+  b.setAttribute('onclick',fn||'');
+}
+
+// ---------- configuración ----------
+function voRenderCfg(){
+  var el=document.getElementById('voTragosSel');
+  if(el){
+    el.innerHTML=[1,2,3,4,5].map(function(n){
+      return '<button class="vo-tr'+(voTragos===n?' on':'')+'" onclick="voSetTragos('+n+')">'+n+'</button>';
+    }).join('');
+  }
+  voAsegurar();
+  if(typeof phEditPills==='function'){
+    phEditPills('votop','voPillsP','voCatP');
+    phEditPills('votot','voPillsT','voCatT');
+  }
+  if(typeof phList==='function'){
+    phList('votop','voListaP','Sin preguntas todavía.');
+    phList('votot','voListaT','Sin temas todavía.');
+  }
+}
+function voCatP(c){phEditCat.votop=c;voRenderCfg();}
+function voCatT(c){phEditCat.votot=c;voRenderCfg();}
+
+function voAbrir(){
+  voAsegurar();
+  if(typeof phPills==='function')phPills('votop','catVotos','voCatJugar');
+  voRenderCfg();
+  voRender();
+}
+function voCatJugar(c){
+  if(typeof phCat!=='undefined'){phCat.votop=c;phCat.votot=c;phSaveCat();}
+  voAbrir();
+}
+
+// el refresco de contenido también toca a los dos grupos nuevos
+var phRefreshBase=phRefresh;
+phRefresh=function(g){
+  try{phRefreshBase(g);}catch(e){}
+  if(g==='votop'||g==='votot'){voRenderCfg();}
+};
+
+// ---------- se enchufa a la app ----------
+MENU_JUEGOS.splice(2,0,{k:'votos',n:'Votación',e:'🗳️',g:'linear-gradient(150deg,#38bdf8,#0b2a4a)'});
+MENU_NOMBRE.votos='Votación';
+CFG_GRUPOS.splice(3,0,['votos','🗳️','Votación']);
+
+REGLAS.votos={
+  e:'🗳️', t:'Votación',
+  obj:'Todos votan en secreto y el que queda con menos votos toma. Las rondas se van turnando: una es sobre una persona y la otra es elegir un lado.',
+  pasos:[
+    'Toca <b>Empezar la votación</b> y sale la pregunta de la ronda.',
+    'En las rondas de <b>persona</b> ("¿Quién es más probable que…?") cada uno vota a alguien del grupo, menos a sí mismo.',
+    'En las rondas de <b>tema</b> ("¿Playa o montaña?") cada uno elige la opción que prefiere.',
+    'Cuando votaron todos, se destapan los votos y sale el conteo.',
+    'Toma <b>el menos votado</b>: en las rondas de persona, quien recibió menos votos; en las de tema, los que quedaron en la minoría.',
+    'Si todos empatan, esa ronda no toma nadie.'
+  ],
+  lista:[
+    'Con un solo celular se pasa el teléfono y cada uno vota por turno.',
+    'En sala cada uno vota desde su celular y nadie ve el voto del otro hasta el final.',
+    'Se necesitan al menos 3 jugadores.'
+  ],
+  listaT:'Cómo se juega según el modo',
+  tip:'Recibir cero votos también cuenta: el que nadie votó es justamente el que toma.'
+};
+
+// ---------- el generador con IA también sabe de estos dos ----------
+MAS_JUEGOS.push({k:'votop',n:'Votación · personas',
+  q:'preguntas que empiezan con "¿Quién es más probable que" y terminan con signo de interrogación'});
+MAS_JUEGOS.push({k:'votot',n:'Votación · temas',
+  q:'temas de 2 o 3 opciones, escritos con barras: pregunta | opción | opción'});
+MAS_ALIAS.votop='votopersona';
+MAS_ALIAS.votot='vototema';
+MAS_DE_ALIAS.votopersona='votop';
+MAS_DE_ALIAS.vototema='votot';
+MAS_DE_ALIAS.votacionpersonas='votop';
+MAS_DE_ALIAS.votaciontemas='votot';
+
+var masPromptBase=masPrompt;
+masPrompt=function(){
+  var t=masPromptBase();
+  if(t.indexOf('[vototema]')>=0){
+    t+='\nY con "vototema" pasa lo mismo: el tema y sus opciones van separados por barras.\n';
+    t+='- ¿Playa o montaña? | Playa | Montaña\n';
+  }
+  return t;
+};
+
+
 // INIT
 phFixNombres();
 menuCargar();
@@ -10617,6 +11208,7 @@ renderRuletaOpts();renderTor();ynRenderList();renderCustomCardsList();
 torPlayCat(torPlayType);
 mjInitTime();
 renderMembers();renderWheel();updateImports();
+if(typeof voAsegurar==='function')voAsegurar();
 setDiceCSS(1);renderDiceCountSel();renderDiceArea();renderCustomFaces();
 holReset();updateHandCountBtns();
 if(evCfg.on)evArrancar();else evRenderCfg();
