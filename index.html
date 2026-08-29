@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v48</title>
+<title>🎉 Party Hub v49</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -2175,6 +2175,63 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   background:rgba(57,255,139,.07);border:1px solid rgba(57,255,139,.22);
 }
 
+
+/* ===== SUBPESTAÑAS DENTRO DE JUEGOS (v49) ===== */
+.jg-subs{position:static !important;background:none !important;padding:2px 2px 12px !important;}
+.cfg-sub.trabada{opacity:.55;}
+
+/* ===== AGREGA LAS TUYAS (v49) ===== */
+.sug-card{
+  margin-top:18px;
+  background:linear-gradient(150deg,rgba(255,214,0,.06),rgba(255,45,149,.04)),var(--card);
+  border-color:rgba(255,214,0,.26);
+}
+.sug-nota{font-size:11.5px;line-height:1.6;color:var(--muted);margin-bottom:10px;}
+.sug-nota b{color:var(--green);}
+.sug-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.sug-p{
+  padding:6px 11px;border-radius:18px;cursor:pointer;font-family:inherit;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted);
+  font-size:11.5px;font-weight:800;transition:.15s;
+}
+.sug-p.on{border-color:var(--gold);color:var(--gold);background:rgba(255,214,0,.12);}
+.sug-info{font-size:11px;color:var(--muted);margin-top:8px;font-weight:700;}
+.sug-lista{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+.sug-it{
+  display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:10px;
+  background:var(--card2);border:1px solid var(--border);
+}
+.sug-cat{font-size:14px;flex-shrink:0;}
+.sug-t{flex:1;min-width:0;font-size:12.5px;line-height:1.4;}
+.sug-de{display:block;font-size:10.5px;color:var(--muted);font-weight:700;margin-top:2px;}
+.sug-n{
+  font-size:10px;font-weight:800;color:var(--cian);flex-shrink:0;
+  background:rgba(0,240,255,.1);border-radius:12px;padding:2px 7px;
+}
+.sug-x{
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:8px;width:26px;height:26px;font-size:11px;cursor:pointer;flex-shrink:0;
+}
+.sug-x:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ===== ¡ADIVINA!: respuestas esperando su foto (v49) ===== */
+.ad-pend{
+  margin:10px 0;padding:11px 12px;border-radius:13px;
+  background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.25);
+}
+.ad-pend-t{
+  font-size:11px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--cian);margin-bottom:9px;
+}
+.ad-pend-i{
+  display:flex;align-items:center;gap:8px;padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.ad-pend-i:last-of-type{border-bottom:0;}
+.ad-pend-i span{flex:1;min-width:0;font-size:13px;font-weight:700;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ad-pend-s{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px;}
+
 </style>
 </head>
 <body>
@@ -2339,6 +2396,10 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       <div class="mas-paso">1. Copia el pedido y d&aacute;selo a la IA</div>
       <div id="masCuerpo"></div>
     </div>
+    <div class="card" id="cfgSugCard" data-cfg="sugerencias">
+      <div class="card-title">&#x1F4A1; Lo que agregaron los jugadores</div>
+      <div id="cfgSugCuerpo"></div>
+    </div>
     <div id="cfgDestino"></div>
     <div class="cfg-barra">
       <button class="btn btn-primary" id="admPub2" onclick="syPublicar()">&#x1F4E4; Publicar para todos</button>
@@ -2364,6 +2425,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
 
 <!-- CATEGORIA -->
 <div class="page" id="page-cats">
+  <div class="jg-subs cfg-subs"></div>
   <div class="cat-chip" id="catChip" style="display:none;"></div>
   <div class="home-sec"><span>&#x1F3AF;</span>Primero elige la categor&iacute;a</div>
   <div class="menu-grid" id="homeCats"></div>
@@ -2372,6 +2434,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
 
 <!-- JUEGOS -->
 <div class="page" id="page-juegos">
+  <div class="jg-subs cfg-subs"></div>
   <div class="cat-chip" style="display:none;"></div>
   <div class="home-sec"><span>&#x1F3AE;</span>Elige un juego</div>
   <div id="homeAviso" onclick="goPage('cats')">&#x1F446; Primero elige una categor&iacute;a</div>
@@ -2455,7 +2518,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v48</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v49</div></div>
 </div>
 
 <!-- RULETA -->
@@ -2488,6 +2551,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   </div>
   <div style="text-align:center;color:var(--muted);font-size:12px;margin-bottom:8px;">Toca la ruleta para girar</div>
   
+  <div class="sug-slot" data-g="ruleta"></div>
 </div>
 
 <!-- DADOS -->
@@ -2541,6 +2605,8 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div class="cat-pills cat-vieja" id="catTor"></div>
   <div class="card" style="padding:12px 15px;" data-cfg="tor"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline solo-admin" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" id="torEditTab1" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" id="torEditTab2" onclick="torTab('dare')">&#x1F525; Retos</div></div><div class="cat-pills" id="torEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
   <div class="card"><div class="card-title">Jugar</div><div class="tor-cat-tabs"><div class="tor-cat-tab active" id="torPlayTab1" onclick="torPlayCat('truth')">&#x1F4AC; Verdad</div><div class="tor-cat-tab" id="torPlayTab2" onclick="torPlayCat('dare')">&#x1F525; Reto</div></div><div class="tor-result-box tor-truth" id="torResultBox">Elige categor&#xED;a y presiona el bot&#xF3;n</div><button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">&#x1F3B2; ELEGIR</button></div>
+  <div class="sug-slot" data-g="truth"></div>
+  <div class="sug-slot" data-g="dare"></div>
 </div>
 
 <!-- MAHJONG PAGE -->
@@ -2654,6 +2720,8 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       </div>
     </div>
   </div>
+  <div class="sug-slot" data-g="votop"></div>
+  <div class="sug-slot" data-g="votot"></div>
 </div>
 
 <!-- LA BOTELLA -->
@@ -2686,6 +2754,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   </div>
 
   
+  <div class="sug-slot" data-g="botella"></div>
 </div>
 
 <!-- ¡ADIVINA! -->
@@ -2721,6 +2790,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     <div class="collapsible-body" id="adEditBody">
       <div class="cat-pills" id="adEditPills" style="margin-top:10px;"></div>
       <div class="cat-hint" id="adPeso"></div>
+      <div id="adPendCaja"></div>
       <div id="adLista" style="margin-bottom:10px;"></div>
       <input type="text" id="adResp" placeholder="Respuesta de la foto (ej: la casa de Beto)"/>
       <div style="display:flex;gap:8px;margin-top:8px;">
@@ -2839,6 +2909,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       🏁 Salida &middot; 💤 Descanso. Gana quien complete primero las vueltas elegidas.
     </div>
   </div>
+  <div class="sug-slot" data-g="tablero"></div>
 </div>
 
 <!-- BASTA DEL ABECEDARIO -->
@@ -3013,6 +3084,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       </div>
     </div>
   </div>
+  <div class="sug-slot" data-g="bomba"></div>
 </div>
 
 <!-- TODIS -->
@@ -3146,6 +3218,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       <div style="text-align:center;margin-top:10px;"><button class="btn btn-gold" style="font-size:16px;padding:12px 32px;" onclick="drawCustomCard()">&#x1F3B4; SACAR CARTA</button></div>
     </div>
   </div>
+  <div class="sug-slot" data-g="cartas"></div>
 </div>
 
 <!-- YO NUNCA -->
@@ -3201,6 +3274,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     <div id="ynScores"></div>
     <div style="margin-top:8px;font-size:12px;color:var(--muted);">Toca + cuando alguien SÍ lo haya hecho</div>
   </div>
+  <div class="sug-slot" data-g="yn"></div>
 </div>
 
 <!-- TOP 10 -->
@@ -4513,6 +4587,7 @@ function salaAplicar(snap){
   adAplicar(v.adivina);
   boAplicar(v.botella);
   if(typeof voAplicar==='function')voAplicar(v.votacion);
+  if(typeof sugAplicar==='function')sugAplicar(v.sugerencias);
   if(typeof salaAplicarJuego==='function')salaAplicarJuego(v.juego);
   histRegistrar();
   salaRender();
@@ -4726,7 +4801,7 @@ function histHTML(){
   if(!salaHist.length)return '';
   return '<div class="card-title" style="margin-top:22px;">Salas anteriores</div>'
     +salaHist.map(function(h,i){
-      var avs=(h.jugadores||[]).slice(0,6).map(function(m){
+      var avs=(h.jugadores||[]).filter(Boolean).slice(0,6).map(function(m){
         return '<div class="hist-av">'+avatarHTML(m,26)+'</div>';
       }).join('');
       var lider=null;
@@ -6756,11 +6831,13 @@ function adRenderEdit(){
   var el=document.getElementById('adLista');
   if(!el)return;
   var arr=(phData.adivina&&phData.adivina[phEditCat.adivina])||[];
+  var conFoto=arr.filter(function(c){return c&&c.img;});
   var peso=Math.round(JSON.stringify(phData.adivina||{}).length/1024);
   var info=document.getElementById('adPeso');
-  if(info)info.textContent=arr.length+' foto'+(arr.length===1?'':'s')+' en esta categoría · '+peso+' KB en total';
+  if(info)info.textContent=conFoto.length+' foto'+(conFoto.length===1?'':'s')+' en esta categoría · '+peso+' KB en total';
   el.innerHTML=(adSubiendo?'<div class="ad-cargando">Procesando la foto…</div>':'')
-    +(arr.length?'<div class="ad-tira">'+arr.map(function(c,i){
+    +(conFoto.length?'<div class="ad-tira">'+arr.map(function(c,i){
+      if(!c||!c.img)return '';
       return '<div class="ad-mini"><img src="'+c.img+'"/><div class="ad-mini-r">'+c.resp+'</div>'
         +'<button class="ad-mini-x" onclick="adBorrar('+i+')">✕</button></div>';
     }).join('')+'</div>'
@@ -7872,6 +7949,7 @@ function syTraer(){
 
 var CFG_GRUPOS=[
   ['menuimgs','🖼','Imágenes del menú'],
+  ['sugerencias','💡','Lo que agregaron'],
   ['ruleta',  '🎡','Ruleta'],
   ['tor',     '🔥','Verdad o Reto'],
   ['yonunca', '🙅','Yo Nunca'],
@@ -9597,7 +9675,11 @@ var AVATAR_EMOJIS=[
 
 var avPickingIdx=-1; // which player we are picking avatar for
 
-function memberName(m){return typeof m==='object'?m.name:m;}
+function memberName(m){
+  if(m==null)return '?';
+  var n=(typeof m==='object')?m.name:m;
+  return (n==null||n==='')?'?':String(n);
+}
 function memberAvatar(m){return typeof m==='object'?m.avatar:'';}
 function memberIsImg(m){return typeof m==='object'&&m.isImg;}
 
@@ -11417,6 +11499,324 @@ function masHistHTML(){
 }
 
 
+
+// ===== SUBPESTAÑAS DE JUEGOS, SUGERENCIAS Y ¡ADIVINA! CON IA (v49) =====
+
+// ---------- 1) dentro de la pestaña Juegos: primero Categorías ----------
+function jgSubs(cual){
+  var els=document.querySelectorAll('.jg-subs');
+  for(var i=0;i<els.length;i++){
+    els[i].innerHTML=
+      '<button class="cfg-sub'+(cual==='cats'?' on':'')+'" onclick="jgIr(\'cats\')">'
+        +'<span>🎯</span>Categorías</button>'
+      +'<button class="cfg-sub'+(cual==='juegos'?' on':'')+(phCatG?'':' trabada')+'" onclick="jgIr(\'juegos\')">'
+        +'<span>🎮</span>Juegos'+(phCatG?'':' 🔒')+'</button>';
+  }
+}
+function jgIr(a){
+  if(a==='juegos'&&!phCatG){ann('👆 Primero elige una categoría');jgSubs('cats');return;}
+  goPageBase(a);
+}
+
+// ---------- 2) cada jugador agrega las suyas ----------
+// Se guardan en el contenido de verdad (no borran nada de lo que ya había) y,
+// si están en una sala, les llegan a todos los celulares de esa sala.
+var SUG_INFO={
+  ruleta :{t:'Agrega tu propio castigo o premio', ph:'Toma 2 y elige a alguien...'},
+  truth  :{t:'Agrega tu propia verdad',           ph:'¿Cuál fue tu peor mentira?'},
+  dare   :{t:'Agrega tu propio reto',             ph:'Baila 20 segundos sin música'},
+  yn     :{t:'Agrega tu propia frase',            ph:'Yo nunca nunca he...'},
+  cartas :{t:'Agrega tu propio castigo',          ph:'Reparte 3 tragos'},
+  tablero:{t:'Agrega tu propio reto de casilla',  ph:'Imita a alguien del grupo'},
+  botella:{t:'Agrega tu propio reto de a dos',    ph:'Se cuentan un secreto al oído'},
+  bomba  :{t:'Agrega tu propia pregunta',         ph:'¿Capital de Perú? | Lima | Cusco | Ica'},
+  votop  :{t:'Agrega tu propia pregunta',         ph:'¿Quién es más probable que...?'},
+  votot  :{t:'Agrega tu propio tema',             ph:'¿Playa o montaña? | Playa | Montaña'}
+};
+var sugCat=ld('sugCat',{});
+var sugLog=ld('sugLog',[]);          // para que el admin las revise
+var sugVistas={};
+var sugSeq=0;
+function sugId(){return 'sg'+Date.now().toString(36)+(++sugSeq);}
+
+sugLog.forEach(function(x){if(!x.id)x.id=sugId();});
+function sugCatDe(g){
+  if(sugCat[g]&&PH_CATS.indexOf(sugCat[g])>=0)return sugCat[g];
+  if(phCatG&&PH_CATS.indexOf(phCatG)>=0)return phCatG;
+  return 'aburrido';
+}
+function sugSetCat(g,c){sugCat[g]=c;sv('sugCat',sugCat);sugRender();}
+
+function sugTexto(g,t){
+  t=String(t||'').trim().replace(/\s+/g,' ').slice(0,160);
+  if(g==='bomba'){
+    var p=t.split('|').map(function(x){return x.trim();}).filter(Boolean);
+    if(p.length<3)return null;
+    var o=p.slice(1,4);while(o.length<3)o.push('—');
+    return {q:p[0],o:o,c:0};
+  }
+  if(g==='votot'){
+    if(t.split('|').filter(function(x){return x.trim();}).length<3)return null;
+  }
+  return t.length>=3?t:null;
+}
+function sugIgual(a,b){
+  var x=(a&&a.q!==undefined)?a.q:a, y=(b&&b.q!==undefined)?b.q:b;
+  return String(x).toLowerCase()===String(y).toLowerCase();
+}
+function sugMeter(g,c,item,quien){
+  if(!phData[g])phData[g]={};
+  if(!Array.isArray(phData[g][c]))phData[g][c]=[];
+  var ya=phData[g][c].filter(function(x){return sugIgual(x,item);}).length;
+  if(ya)return false;
+  phData[g][c].push(item);
+  phSave();
+  sugLog.push({id:sugId(),g:g,c:c,t:(item&&item.q!==undefined)?item.q:item,n:quien||'',ts:Date.now()});
+  while(sugLog.length>200)sugLog.shift();
+  sv('sugLog',sugLog);
+  return true;
+}
+function sugAgregar(g){
+  var inp=document.getElementById('sugIn-'+g);
+  if(!inp)return;
+  var item=sugTexto(g,inp.value);
+  if(!item){
+    ann(g==='bomba'||g==='votot'
+      ? 'Sepáralo con barras: pregunta | opción | opción'
+      : 'Escribe algo más largo');
+    return;
+  }
+  var c=sugCatDe(g);
+  var quien=(perfil&&perfil.nombre)?perfil.nombre:'';
+  if(!sugMeter(g,c,item,quien)){ann('Esa ya estaba');inp.value='';return;}
+  inp.value='';
+  // si están en sala, les llega a todos
+  if(typeof salaEstado!=='undefined'&&salaEstado==='on'&&salaRef){
+    try{salaRef.child('sugerencias/'+sugId()).set({g:g,c:c,v:JSON.stringify(item),n:quien,ts:Date.now()});}catch(e){}
+  }
+  if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  sugRender();
+  ann('✅ Agregada a '+(PH_CATLBL[c]||c));
+}
+function sugBorrar(id){
+  var e=sugLog.filter(function(x){return x.id===id;})[0];
+  if(!e)return;
+  var g=e.g,c=e.c;
+  if(phData[g]&&Array.isArray(phData[g][c])){
+    for(var k=0;k<phData[g][c].length;k++){
+      if(sugIgual(phData[g][c][k],e.t)){phData[g][c].splice(k,1);break;}
+    }
+    phSave();
+  }
+  sugLog=sugLog.filter(function(x){return x.id!==id;});
+  sv('sugLog',sugLog);
+  if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  sugRender();
+  if(typeof cfgSugRender==='function')cfgSugRender();
+  ann('Quitada');
+}
+// lo que llega desde la sala
+function sugAplicar(v){
+  if(!v)return;
+  var hubo=false;
+  Object.keys(v).forEach(function(id){
+    if(sugVistas[id])return;
+    sugVistas[id]=1;
+    var s=v[id];
+    if(!s||!s.g||!s.c||!s.v)return;
+    var item;
+    try{item=JSON.parse(s.v);}catch(e){item=s.v;}
+    if(sugMeter(s.g,s.c,item,s.n||''))hubo=true;
+  });
+  if(hubo){
+    sugRender();
+    if(typeof cfgSugRender==='function')cfgSugRender();
+  }
+}
+
+function sugMiasHTML(g){
+  var mias=sugLog.filter(function(x){return x.g===g;}).slice().reverse().slice(0,12);
+  if(!mias.length)return '';
+  return '<div class="sug-lista">'+mias.map(function(x){
+    return '<div class="sug-it">'
+      +'<span class="sug-cat c-'+x.c+'">'+(PH_CATINFO[x.c]?PH_CATINFO[x.c].e:'')+'</span>'
+      +'<span class="sug-t">'+esc(x.t)+'</span>'
+      +(x.n?'<span class="sug-n">'+esc(x.n)+'</span>':'')
+      +'<button class="sug-x" onclick="sugBorrar(\''+x.id+'\')" title="Quitar">&#10005;</button>'
+      +'</div>';
+  }).join('')+'</div>';
+}
+function sugRender(){
+  var els=document.querySelectorAll('.sug-slot');
+  for(var i=0;i<els.length;i++){
+    var g=els[i].getAttribute('data-g');
+    var inf=SUG_INFO[g];
+    if(!inf)continue;
+    var c=sugCatDe(g);
+    var n=(phData[g]&&phData[g][c])?phData[g][c].length:0;
+    els[i].innerHTML='<div class="card sug-card">'
+      +'<div class="card-title">💡 '+esc(inf.t)+'</div>'
+      +'<div class="sug-nota">Se suma a lo que ya hay, sin borrar nada. '
+        +(typeof salaEstado!=='undefined'&&salaEstado==='on'
+            ? 'Como están en sala, le llega a <b>todos</b>.'
+            : 'Queda guardado en este celular.')
+      +'</div>'
+      +'<div class="sug-pills">'+PH_CATS.map(function(k){
+          return '<button class="sug-p'+(k===c?' on':'')+'" onclick="sugSetCat(\''+g+'\',\''+k+'\')">'
+            +(PH_CATLBL[k]||k)+'</button>';
+        }).join('')+'</div>'
+      +'<div class="flex-row" style="margin-top:8px;">'
+        +'<input type="text" id="sugIn-'+g+'" maxlength="160" placeholder="'+esc(inf.ph)+'" '
+          +'onkeydown="if(event.key===\'Enter\')sugAgregar(\''+g+'\')"/>'
+        +'<button class="btn btn-primary" onclick="sugAgregar(\''+g+'\')">+</button>'
+      +'</div>'
+      +'<div class="sug-info">'+n+' en '+(PH_CATLBL[c]||c)+'</div>'
+      +sugMiasHTML(g)
+      +'</div>';
+  }
+}
+
+// ---------- 3) ¡Adivina!: la IA da la lista, tú pones las fotos ----------
+MAS_JUEGOS.push({k:'adivina',n:'¡Adivina! (respuestas)',
+  q:'respuestas para adivinar con una foto: solo el nombre de la cosa, lugar, personaje o famoso, sin explicar nada'});
+MAS_ALIAS.adivina='adivina';
+MAS_DE_ALIAS.adivina='adivina';
+MAS_DE_ALIAS.adivinar='adivina';
+MAS_DE_ALIAS.fotos='adivina';
+
+var masAplicarV49=masAplicar;
+masAplicar=function(){
+  // en ¡Adivina! nunca se borra una foto: lo nuevo entra pendiente de foto
+  if(masPendiente&&masPendiente.adivina){
+    Object.keys(masPendiente.adivina).forEach(function(c){
+      var viejas=(phData.adivina&&phData.adivina[c])||[];
+      var conFoto=viejas.filter(function(x){return x&&x.img;});
+      var ya={};
+      conFoto.forEach(function(x){ya[String(x.resp||'').toLowerCase()]=1;});
+      var nuevas=[];
+      masPendiente.adivina[c].forEach(function(t){
+        var r=String((t&&t.q!==undefined)?t.q:t).trim().slice(0,60);
+        var k=r.toLowerCase();
+        if(!r||ya[k])return;
+        ya[k]=1;nuevas.push({img:'',resp:r});
+      });
+      masPendiente.adivina[c]=conFoto.concat(nuevas);
+    });
+  }
+  masAplicarV49();
+  if(typeof adRenderEdit==='function'){try{adRenderEdit();}catch(e){}}
+};
+var masRevisarV49=masRevisar;
+masRevisar=function(){
+  masRevisarV49();
+  if(masPendiente&&masPendiente.adivina){
+    var el=document.getElementById('masResumen');
+    if(el&&el.className.indexOf('buena')>=0){
+      el.insertAdjacentHTML('beforeend',
+        '<div class="mas-res-n">🖼 En <b>¡Adivina!</b> no se borra ninguna foto: '
+        +'las respuestas nuevas quedan <b>pendientes de foto</b> y las cargas desde el juego.</div>');
+    }
+  }
+};
+
+// pendientes: cada respuesta espera su foto
+var adPendiente=-1;
+function adPonerFoto(i){
+  adPendiente=i;
+  var f=document.getElementById('adFileInput');
+  if(f)f.click();
+}
+function adQuitarPend(i){
+  var arr=phData.adivina[phEditCat.adivina]||[];
+  if(!arr[i])return;
+  arr.splice(i,1);phSave();adRenderEdit();
+}
+function adPendientesHTML(){
+  var arr=(phData.adivina&&phData.adivina[phEditCat.adivina])||[];
+  var pend=[];
+  arr.forEach(function(x,i){if(x&&!x.img&&x.resp)pend.push({i:i,r:x.resp});});
+  if(!pend.length)return '';
+  return '<div class="ad-pend"><div class="ad-pend-t">📷 Esperan su foto ('+pend.length+')</div>'
+    +pend.map(function(p){
+      return '<div class="ad-pend-i"><span>'+esc(p.r)+'</span>'
+        +'<button class="btn btn-secondary btn-sm" onclick="adPonerFoto('+p.i+')">📷 Foto</button>'
+        +'<button class="btn-icon" onclick="adQuitarPend('+p.i+')" title="Quitar">🗑</button></div>';
+    }).join('')
+    +'<div class="ad-pend-s">Estas todavía no salen en el juego. En cuanto le pongas la foto, entran.</div></div>';
+}
+var adRenderEditV49=adRenderEdit;
+adRenderEdit=function(){
+  adRenderEditV49();
+  var cont=document.getElementById('adPendCaja');
+  if(cont)cont.innerHTML=adPendientesHTML();
+};
+var adArchivoV49=adArchivo;
+adArchivo=function(input){
+  if(adPendiente<0)return adArchivoV49(input);
+  var i=adPendiente;adPendiente=-1;
+  if(!input.files||!input.files[0])return;
+  var arr=phData.adivina[phEditCat.adivina]||[];
+  if(!arr[i]){input.value='';return;}
+  adSubiendo=true;adRenderEdit();
+  var r=new FileReader();
+  r.onload=function(ev){
+    var img=new Image();
+    img.onload=function(){
+      try{
+        var W=420,H=Math.round(img.height*(W/img.width));
+        if(img.width<img.height){H=420;W=Math.round(img.width*(H/img.height));}
+        var c=document.createElement('canvas');c.width=W;c.height=H;
+        c.getContext('2d').drawImage(img,0,0,W,H);
+        var antes=JSON.stringify(phData.adivina);
+        arr[i].img=c.toDataURL('image/jpeg',0.72);
+        try{localStorage.setItem('ph_phData',JSON.stringify(phData));
+            ann('✅ Foto puesta a "'+arr[i].resp+'"');}
+        catch(err){phData.adivina=JSON.parse(antes);ann('⚠ Sin espacio: borra alguna foto antes');}
+      }catch(e){ann('No se pudo procesar la imagen');}
+      adSubiendo=false;adRenderEdit();adRender();
+    };
+    img.onerror=function(){adSubiendo=false;ann('No se pudo leer la imagen');adRenderEdit();};
+    img.src=ev.target.result;
+  };
+  r.readAsDataURL(input.files[0]);
+  input.value='';
+};
+
+// ---------- 4) el admin ve lo que agregaron los jugadores ----------
+function cfgSugRender(){
+  var el=document.getElementById('cfgSugCuerpo');
+  if(!el)return;
+  if(!sugLog.length){
+    el.innerHTML='<div class="mas-vacio">Todavía nadie agregó nada desde los juegos.</div>';
+    return;
+  }
+  el.innerHTML='<div class="sug-lista">'+sugLog.slice().reverse().slice(0,60).map(function(x){
+    var nom=(MAS_JUEGOS.filter(function(j){return j.k===x.g;})[0]||{}).n||x.g;
+    return '<div class="sug-it">'
+      +'<span class="sug-cat">'+(PH_CATINFO[x.c]?PH_CATINFO[x.c].e:'')+'</span>'
+      +'<span class="sug-t">'+esc(x.t)+'<span class="sug-de">'+esc(nom)+(x.n?' · '+esc(x.n):'')+'</span></span>'
+      +'<button class="sug-x" onclick="sugBorrar(\''+x.id+'\')" title="Quitar">&#10005;</button>'
+      +'</div>';
+  }).join('')+'</div>'
+  +'<div class="sug-nota" style="margin-top:10px;">Ya están dentro del contenido. '
+  +'Presiona <b>Publicar para todos</b> para que les lleguen a todos los celulares.</div>';
+}
+
+// ---------- 5) engancharse a la app ----------
+var goPageV49=goPage;
+goPage=function(id){
+  var r=goPageV49(id);
+  try{
+    if(id==='cats')jgSubs('cats');
+    if(id==='juegos')jgSubs('juegos');
+    sugRender();
+  }catch(e){}
+  return r;
+};
+var cfgAbrirV49=cfgAbrir;
+cfgAbrir=function(){cfgAbrirV49();try{cfgSugRender();}catch(e){}};
+
+
 // INIT
 phFixNombres();
 menuCargar();
@@ -11433,6 +11833,8 @@ mjInitTime();
 renderMembers();renderWheel();updateImports();
 if(typeof voAsegurar==='function')voAsegurar();
 if(typeof top10Siempre==='function')top10Siempre();
+if(typeof sugRender==='function')sugRender();
+if(typeof jgSubs==='function')jgSubs(phCatG?'juegos':'cats');
 setDiceCSS(1);renderDiceCountSel();renderDiceArea();renderCustomFaces();
 holReset();updateHandCountBtns();
 if(evCfg.on)evArrancar();else evRenderCfg();
