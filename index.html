@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v43</title>
+<title>🎉 Party Hub v44</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -1894,6 +1894,66 @@ body.sala-trabada .ab-cfg{display:none !important;}
 .inv-btns{display:flex;gap:9px;}
 .inv-btns .btn{flex:1;}
 
+
+/* ===== PESTAÑAS DE ABAJO, ESTILO APP (v44) ===== */
+#tabbar{
+  display:none;
+  position:fixed;left:0;right:0;bottom:0;z-index:120;
+  background:rgba(14,10,32,.94);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(0,240,255,.18);
+  box-shadow:0 -6px 26px rgba(0,0,0,.5);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+body.hay-tabs #tabbar{display:block;}
+body.hay-tabs .page{padding-bottom:96px;}
+.tb-in{max-width:700px;margin:0 auto;display:flex;}
+.tb-b{
+  flex:1;min-width:0;background:transparent;border:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:9px 2px 8px;color:var(--muted);
+  transition:color .15s,transform .12s;position:relative;
+}
+.tb-i{font-size:21px;line-height:1;filter:grayscale(.55) opacity(.75);transition:.18s;}
+.tb-t{
+  font-size:10.5px;font-weight:800;letter-spacing:.2px;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.tb-b:active{transform:scale(.92);}
+.tb-b.on{color:var(--cian);}
+.tb-b.on .tb-i{filter:none;transform:translateY(-1px) scale(1.12);}
+.tb-b.on .tb-t{text-shadow:0 0 10px rgba(0,240,255,.55);}
+.tb-b.on::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:30px;height:3px;border-radius:0 0 4px 4px;
+  background:var(--cian);box-shadow:0 0 12px rgba(0,240,255,.9);
+}
+.tb-punto{
+  position:absolute;top:7px;right:calc(50% - 19px);
+  width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px rgba(57,255,139,.9);
+}
+body.sala-trabada #tabbar{display:none !important;}
+/* en modo "un solo celular" no hay sala en línea: la pestaña sobra */
+body.modo-solo #tb-sala{display:none;}
+
+/* ===== INICIO: solo el logo ===== */
+#page-menu{display:none;}
+#page-menu.active{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:calc(100vh - 190px);text-align:center;
+}
+.home-saludo{
+  margin-top:20px;font-size:14px;line-height:1.7;color:var(--muted);max-width:290px;
+}
+.home-saludo b{color:var(--cian);text-shadow:0 0 10px rgba(0,240,255,.45);}
+.home-abajo{
+  margin-top:26px;font-size:11.5px;font-weight:800;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--muted);opacity:.75;
+  display:flex;align-items:center;gap:7px;
+}
+.home-abajo span{font-size:15px;}
+
 </style>
 </head>
 <body>
@@ -1981,7 +2041,7 @@ body.sala-trabada .ab-cfg{display:none !important;}
   </div>
 </div>
 <div class="appbar">
-  <button class="ab-back" id="abBack" onclick="goPage('menu')">&#x2190; Men&uacute;</button>
+  <button class="ab-back" id="abBack" onclick="phAtras()">&#x2190; Volver</button>
   <div class="ab-title" id="abTitle">🎉 Party Hub</div>
   <button class="ab-sala" id="abSala" style="display:none;" onclick="goPage('sala')">📡</button>
   <button class="ab-cfg" id="abCfg" onclick="goPage('config')" title="Configuraci&oacute;n" aria-label="Configuraci&oacute;n">&#x2699;&#xFE0F;</button>
@@ -2059,32 +2119,35 @@ body.sala-trabada .ab-cfg{display:none !important;}
 
 <!-- SALA EN LINEA -->
 <div class="page" id="page-sala">
+  <div class="pr-slot"></div>
   <div class="section-header" style="margin-top:6px;"><div class="section-title">📡 Sala en línea<button class="btn-reglas" onclick="verReglas('sala')" aria-label="Reglas de este juego">&#x1F4D6; Reglas</button></div></div>
   <div class="card" id="salaCuerpo"></div>
 </div>
 
 <!-- MENU PRINCIPAL -->
+<!-- INICIO -->
 <div class="page active" id="page-menu">
   <div class="home-logo" id="homeLogo"></div>
-  <div class="menu-sala" onclick="goPage('sala')">
-    <div class="menu-sala-ico">📡</div>
-    <div class="menu-sala-txt">
-      <div class="menu-sala-t">Sala en l&iacute;nea</div>
-      <div class="menu-sala-s" id="menuSalaSub">Jueguen todos desde su propio celular</div>
-    </div>
-    <div style="color:var(--muted);font-size:20px;">&rsaquo;</div>
-  </div>
-  <div class="pr-slot"></div>
+  <div class="home-saludo" id="homeSaludo"></div>
+  <div class="home-abajo"><span>&#x1F447;</span>Usa las pesta&ntilde;as de abajo</div>
+</div>
+
+<!-- CATEGORIA -->
+<div class="page" id="page-cats">
   <div class="cat-chip" id="catChip" style="display:none;"></div>
   <div class="home-sec"><span>&#x1F3AF;</span>Elige la categor&iacute;a</div>
   <div class="menu-grid" id="homeCats"></div>
+  <div class="menu-tip">La categor&iacute;a vale para <b>todos</b> los juegos. Puedes cambiarla cuando quieras.</div>
+</div>
+
+<!-- JUEGOS -->
+<div class="page" id="page-juegos">
+  <div class="cat-chip" style="display:none;"></div>
   <div class="home-sec"><span>&#x1F3AE;</span>Elige un juego</div>
-  <div id="homeAviso">&#x1F446; Primero elige una categor&iacute;a</div>
+  <div id="homeAviso" onclick="goPage('cats')">&#x1F446; Primero elige una categor&iacute;a</div>
   <div class="menu-grid" id="menuGrid"></div>
   <div class="sy-estado" id="syEstado" style="display:none;"></div>
   <div class="menu-tip solo-admin">Toca el &#x1F4F7; de cada juego para poner la imagen o el <b>GIF</b>.<br>Cuando termines, baja y presiona <b>Publicar para todos</b>.</div>
-
-  
 </div>
 
 <!-- Modal de imagen del menu -->
@@ -2109,6 +2172,8 @@ body.sala-trabada .ab-cfg{display:none !important;}
     <input type="file" id="menuFileInput" accept="image/*,image/gif" style="display:none;" onchange="menuArchivo(this)"/>
   </div>
 </div>
+
+<div id="tabbar"></div>
 
 <nav><div class="nav-inner">
   <button class="nav-btn active" onclick="goPage('members')" id="tab-members"><span>&#x1F465;</span>Jugadores</button>
@@ -2160,7 +2225,7 @@ body.sala-trabada .ab-cfg{display:none !important;}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v43</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v44</div></div>
 </div>
 
 <!-- RULETA -->
@@ -3640,7 +3705,13 @@ function appbarSet(id){
   var back=document.getElementById('abBack');
   var tit=document.getElementById('abTitle');
   if(!back||!tit)return;
-  if(id==='menu'){
+  if(typeof phEsTab==='function'&&phEsTab(id)){
+    back.style.visibility='hidden';
+    tit.textContent=(id==='menu')?'🎉 Party Hub'
+      :(id==='cats')?'🎯 Categoría'
+      :(id==='juegos')?'🎮 Juegos'
+      :(MENU_NOMBRE[id]||'');
+  } else if(id==='menu'){
     back.style.visibility='hidden';
     tit.textContent='🎉 Party Hub';
   } else {
@@ -8142,7 +8213,7 @@ function phSetModo(m){
   if(typeof renderMenu==='function')renderMenu();
   if(typeof homeRender==='function')homeRender();
   if(m==='sala'&&salaEstado!=='on'){goPage('sala');ann('📡 Crea la sala o entra con el código');}
-  else{goPage('menu');ann(PH_MODOS[m].e+' '+PH_MODOS[m].t);}
+  else{goPage(phCatG?'juegos':'cats');ann(PH_MODOS[m].e+' '+PH_MODOS[m].t);}
 }
 function phCambiarModo(){goPage('modo');}
 
@@ -8387,7 +8458,7 @@ function salaTerminarJuego(){
   if(!salaRef)return;
   salaRef.child('juego').remove();
   ann('Partida terminada');
-  goPage('menu');
+  goPage('juegos');
 }
 
 // ---------- lo que llega de la sala ----------
@@ -8398,8 +8469,8 @@ function salaAplicarJuego(v){
   // si el grupo se movió a otro juego, vamos todos
   if(salaJuego&&salaMiPagina!==salaJuego.k){
     goPage(salaJuego.k);
-  } else if(!salaJuego&&antes&&salaMiPagina&&salaMiPagina!=='menu'){
-    goPage('menu');
+  } else if(!salaJuego&&antes&&salaMiPagina&&salaMiPagina!=='menu'&&salaMiPagina!=='juegos'){
+    goPage('juegos');
   }
   if(antes!==ahora)salaPintarLobby();
   salaPintarLobby();
@@ -8491,7 +8562,7 @@ function perfilGuardarPortada(){
   if(typeof salaRenderPerfil==='function')salaRenderPerfil();
   prArrancar();
   if(!phModo){goPage('modo');return;}
-  goPage('menu');
+  goPage(phCatG?'juegos':'cats');
   ann('👋 Hola, '+perfil.nombre);
 }
 
@@ -9582,7 +9653,8 @@ function goPage(id){
   if(typeof salaAbrirJuego==='function'&&typeof PH_SOLOJUEGO!=='undefined'
      && typeof salaEstado!=='undefined' && salaEstado==='on'
      && !PH_SOLOJUEGO[id] && id!=='menu' && id!=='sala' && id!=='config'
-     && id!=='modo' && id!=='invitar' && id!=='members' && id!=='top10'){
+     && id!=='modo' && id!=='invitar' && id!=='members' && id!=='top10'
+     && id!=='cats' && id!=='juegos' && id!=='perfil'){
     if(salaAbrirJuego(id))return;
   }
   if(id!=='rusa'&&typeof rrCerrarPagina==='function')rrCerrarPagina();
@@ -9594,17 +9666,21 @@ function goPage(id){
   if(pg)pg.classList.add('active');
   var tb=document.getElementById('tab-'+id);
   if(tb)tb.classList.add('active');
+  phPagActual=id;
+  if(typeof phPintarTabs==='function')phPintarTabs(id);
   appbarSet(id);
   window.scrollTo(0,0);
   if(typeof salaMarcarPagina==='function')salaMarcarPagina(id);
   if(typeof phPintarPresencia==='function')phPintarPresencia();
   if(typeof salaPintarLobby==='function')salaPintarLobby();
   if(id==='invitar'){shareRender();if(typeof prPintar==='function')prPintar();return;}
-  if(id==='menu'){renderMenu();homeRender();salaRender();turnRefresh();phPintarChip();if(typeof prPintar==='function')prPintar();return;}
+  if(id==='menu'){homeRender();turnRefresh();phPintarChip();return;}
+  if(id==='cats'){homeCategorias();phPintarChip();return;}
+  if(id==='juegos'){renderMenu();homeCategorias();salaRender();turnRefresh();phPintarChip();return;}
   if(id==='perfil'){perfilPortada();return;}
   if(id==='modo'){phPintarModoPortada();return;}
   if(id==='config'){cfgAbrir();return;}
-  if(id==='sala'){salaRender();return;}
+  if(id==='sala'){salaRender();if(typeof prPintar==='function')prPintar();return;}
   if(id==='ruleta'){phPills('ruleta','catRuleta','ruletaCat');renderRuletaOpts();renderWheel();}
   if(id==='dados'){renderDiceArea();renderDiceCountSel();renderCustomFaces();}
   if(id==='tor'){phPills('tor','catTor','torCat');renderTor();}
@@ -9888,6 +9964,118 @@ function phFixNombres(){
   if(c)sv('customFaces',customFaces);
 }
 
+
+// ===== TRES PANTALLAS SEPARADAS + PESTAÑAS DE ABAJO (v44) =====
+// Inicio, Categoría y Juegos ya no comparten pantalla: cada una es su
+// propia página, y abajo hay una barra de pestañas como la de un celular.
+// Cuando empieza un juego la barra se esconde para no estorbar.
+
+var phPagActual='menu';
+
+// las páginas que tienen pestaña propia, en orden
+var PH_TABS=[
+  {k:'menu',   e:'🏠', t:'Inicio'},
+  {k:'cats',   e:'🎯', t:'Categoría'},
+  {k:'juegos', e:'🎮', t:'Juegos'},
+  {k:'members',e:'👥', t:'Jugadores'},
+  {k:'sala',   e:'📡', t:'Sala'}
+];
+function phEsTab(id){
+  for(var i=0;i<PH_TABS.length;i++)if(PH_TABS[i].k===id)return true;
+  return false;
+}
+function phTabbarHTML(){
+  return '<div class="tb-in">'+PH_TABS.map(function(t){
+    return '<button class="tb-b" id="tb-'+t.k+'" onclick="goPage(\''+t.k+'\')">'
+      +'<span class="tb-i">'+t.e+'</span><span class="tb-t">'+t.t+'</span>'
+      +(t.k==='sala'?'<i class="tb-punto" id="tbPuntoSala" style="display:none;"></i>':'')
+      +'</button>';
+  }).join('')+'</div>';
+}
+function phPintarTabs(id){
+  var bar=document.getElementById('tabbar');
+  if(!bar)return;
+  if(!bar.firstChild)bar.innerHTML=phTabbarHTML();
+  document.body.classList.toggle('hay-tabs',phEsTab(id));
+  PH_TABS.forEach(function(t){
+    var b=document.getElementById('tb-'+t.k);
+    if(b)b.classList.toggle('on',t.k===id);
+  });
+  var p=document.getElementById('tbPuntoSala');
+  if(p)p.style.display=(typeof salaEstado!=='undefined'&&salaEstado==='on')?'':'none';
+}
+
+// el botón ← de arriba: vuelve a la pestaña de donde saliste
+function phAtras(){
+  if(phPagActual==='config'||phPagActual==='invitar')return goPage('menu');
+  return goPage('juegos');
+}
+
+// ---------- el chip de categoría/modo, ahora en varias páginas ----------
+function phPintarChip(){
+  var els=document.querySelectorAll('.cat-chip');
+  if(!els.length)return;
+  var h='';
+  if(phCatG&&PH_CATINFO[phCatG]){
+    var i=PH_CATINFO[phCatG];
+    h+='<div class="chip c-'+phCatG+'"><span class="chip-e">'+i.e+'</span>'
+      +'<span class="chip-t">'+i.t+'</span>'
+      +'<button class="chip-btn" onclick="phSalirCat()">Cambiar</button></div>';
+  }
+  if(phModo&&PH_MODOS[phModo]){
+    var m=PH_MODOS[phModo];
+    h+='<div class="chip m-'+phModo+'"><span class="chip-e">'+m.e+'</span>'
+      +'<span class="chip-t">'+(m.c||m.t)+'</span>'
+      +'<button class="chip-btn" onclick="phCambiarModo()">Cambiar</button></div>';
+  }
+  for(var z=0;z<els.length;z++){
+    els[z].className='cat-chip chip-fila';
+    els[z].style.display=h?'':'none';
+    els[z].innerHTML=h;
+  }
+}
+
+// ---------- Inicio: el logo y nada más ----------
+function homeSaludo(){
+  var el=document.getElementById('homeSaludo');
+  if(!el)return;
+  var n=(perfil&&perfil.nombre)?String(perfil.nombre).trim():'';
+  el.innerHTML=(n?'Hola, <b>'+esc(n)+'</b>. ':'')
+    +'Elige abajo una <b>categoría</b> y después el <b>juego</b>.';
+}
+function homeRender(){
+  homeLogo();
+  homeSaludo();
+}
+
+// ---------- Categoría: al elegir, se pasa solo a Juegos ----------
+function phElegirCat(c){
+  if(!PH_CATINFO[c])return;
+  phCatG=c;sv('catGlobal',c);
+  phAplicarGlobal(c);
+  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella'].forEach(function(g){
+    if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  });
+  if(typeof syncRuleta==='function'){try{syncRuleta();}catch(e){}}
+  homeCategorias();
+  phPintarChip();
+  if(!phModo){goPage('modo');return;}
+  ann(PH_CATINFO[c].e+' Categoría: '+PH_CATINFO[c].t);
+  goPage('juegos');
+}
+function phSalirCat(){goPage('cats');}
+
+// ---------- arranque: del perfil/modo se cae en Categoría ----------
+function phArranqueCat(){
+  if(typeof phArranqueModo==='function')phArranqueModo();
+  phPintarChip();
+  if(phCatG)phAplicarGlobal(phCatG);
+  if(typeof prArranquePerfil==='function'&&prArranquePerfil())return;
+  if(!phModo){goPage('modo');return;}
+  if(typeof homeRender==='function')homeRender();
+}
+
+
 // INIT
 phFixNombres();
 menuCargar();
@@ -9905,6 +10093,7 @@ renderMembers();renderWheel();updateImports();
 setDiceCSS(1);renderDiceCountSel();renderDiceArea();renderCustomFaces();
 holReset();updateHandCountBtns();
 if(evCfg.on)evArrancar();else evRenderCfg();
+phPintarTabs('menu');
 goPage(salaPendiente?'sala':'menu');
 if(salaPendiente)ann('Escribe tu nombre y entra a la sala '+salaPendiente);
 </script>
