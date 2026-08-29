@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v37</title>
+<title>🎉 Party Hub v38</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -1444,6 +1444,7 @@ input[type=text]:focus,input[type=number]:focus{
 /* ===== ADMINISTRADOR Y SINCRONIZACION (v37) ===== */
 /* mientras no seas admin, no se ven los botones de editar contenido */
 body:not(.es-admin) .solo-admin{display:none !important;}
+body.es-admin #cfgBloqueado{display:none !important;}
 
 .admin-card{margin-top:16px;border-color:rgba(255,230,0,.3) !important;}
 .admin-card .card-title{color:var(--gold);text-shadow:0 0 10px rgba(255,230,0,.55);}
@@ -1473,6 +1474,88 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
   color:var(--gold);text-shadow:0 0 8px rgba(255,230,0,.6);vertical-align:middle;
 }
+
+
+/* ===== PESTAÑA DE CONFIGURACION (v38) ===== */
+.ab-cfg{
+  background:var(--card2);border:1px solid var(--border);color:var(--cian);
+  border-radius:10px;width:38px;height:34px;font-size:16px;line-height:1;
+  cursor:pointer;flex-shrink:0;
+  box-shadow:0 0 12px rgba(0,240,255,.25),inset 0 1px 0 rgba(255,255,255,.12);
+  transition:transform .12s,box-shadow .12s;
+}
+.ab-cfg:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(0,240,255,.5);}
+.ab-cfg:active{transform:translateY(1px) scale(.95);}
+
+.cfg-intro{
+  font-size:13px;line-height:1.6;color:var(--muted);
+  background:linear-gradient(150deg,rgba(0,240,255,.07),rgba(168,85,255,.05));
+  border:1px solid rgba(0,240,255,.2);border-radius:14px;
+  padding:12px 14px;margin-bottom:16px;
+}
+.cfg-intro b{color:var(--text);}
+
+.cfg-grupo{
+  display:flex;align-items:center;gap:9px;
+  font-size:13px;font-weight:900;letter-spacing:.9px;text-transform:uppercase;
+  color:var(--cian);text-shadow:0 0 12px rgba(0,240,255,.5);
+  margin:26px 0 10px;padding-bottom:8px;
+  border-bottom:1px solid rgba(0,240,255,.22);
+}
+.cfg-grupo span{font-size:19px;filter:drop-shadow(0 0 8px rgba(255,255,255,.35));}
+.cfg-nota{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:12px;}
+.cfg-nota b{color:var(--text);}
+
+/* rejilla de imagenes del menu */
+.cfg-imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.cfg-img{
+  position:relative;padding:0;border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;background:var(--card2);cursor:pointer;aspect-ratio:1;
+  display:flex;flex-direction:column;
+  transition:transform .12s,border-color .12s,box-shadow .12s;
+}
+.cfg-img:hover{transform:translateY(-3px);border-color:var(--cian);
+  box-shadow:0 0 18px rgba(0,240,255,.4);}
+.cfg-img:active{transform:translateY(0) scale(.97);}
+.cfg-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.cfg-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.cfg-img-ph span{font-size:30px;filter:drop-shadow(0 0 10px rgba(255,255,255,.4));}
+.cfg-img-n{
+  position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(0deg,rgba(5,4,14,.95),rgba(5,4,14,.6) 60%,transparent);
+  color:#fff;font-size:10px;font-weight:800;padding:14px 4px 5px;
+  text-align:center;line-height:1.2;
+}
+.cfg-img-ok{
+  position:absolute;top:5px;right:5px;width:18px;height:18px;border-radius:50%;
+  background:var(--green);color:#04140b;font-size:11px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 10px rgba(57,255,139,.7);
+}
+
+/* cuando no eres admin */
+.cfg-cerrado{
+  text-align:center;color:var(--muted);font-size:13.5px;line-height:1.65;
+  padding:26px 16px;
+}
+.cfg-cerrado .candado{font-size:38px;display:block;margin-bottom:12px;
+  filter:drop-shadow(0 0 16px rgba(255,230,0,.5));}
+.cfg-cerrado b{color:var(--text);}
+
+/* barra fija para publicar */
+.cfg-barra{
+  position:sticky;bottom:0;z-index:60;margin-top:26px;
+  padding:12px 0 16px;
+  background:linear-gradient(0deg,var(--bg) 62%,rgba(5,4,14,0));
+}
+.cfg-barra .btn{width:100%;font-size:16px;padding:14px;}
+.cfg-barra-n{text-align:center;font-size:11.5px;color:var(--muted);margin-top:7px;}
+.cfg-remite{
+  font-size:12.5px;line-height:1.6;color:var(--muted);text-align:center;
+  background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.2);
+  border-radius:12px;padding:11px 13px;margin-top:14px;
+}
+.cfg-remite b{color:var(--cian);text-shadow:0 0 8px rgba(0,240,255,.5);}
 
 </style>
 </head>
@@ -1554,6 +1637,32 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   <button class="ab-back" id="abBack" onclick="goPage('menu')">&#x2190; Men&uacute;</button>
   <div class="ab-title" id="abTitle">🎉 Party Hub</div>
   <button class="ab-sala" id="abSala" style="display:none;" onclick="goPage('sala')">📡</button>
+  <button class="ab-cfg" id="abCfg" onclick="goPage('config')" title="Configuraci&oacute;n" aria-label="Configuraci&oacute;n">&#x2699;&#xFE0F;</button>
+</div>
+
+<!-- CONFIGURACION -->
+<div class="page" id="page-config">
+  <div class="section-header" style="margin-top:6px;">
+    <div class="section-title">&#x2699;&#xFE0F; Configuraci&oacute;n</div>
+  </div>
+  <div class="card admin-card" id="adminCard">
+    <div class="card-title">&#x1F511; Administrador</div>
+    <div id="adminCuerpo"></div>
+  </div>
+  <div id="cfgBloqueado" class="cfg-cerrado">
+    <span class="candado">&#x1F512;</span>
+    Aqu&iacute; se configuran <b>todos los juegos</b>: las preguntas, los retos, los tiempos y las im&aacute;genes.<br>
+    Entra como administrador para verlo.
+  </div>
+  <div class="solo-admin" id="cfgTodo">
+    <div class="cfg-intro">Lo que cambies aqu&iacute; se guarda en este aparato. Para que le llegue a todos,
+      sube y presiona <b>Publicar para todos</b>.</div>
+    <div id="cfgDestino"></div>
+    <div class="cfg-barra">
+      <button class="btn btn-primary" id="admPub2" onclick="syPublicar()">&#x1F4E4; Publicar para todos</button>
+      <div class="cfg-barra-n">Hasta que no publiques, nadie ve tus cambios</div>
+    </div>
+  </div>
 </div>
 
 <!-- SALA EN LINEA -->
@@ -1579,10 +1688,6 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   <div class="sy-estado" id="syEstado" style="display:none;"></div>
   <div class="menu-tip solo-admin">Toca el &#x1F4F7; de cada juego para poner la imagen o el <b>GIF</b>.<br>Cuando termines, baja y presiona <b>Publicar para todos</b>.</div>
 
-  <div class="card admin-card" id="adminCard">
-    <div class="card-title">&#x1F511; Administrador</div>
-    <div id="adminCuerpo"></div>
-  </div>
   <div class="card share-card">
     <div class="card-title">&#x1F4F2; Invitar a tus amigos</div>
     <div class="qr-caja"><img id="qrImg" alt="C&oacute;digo QR del juego"/></div>
@@ -1684,7 +1789,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v37</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v38</div></div>
 </div>
 
 <!-- RULETA -->
@@ -1702,7 +1807,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
   <div class="cat-pills" id="catRuleta"></div>
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="ruleta">
     <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Opciones</div><button class="btn-outline solo-admin" id="ruletaOptsToggle" onclick="toggleCollapsible('ruletaOpts','ruletaOptsToggle')">&#x270F; Editar</button></div>
     <div class="collapsible-body" id="ruletaOpts"><div class="cat-pills" id="ruletaEditPills" style="margin-top:10px;"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="ruletaOptionsList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="ruletaInput" placeholder="Nueva opci&#xF3;n..." onkeydown="if(event.key==='Enter')phAddItem('ruleta','ruletaInput')"/><button class="btn btn-primary" onclick="phAddItem('ruleta','ruletaInput')">+</button></div><div id="memberImportRuleta" style="margin-top:8px;"></div></div>
   </div>
@@ -1768,7 +1873,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
   <div class="cat-pills" id="catTor"></div>
-  <div class="card" style="padding:12px 15px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline solo-admin" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" id="torEditTab1" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" id="torEditTab2" onclick="torTab('dare')">&#x1F525; Retos</div></div><div class="cat-pills" id="torEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
+  <div class="card" style="padding:12px 15px;" data-cfg="tor"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline solo-admin" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" id="torEditTab1" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" id="torEditTab2" onclick="torTab('dare')">&#x1F525; Retos</div></div><div class="cat-pills" id="torEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
   <div class="card"><div class="card-title">Jugar</div><div class="tor-cat-tabs"><div class="tor-cat-tab active" id="torPlayTab1" onclick="torPlayCat('truth')">&#x1F4AC; Verdad</div><div class="tor-cat-tab" id="torPlayTab2" onclick="torPlayCat('dare')">&#x1F525; Reto</div></div><div class="tor-result-box tor-truth" id="torResultBox">Elige categor&#xED;a y presiona el bot&#xF3;n</div><button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">&#x1F3B2; ELEGIR</button></div>
 </div>
 
@@ -1777,7 +1882,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   <div class="section-header" style="margin-top:6px;"><div class="section-title">🀄 Encuentra<button class="btn-reglas" onclick="verReglas('mahjong')" title="C&oacute;mo se juega" aria-label="C&oacute;mo se juega">?</button></div></div>
 
   <!-- Level selector -->
-  <div class="card" style="padding:12px 15px;margin-bottom:10px;">
+  <div class="card" style="padding:12px 15px;margin-bottom:10px;" data-cfg="mahjong">
     <div class="card-title">Nivel</div>
     <div class="mj-levels">
       <div class="mj-lvl-btn active" id="mjlvl-1" onclick="mjSetLevel(1)">🟢 Fácil<br><span style="font-size:10px;color:var(--muted);">48 fichas</span></div>
@@ -1847,7 +1952,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <button class="btn btn-gold" style="font-size:16px;padding:13px 36px;" onclick="boEmpezar()">🍾 GIRAR</button>
   </div>
 
-  <div class="card" style="margin-top:16px;padding:12px 15px;">
+  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="botella">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Retos de a dos</div>
       <button class="btn-outline solo-admin" id="boEditToggle" onclick="toggleCollapsible('boEditBody','boEditToggle')">&#x270F; Editar</button>
@@ -1885,13 +1990,13 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <div id="adPuntos"></div>
   </div>
 
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="adivina">
     <div class="card-title">Segundos para responder</div>
     <div class="bomba-presets" id="adPresets"></div>
     <button class="btn btn-secondary btn-sm" id="adTop10Btn" style="width:100%;margin-top:12px;" onclick="adToggleTop10()"></button>
   </div>
 
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="adivina">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Tus fotos</div>
       <button class="btn-outline solo-admin" id="adEditToggle" onclick="toggleCollapsible('adEditBody','adEditToggle')">&#x270F; Editar</button>
@@ -1924,22 +2029,23 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   </div>
   <button class="btn btn-secondary" id="evOnBtn" onclick="evToggle()"></button>
   <div class="ev-prox" id="evProximos" style="margin-top:10px;"></div>
+  <div class="cfg-remite">Los tiempos de cada evento y el sonido de la alarma est&aacute;n en <b>&#x2699;&#xFE0F; Configuraci&oacute;n</b>.</div>
 
-  <div class="card" style="margin-top:16px;padding:12px 15px;">
+  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="eventos">
     <div class="card-title">⚠️ Último en cerrar toma</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Salta una alarma y todos tienen que cerrarla. El último toma.</div>
     <div class="bomba-presets" id="evP1"></div>
     <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:10px;" onclick="evProbar('cerrar')">▶ Probarlo ahora</button>
   </div>
 
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="eventos">
     <div class="card-title">🎯 Sorteo de verdad, reto u obligar</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Elige un jugador al azar y le toca verdad, reto u obligar. Usa la categoría de Verdad o Reto.</div>
     <div class="bomba-presets" id="evP2"></div>
     <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:10px;" onclick="evProbar('castigo')">▶ Probarlo ahora</button>
   </div>
 
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="eventos">
     <button class="btn btn-secondary btn-sm" id="evSonBtn" style="width:100%;" onclick="evToggleSonido()"></button>
     <div style="font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6;">
       En sala, la alarma salta en todos los celulares a la vez y cada uno cierra la suya.
@@ -1958,7 +2064,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   <div style="text-align:center;margin-top:8px;">
     <button class="btn btn-gold" style="font-size:16px;padding:13px 34px;" onclick="loEmpezar()">🎴 REPARTIR</button>
   </div>
-  <div class="card" style="margin-top:16px;padding:12px 15px;">
+  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="loro">
     <div class="card-title">Cartas por jugador</div>
     <div class="bomba-presets" id="loCartas"></div>
     <button class="btn btn-secondary btn-sm" id="loTop10Btn" style="width:100%;margin-top:12px;" onclick="loToggleTop10()"></button>
@@ -1981,12 +2087,12 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <div class="card-title">Quién va ganando</div>
     <div id="tbRanking"></div>
   </div>
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="tablero">
     <div class="card-title">Vueltas para ganar</div>
     <div class="bomba-presets" id="tbVueltas"></div>
     <button class="btn btn-secondary btn-sm" id="tbTop10Btn" style="width:100%;margin-top:12px;" onclick="tbToggleTop10()"></button>
   </div>
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="tablero">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Retos del tablero</div>
       <button class="btn-outline solo-admin" id="tbEditToggle" onclick="toggleCollapsible('tbEditBody','tbEditToggle')">&#x270F; Editar</button>
@@ -2020,7 +2126,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <button class="btn btn-primary" style="flex:1;min-width:150px;padding:13px;" onclick="bsEmpezar()">🔡 EMPEZAR</button>
     <button class="btn btn-secondary" onclick="bsNoVale()">❌ No vale</button>
   </div>
-  <div class="card" style="margin-top:16px;padding:12px 15px;">
+  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="basta">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Tiempo por jugador</div>
       <div class="bomba-time-lbl" id="bsSegsLbl">10 s</div>
@@ -2042,7 +2148,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   <div style="text-align:center;">
     <button class="btn btn-primary" style="font-size:16px;padding:13px 34px;" onclick="palEmpezar()">🔤 EMPEZAR RONDA</button>
   </div>
-  <div class="card" style="margin-top:16px;padding:12px 15px;">
+  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="palabras">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Tiempo por jugador</div>
       <div class="bomba-time-lbl" id="palSegsLbl">30 s</div>
@@ -2064,7 +2170,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
   <div style="text-align:center;">
     <button class="btn btn-primary" style="font-size:16px;padding:13px 34px;" onclick="rrEmpezar()">🔄 Nueva ronda</button>
   </div>
-  <div class="card rr-noTap" style="margin-top:16px;padding:12px 15px;">
+  <div class="card rr-noTap" style="margin-top:16px;padding:12px 15px;" data-cfg="rusa">
     <div class="card-title">Modo de juego</div>
     <div class="rr-modos">
       <div class="rr-modo" id="rrModo1" onclick="rrSetModo('rapido')">⚡ Rápido<br><span style="font-size:10px;font-weight:600;">siempre dispara</span></div>
@@ -2081,7 +2187,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
       <button class="btn btn-secondary btn-sm" onclick="rrReiniciarTabla()">Reiniciar</button>
     </div>
     <div id="rrTabla"></div>
-    <button class="btn btn-secondary btn-sm" id="rrTop10Btn" style="width:100%;margin-top:10px;" onclick="rrToggleTop10()"></button>
+    <button data-cfgsuelto="rusa" class="btn btn-secondary btn-sm" id="rrTop10Btn" style="width:100%;margin-top:10px;" onclick="rrToggleTop10()"></button>
   </div>
   
 </div>
@@ -2100,7 +2206,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
       <button class="btn btn-secondary btn-sm" onclick="tpReiniciarTabla()">Reiniciar</button>
     </div>
     <div id="tpTabla"></div>
-    <button class="btn btn-secondary btn-sm" id="tpTop10Btn" style="width:100%;margin-top:10px;" onclick="tpToggleTop10()"></button>
+    <button data-cfgsuelto="reflejos" class="btn btn-secondary btn-sm" id="tpTop10Btn" style="width:100%;margin-top:10px;" onclick="tpToggleTop10()"></button>
   </div>
   
 </div>
@@ -2122,7 +2228,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
 
   <div class="cat-pills" id="catBomba"></div>
 
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="bomba">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Tiempo por pregunta</div>
       <div class="bomba-time-lbl" id="bombaTimeLbl">15 s</div>
@@ -2155,7 +2261,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <button class="btn btn-primary" id="bombaBtn" style="font-size:17px;padding:14px 42px;box-shadow:0 4px 20px rgba(233,69,96,.4);" onclick="bombaStart()">💣 JUGAR</button>
   </div>
 
-  <div class="card" style="margin-top:16px;padding:12px 15px;">
+  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="bomba">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Preguntas</div>
       <button class="btn-outline solo-admin" id="bombaEditToggle" onclick="toggleCollapsible('bombaEditBody','bombaEditToggle')">&#x270F; Editar</button>
@@ -2323,7 +2429,7 @@ body:not(.es-admin) .solo-admin{display:none !important;}
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
   <div class="cat-pills" id="catYn"></div>
-  <div class="card" style="padding:12px 15px;">
+  <div class="card" style="padding:12px 15px;" data-cfg="yonunca">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Frases</div>
       <button class="btn-outline solo-admin" id="ynOptsToggle" onclick="toggleCollapsible('ynOpts','ynOptsToggle')">&#x270F; Editar</button>
@@ -2917,6 +3023,7 @@ var menuImgs={};
 var menuPickKey='';
 var menuCargando=false;
 
+function cfgTocarMenu(){if(typeof cfgPintarImgs==='function')cfgPintarImgs();}
 function renderMenu(){
   var el=document.getElementById('menuGrid');
   if(!el)return;
@@ -3020,7 +3127,7 @@ function menuPintarModal(){
 
 // ---- carga inicial: trae lo guardado y migra lo viejo ----
 function menuCargar(){
-  setTimeout(function(){try{syArrancar();}catch(e){}},250);
+  setTimeout(function(){try{cfgMover();}catch(e){}try{syArrancar();}catch(e){}},250);
   idbTodo().then(function(guardadas){
     var viejas=ld('menuImgs',{});
     var hayViejas=Object.keys(viejas).length>0;
@@ -3100,7 +3207,7 @@ function menuAplicar(k,data,pesado){
   menuImgs[k]=data;
   menuGuardarUna(k,data).then(function(){
     menuCargando=false;
-    renderMenu();menuCerrar();
+    renderMenu();cfgTocarMenu();menuCerrar();
     ann('Imagen de '+MENU_NOMBRE[k]+' actualizada'+(pesado?' (pesa bastante, puede tardar en abrir)':''));
   }).catch(function(){
     if(previa)menuImgs[k]=previa;else delete menuImgs[k];
@@ -3119,7 +3226,7 @@ function menuQuitar(){
     var copia=ld('menuImgs',{});
     if(copia[k]){delete copia[k];localStorage.setItem('ph_menuImgs',JSON.stringify(copia));}
   }catch(e){}
-  renderMenu();menuCerrar();
+  renderMenu();cfgTocarMenu();menuCerrar();
   ann('Imagen quitada');
 }
 
@@ -3146,7 +3253,7 @@ function appbarSet(id){
     tit.textContent='🎉 Party Hub';
   } else {
     back.style.visibility='visible';
-    tit.textContent=MENU_NOMBRE[id]||'';
+    tit.textContent=(id==='config')?'⚙️ Configuración':(MENU_NOMBRE[id]||'');
   }
 }
 
@@ -6863,6 +6970,7 @@ function syArrancar(){
       if(u)fbUid=u.uid;
       document.body.classList.toggle('es-admin',SY.admin);
       syPintarAdmin();
+      if(typeof cfgPintarImgs==='function')cfgPintarImgs();
     });
   }catch(e){}
 }
@@ -6961,7 +7069,8 @@ function syPublicar(){
   var btn=document.getElementById('admPub');
   var err=document.getElementById('admErr');
   SY.publicando=true;
-  function paso(txt){if(btn)btn.textContent=txt;}
+  var btn2=document.getElementById('admPub2');
+  function paso(txt){if(btn)btn.textContent=txt;if(btn2)btn2.textContent=txt;}
   paso('Subiendo… 0 de '+nuevas.length);
 
   var i=0;
@@ -6990,10 +7099,12 @@ function syPublicar(){
       });
       syGuardarVer();
       syPintarAdmin();
+      if(btn2)btn2.textContent='📤 Publicar para todos';
       ann('📤 Publicado. Todos lo verán al abrir la app');
     })
     .catch(function(e){
       SY.publicando=false;syPintarAdmin();
+      if(btn2)btn2.textContent='📤 Publicar para todos';
       var er=document.getElementById('admErr');
       var m=(e&&e.message)||'';
       if(er)er.textContent=(m.toLowerCase().indexOf('permission')>=0)
@@ -7009,6 +7120,101 @@ function syTraer(){
     if(v){syAplicarTexto(v);ann('⬇ Contenido publicado cargado');}
     else ann('Todavía no hay nada publicado');
   }).catch(function(){ann('No se pudo leer');});
+}
+
+
+// ===== PESTAÑA DE CONFIGURACION (v38) =====
+// Todos los ajustes y el contenido editable se mudan aqui al arrancar.
+// Los juegos se quedan solo con lo de jugar.
+
+var CFG_GRUPOS=[
+  ['menuimgs','🖼','Imágenes del menú'],
+  ['ruleta',  '🎡','Ruleta'],
+  ['tor',     '🔥','Verdad o Reto'],
+  ['yonunca', '🙅','Yo Nunca'],
+  ['bomba',   '💣','Bomba'],
+  ['mahjong', '🀄','Encuentra'],
+  ['reflejos','⚡','¡Tiempo!'],
+  ['rusa',    '🔫','Ruleta Rusa'],
+  ['palabras','🔤','Palabras'],
+  ['basta',   '🔡','Basta'],
+  ['tablero', '🎲','Juego de mesa'],
+  ['loro',    '🦜','¡No es un loro!'],
+  ['adivina', '🖼','¡Adivina!'],
+  ['botella', '🍾','La botella'],
+  ['eventos', '⏰','Eventos sorpresa']
+];
+var cfgMudado=false;
+
+function cfgMover(){
+  if(cfgMudado)return;
+  var dest=document.getElementById('cfgDestino');
+  if(!dest)return;
+  cfgMudado=true;
+
+  CFG_GRUPOS.forEach(function(g){
+    var clave=g[0];
+    var tarjetas=document.querySelectorAll('[data-cfg="'+clave+'"]');
+    var sueltos=document.querySelectorAll('[data-cfgsuelto="'+clave+'"]');
+    if(!tarjetas.length&&!sueltos.length&&clave!=='menuimgs')return;
+
+    var tit=document.createElement('div');
+    tit.className='cfg-grupo';
+    tit.innerHTML='<span>'+g[1]+'</span>'+g[2];
+    dest.appendChild(tit);
+
+    if(clave==='menuimgs'){
+      var caja=document.createElement('div');
+      caja.className='card';
+      caja.innerHTML='<div class="cfg-nota">Toca una ficha para poner tu imagen o tu GIF. '
+        +'Después baja y presiona <b>Publicar</b>.</div><div class="cfg-imgs" id="cfgImgs"></div>';
+      dest.appendChild(caja);
+      return;
+    }
+
+    for(var i=0;i<tarjetas.length;i++)dest.appendChild(tarjetas[i]);
+
+    if(sueltos.length){
+      var c=document.createElement('div');
+      c.className='card';
+      c.innerHTML='<div class="card-title">Marcador</div>';
+      for(var k=0;k<sueltos.length;k++)c.appendChild(sueltos[k]);
+      dest.appendChild(c);
+    }
+  });
+}
+
+// ---- las fichas del menu, para cambiar imagenes desde aqui ----
+function cfgPintarImgs(){
+  var el=document.getElementById('cfgImgs');
+  if(!el)return;
+  el.innerHTML=MENU_JUEGOS.map(function(j){
+    var img=menuImgs[j.k];
+    var fondo=img
+      ? '<img src="'+img+'" alt="">'
+      : '<div class="cfg-img-ph" style="background:'+j.g+';"><span>'+j.e+'</span></div>';
+    return '<button class="cfg-img" onclick="menuAbrir(\''+j.k+'\')" title="Cambiar '+j.n+'">'
+      +fondo+'<div class="cfg-img-n">'+j.n+'</div>'
+      +(img?'<div class="cfg-img-ok">✓</div>':'')
+      +'</button>';
+  }).join('');
+}
+
+// ---- refrescar todos los controles que viven aqui ----
+function cfgAbrir(){
+  cfgMover();
+  if(typeof syPintarAdmin==='function')syPintarAdmin();
+  cfgPintarImgs();
+  ['bombaRenderCfg','bombaRenderEdit','rrRenderCfg','tpRenderCfg','bsRenderCfg',
+   'tbRenderCfg','tbRenderEdit','loRenderCfg','boRenderCfg','boRenderEdit',
+   'adRenderCfg','adRenderEdit','palRenderCfg','evRenderCfg',
+   'mjUpdateTimeLabel','mjUpdateHelpers'].forEach(function(f){
+    if(typeof window[f]==='function'){try{window[f]();}catch(e){}}
+  });
+  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella'].forEach(function(g){
+    if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  });
+  if(typeof updateImports==='function'){try{updateImports();}catch(e){}}
 }
 
 // POPUP
@@ -7937,6 +8143,7 @@ function goPage(id){
   appbarSet(id);
   window.scrollTo(0,0);
   if(id==='menu'){renderMenu();shareRender();salaRender();turnRefresh();return;}
+  if(id==='config'){cfgAbrir();return;}
   if(id==='sala'){salaRender();return;}
   if(id==='ruleta'){phPills('ruleta','catRuleta','ruletaCat');renderRuletaOpts();renderWheel();}
   if(id==='dados'){renderDiceArea();renderDiceCountSel();renderCustomFaces();}
