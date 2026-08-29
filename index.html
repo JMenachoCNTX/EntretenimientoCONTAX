@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v47</title>
+<title>🎉 Party Hub v48</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -2138,6 +2138,43 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
 .vo-tr.on{border-color:var(--accent);color:var(--accent);background:rgba(255,45,149,.12);
   box-shadow:0 0 12px rgba(255,45,149,.28);}
 
+
+/* ===== SUBPESTAÑAS DE AJUSTES (v48) ===== */
+.cfg-subs{
+  display:flex;gap:7px;overflow-x:auto;padding:8px 2px 10px;margin-bottom:6px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  position:sticky;top:52px;z-index:90;
+  background:linear-gradient(180deg,var(--bg) 76%,rgba(5,4,14,0));
+}
+.cfg-subs::-webkit-scrollbar{display:none;}
+.cfg-sub{
+  display:flex;align-items:center;gap:6px;flex-shrink:0;
+  padding:8px 13px;border-radius:20px;cursor:pointer;white-space:nowrap;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted);
+  font-size:12.5px;font-weight:800;font-family:inherit;transition:.15s;
+}
+.cfg-sub span{font-size:14px;}
+.cfg-sub:active{transform:scale(.95);}
+.cfg-sub.on{
+  border-color:var(--cian);color:var(--cian);background:rgba(0,240,255,.11);
+  box-shadow:0 0 14px rgba(0,240,255,.28);
+}
+.cfg-sec>.cfg-grupo:first-child{margin-top:2px;}
+
+/* versión con el nombre en edición */
+.mas-h.editando{gap:7px;}
+.mas-h-inp{
+  flex:1;min-width:0;padding:8px 10px;border-radius:10px;
+  background:var(--card);border:1px solid var(--cian);color:var(--text);
+  font-size:13px;font-weight:700;font-family:inherit;outline:none;
+}
+
+.top10-auto{
+  font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6;
+  padding:9px 12px;margin-bottom:12px;border-radius:12px;
+  background:rgba(57,255,139,.07);border:1px solid rgba(57,255,139,.22);
+}
+
 </style>
 </head>
 <body>
@@ -2292,7 +2329,8 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   </div>
   <div class="solo-admin" id="cfgTodo">
     <div class="cfg-intro">Lo que cambies aqu&iacute; se guarda en este aparato. Para que le llegue a todos,
-      sube y presiona <b>Publicar para todos</b>.</div>
+      baja y presiona <b>Publicar para todos</b>.</div>
+    <div class="cfg-subs" id="cfgSubs"></div>
     <div class="card" id="masCard">
       <div class="card-title">&#x1F916; Contenido nuevo con IA</div>
       <div class="cfg-intro" style="margin:0 0 12px;">Pide a cualquier IA (ChatGPT, Gemini, Claude&hellip;) preguntas
@@ -2417,7 +2455,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v47</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v48</div></div>
 </div>
 
 <!-- RULETA -->
@@ -2510,7 +2548,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div class="section-header" style="margin-top:6px;"><div class="section-title">🀄 Encuentra<button class="btn-reglas" onclick="verReglas('mahjong')" aria-label="Reglas de este juego">&#x1F4D6; Reglas</button></div></div>
 
   <!-- Level selector -->
-  <div class="card" style="padding:12px 15px;margin-bottom:10px;" data-cfg="mahjong">
+  <div class="card" style="padding:12px 15px;margin-bottom:10px;">
     <div class="card-title">Nivel</div>
     <div class="mj-levels">
       <div class="mj-lvl-btn active" id="mjlvl-1" onclick="mjSetLevel(1)">🟢 Fácil<br><span style="font-size:10px;color:var(--muted);">48 fichas</span></div>
@@ -2645,7 +2683,6 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
         <button class="btn btn-primary" onclick="phAddItem('botella','boInput')">+</button>
       </div>
     </div>
-    <button class="btn btn-secondary btn-sm" id="boTop10Btn" style="width:100%;margin-top:12px;" onclick="boToggleTop10()"></button>
   </div>
 
   
@@ -2674,7 +2711,6 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div class="card" style="padding:12px 15px;" data-cfg="adivina">
     <div class="card-title">Segundos para responder</div>
     <div class="bomba-presets" id="adPresets"></div>
-    <button class="btn btn-secondary btn-sm" id="adTop10Btn" style="width:100%;margin-top:12px;" onclick="adToggleTop10()"></button>
   </div>
 
   <div class="card" style="padding:12px 15px;" data-cfg="adivina">
@@ -2749,10 +2785,9 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div style="text-align:center;margin-top:8px;">
     <button class="btn btn-gold" style="font-size:16px;padding:13px 34px;" onclick="loEmpezar()">🎴 REPARTIR</button>
   </div>
-  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="loro">
+  <div class="card" style="margin-top:16px;padding:12px 15px;">
     <div class="card-title">Cartas por jugador</div>
     <div class="bomba-presets" id="loCartas"></div>
-    <button class="btn btn-secondary btn-sm" id="loTop10Btn" style="width:100%;margin-top:12px;" onclick="loToggleTop10()"></button>
   </div>
   
 </div>
@@ -2781,7 +2816,6 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div class="card" style="padding:12px 15px;" data-cfg="tablero">
     <div class="card-title">Vueltas para ganar</div>
     <div class="bomba-presets" id="tbVueltas"></div>
-    <button class="btn btn-secondary btn-sm" id="tbTop10Btn" style="width:100%;margin-top:12px;" onclick="tbToggleTop10()"></button>
   </div>
   <div class="card" style="padding:12px 15px;" data-cfg="tablero">
     <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -2819,16 +2853,18 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     <button class="btn btn-primary" style="flex:1;min-width:150px;padding:13px;" onclick="bsEmpezar()">🔡 EMPEZAR</button>
     <button class="btn btn-secondary" onclick="bsNoVale()">❌ No vale</button>
   </div>
-  <div class="card" style="margin-top:16px;padding:12px 15px;" data-cfg="basta">
+  <div class="card" style="margin-top:16px;padding:12px 15px;">
+    <div class="card-title">Tema de las palabras</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;" id="bsTemas"></div>
+  </div>
+
+  <div class="card" style="padding:12px 15px;" data-cfg="basta">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Tiempo por jugador</div>
       <div class="bomba-time-lbl" id="bsSegsLbl">10 s</div>
     </div>
     <div class="bomba-presets" id="bsPresets"></div>
-    <div class="card-title" style="margin:14px 0 8px;">Tema de las palabras</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;" id="bsTemas"></div>
     <button class="btn btn-secondary btn-sm" id="bsFacilBtn" style="width:100%;margin-top:14px;" onclick="bsToggleFaciles()"></button>
-    <button class="btn btn-secondary btn-sm" id="bsTop10Btn" style="width:100%;margin-top:8px;" onclick="bsToggleTop10()"></button>
   </div>
   
 </div>
@@ -2867,7 +2903,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   <div style="text-align:center;">
     <button class="btn btn-primary" style="font-size:16px;padding:13px 34px;" onclick="rrEmpezar()">🔄 Nueva ronda</button>
   </div>
-  <div class="card rr-noTap" style="margin-top:16px;padding:12px 15px;" data-cfg="rusa">
+  <div class="card rr-noTap" style="margin-top:16px;padding:12px 15px;">
     <div class="card-title">Modo de juego</div>
     <div class="rr-modos">
       <div class="rr-modo" id="rrModo1" onclick="rrSetModo('rapido')">⚡ Rápido<br><span style="font-size:10px;font-weight:600;">siempre dispara</span></div>
@@ -2884,7 +2920,6 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       <button class="btn btn-secondary btn-sm" onclick="rrReiniciarTabla()">Reiniciar</button>
     </div>
     <div id="rrTabla"></div>
-    <button data-cfgsuelto="rusa" class="btn btn-secondary btn-sm" id="rrTop10Btn" style="width:100%;margin-top:10px;" onclick="rrToggleTop10()"></button>
   </div>
   
 </div>
@@ -2905,7 +2940,6 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
       <button class="btn btn-secondary btn-sm" onclick="tpReiniciarTabla()">Reiniciar</button>
     </div>
     <div id="tpTabla"></div>
-    <button data-cfgsuelto="reflejos" class="btn btn-secondary btn-sm" id="tpTop10Btn" style="width:100%;margin-top:10px;" onclick="tpToggleTop10()"></button>
   </div>
   
 </div>
@@ -3171,6 +3205,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
 
 <!-- TOP 10 -->
 <div class="page" id="page-top10">
+  <div class="top10-auto">&#x1F504; Los tragos de todos los juegos se suman aqu&iacute; solos.</div>
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F3C6; Top 10 Shots<button class="btn-reglas" onclick="verReglas('top10')" aria-label="Reglas de este juego">&#x1F4D6; Reglas</button></div><button class="btn btn-secondary btn-sm" onclick="resetTop10()">Reiniciar</button></div>
   <div class="card"><div class="flex-row" style="margin-bottom:9px;"><input type="text" id="top10NameInput" placeholder="Agregar persona..." onkeydown="if(event.key==='Enter')addTop10Person()"/><button class="btn btn-primary" onclick="addTop10Person()">+</button></div><button class="btn btn-secondary btn-sm" onclick="importMembersTop10()">&#x1F4E5; Importar equipo</button></div>
   <div id="topPodio"></div>
@@ -11194,6 +11229,194 @@ masPrompt=function(){
 };
 
 
+
+// ===== AJUSTES ORDENADOS Y AUTOMATISMOS (v48) =====
+
+// ---------- 1) el Top 10 se llena solo ----------
+// Antes había un botón "Sumar los tragos al Top 10" en cada juego. Ahora
+// siempre suman, y el botón desapareció.
+var TOP10_CFGS=['tiempoCfg','rrCfg','bsCfg','tbCfg','loCfg','adCfg','boCfg'];
+function top10Siempre(){
+  TOP10_CFGS.forEach(function(k){
+    var o=window[k];
+    if(o&&typeof o==='object'&&o.alTop10!==true){o.alTop10=true;try{sv(k,o);}catch(e){}}
+  });
+}
+top10Siempre();
+// si alguien los llama igual, no apagan nada
+function tpToggleTop10(){top10Siempre();}
+function rrToggleTop10(){top10Siempre();}
+function bsToggleTop10(){top10Siempre();}
+function tbToggleTop10(){top10Siempre();}
+function loToggleTop10(){top10Siempre();}
+function adToggleTop10(){top10Siempre();}
+function boToggleTop10(){top10Siempre();}
+
+// suma al Top 10 desde cualquier lado
+function phSumaTop10(nombre,cuantos){
+  var n=Math.max(1,parseInt(cuantos,10)||1);
+  var i=-1;
+  for(var k=0;k<top10.length;k++)if(top10[k].name===nombre){i=k;break;}
+  if(i<0){top10.push({name:nombre,count:n});}
+  else top10[i].count+=n;
+  topFlash[nombre]=true;
+  sv('top10',top10);
+  if(document.getElementById('page-top10').classList.contains('active'))renderTop10();
+  if(typeof salaPushMarcador==='function')salaPushMarcador();
+}
+// la Votación también alimenta el Top 10
+var voCerrarBase=voCerrar;
+voCerrar=function(){
+  var antes=voEstado;
+  voCerrarBase();
+  if(antes!=='fin'&&voEstado==='fin'){
+    voCastigados.forEach(function(n){phSumaTop10(n,voTragos);});
+  }
+};
+
+// ---------- 2) los eventos sorpresa se encienden solos ----------
+if(evCfg&&!evCfg.on){evCfg.on=true;evGuardar();}
+var PH_NOJUEGO={menu:1,cats:1,juegos:1,members:1,invitar:1,config:1,sala:1,perfil:1,modo:1,top10:1};
+function evAsegurar(){
+  if(!evCfg.on){evCfg.on=true;evGuardar();}
+  if(!evTicker)evArrancar();
+}
+var goPageV48=goPage;
+goPage=function(id){
+  var r=goPageV48(id);
+  try{ if(!PH_NOJUEGO[id])evAsegurar(); }catch(e){}
+  return r;
+};
+
+// ---------- 3) las opciones que son del juego se quedan en el juego ----------
+CFG_GRUPOS=CFG_GRUPOS.filter(function(g){
+  return ['mahjong','reflejos','rusa','loro'].indexOf(g[0])<0;
+});
+
+// ---------- 4) la configuración, por subpestañas ----------
+var CFG_SECS=[];
+var cfgSubAct=ld('cfgSub','');
+
+function cfgSeccion(clave,emoji,titulo){
+  var s=document.createElement('div');
+  s.className='cfg-sec';
+  s.id='cfgsec-'+clave;
+  CFG_SECS.push({k:clave,e:emoji,t:titulo});
+  return s;
+}
+function cfgMover(){
+  if(cfgMudado)return;
+  var dest=document.getElementById('cfgDestino');
+  if(!dest)return;
+  cfgMudado=true;
+  CFG_SECS=[];
+
+  // el generador con IA es la primera subpestaña
+  var mas=document.getElementById('masCard');
+  if(mas){
+    var si=cfgSeccion('ia','🤖','Contenido con IA');
+    si.appendChild(mas);
+    dest.appendChild(si);
+  }
+
+  CFG_GRUPOS.forEach(function(g){
+    var clave=g[0];
+    var tarjetas=document.querySelectorAll('[data-cfg="'+clave+'"]');
+    var sueltos=document.querySelectorAll('[data-cfgsuelto="'+clave+'"]');
+    if(!tarjetas.length&&!sueltos.length&&clave!=='menuimgs')return;
+
+    var sec=cfgSeccion(clave,g[1],g[2]);
+    var tit=document.createElement('div');
+    tit.className='cfg-grupo';
+    tit.innerHTML='<span>'+g[1]+'</span>'+g[2];
+    sec.appendChild(tit);
+
+    if(clave==='menuimgs'){
+      var caja=document.createElement('div');
+      caja.className='card';
+      caja.innerHTML='<div class="cfg-nota">Toca una ficha para poner tu imagen o tu GIF. '
+        +'Después baja y presiona <b>Publicar</b>.</div><div class="cfg-imgs" id="cfgImgs"></div>';
+      sec.appendChild(caja);
+      dest.appendChild(sec);
+      return;
+    }
+    for(var i=0;i<tarjetas.length;i++)sec.appendChild(tarjetas[i]);
+    if(sueltos.length){
+      var c=document.createElement('div');
+      c.className='card';
+      c.innerHTML='<div class="card-title">Marcador</div>';
+      for(var k=0;k<sueltos.length;k++)c.appendChild(sueltos[k]);
+      sec.appendChild(c);
+    }
+    dest.appendChild(sec);
+  });
+
+  cfgPintarSubs();
+  var hay=CFG_SECS.filter(function(s){return s.k===cfgSubAct;}).length;
+  cfgSub(hay?cfgSubAct:(CFG_SECS[0]?CFG_SECS[0].k:''),true);
+}
+
+function cfgPintarSubs(){
+  var el=document.getElementById('cfgSubs');
+  if(!el)return;
+  el.innerHTML=CFG_SECS.map(function(s){
+    return '<button class="cfg-sub" id="cfgsub-'+s.k+'" onclick="cfgSub(\''+s.k+'\')">'
+      +'<span>'+s.e+'</span>'+esc(s.t)+'</button>';
+  }).join('');
+}
+function cfgSub(k,sinScroll){
+  if(!k)return;
+  cfgSubAct=k;sv('cfgSub',k);
+  CFG_SECS.forEach(function(s){
+    var sec=document.getElementById('cfgsec-'+s.k);
+    if(sec)sec.style.display=(s.k===k)?'':'none';
+    var b=document.getElementById('cfgsub-'+s.k);
+    if(b)b.classList.toggle('on',s.k===k);
+  });
+  if(sinScroll)return;
+  var act=document.getElementById('cfgsub-'+k);
+  if(act&&act.scrollIntoView)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  var subs=document.getElementById('cfgSubs');
+  if(subs&&subs.scrollIntoView)subs.scrollIntoView({block:'start',behavior:'smooth'});
+}
+
+// ---------- 5) las versiones guardadas: nombre editable ----------
+var masEditando=null;
+function masHistRenombrar(id){masEditando=id;masPintar();}
+function masHistCancelar(){masEditando=null;masPintar();}
+function masHistNombre(id){
+  var inp=document.getElementById('masNom-'+id);
+  var v=inp?String(inp.value||'').trim():'';
+  if(v.length<2){ann('Ponle un nombre de al menos 2 letras');return;}
+  phHist.forEach(function(x){if(x.id===id)x.n=v.slice(0,40);});
+  masHistSalvar();
+  masEditando=null;masPintar();
+  ann('✏️ Ahora se llama "'+v.slice(0,40)+'"');
+}
+function masHistHTML(){
+  if(!phHist.length)
+    return '<div class="mas-vacio">Todavía no hay versiones guardadas. '
+      +'La primera se guarda sola cuando apliques contenido nuevo.</div>';
+  return '<div class="mas-hist">'+phHist.slice().reverse().map(function(v){
+    if(masEditando===v.id){
+      return '<div class="mas-h editando">'
+        +'<input class="mas-h-inp" id="masNom-'+esc(v.id)+'" maxlength="40" value="'+esc(v.n)+'" '
+          +'onkeydown="if(event.key===\'Enter\')masHistNombre('+JSON.stringify(v.id)+')"/>'
+        +'<button class="btn btn-primary btn-sm" onclick="masHistNombre('+JSON.stringify(v.id)+')">Guardar</button>'
+        +'<button class="btn-icon" onclick="masHistCancelar()" title="Cancelar">✕</button>'
+        +'</div>';
+    }
+    return '<div class="mas-h">'
+      +'<div class="mas-h-d"><div class="mas-h-n">'+esc(v.n)+'</div>'
+      +'<div class="mas-h-s">'+masFecha(v.t)+' · '+v.c+' frases</div></div>'
+      +'<button class="btn-icon" onclick="masHistRenombrar('+JSON.stringify(v.id)+')" title="Cambiar el nombre">✏️</button>'
+      +'<button class="btn btn-secondary btn-sm" onclick="masHistUsar('+JSON.stringify(v.id)+')">Usar</button>'
+      +'<button class="btn-icon" onclick="masHistBorrar('+JSON.stringify(v.id)+')" title="Borrar esta versión">🗑</button>'
+      +'</div>';
+  }).join('')+'</div>';
+}
+
+
 // INIT
 phFixNombres();
 menuCargar();
@@ -11209,6 +11432,7 @@ torPlayCat(torPlayType);
 mjInitTime();
 renderMembers();renderWheel();updateImports();
 if(typeof voAsegurar==='function')voAsegurar();
+if(typeof top10Siempre==='function')top10Siempre();
 setDiceCSS(1);renderDiceCountSel();renderDiceArea();renderCustomFaces();
 holReset();updateHandCountBtns();
 if(evCfg.on)evArrancar();else evRenderCfg();
