@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v36</title>
+<title>🎉 Party Hub v37</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -1440,6 +1440,40 @@ input[type=text]:focus,input[type=number]:focus{
   box-shadow:0 0 8px rgba(0,240,255,.8);}
 .reglas-puntos b{color:#fff;}
 
+
+/* ===== ADMINISTRADOR Y SINCRONIZACION (v37) ===== */
+/* mientras no seas admin, no se ven los botones de editar contenido */
+body:not(.es-admin) .solo-admin{display:none !important;}
+
+.admin-card{margin-top:16px;border-color:rgba(255,230,0,.3) !important;}
+.admin-card .card-title{color:var(--gold);text-shadow:0 0 10px rgba(255,230,0,.55);}
+.admin-txt{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:10px;}
+.admin-card input{width:100%;margin-bottom:8px;}
+.admin-ok{font-size:13.5px;font-weight:700;color:var(--green);
+  text-shadow:0 0 10px rgba(57,255,139,.5);margin-bottom:10px;}
+.admin-ok b{color:#fff;}
+.admin-uid{
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;word-break:break-all;
+  background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.28);border-radius:10px;
+  padding:9px 11px;color:var(--cian);margin-bottom:12px;cursor:pointer;
+}
+.admin-uid:active{background:rgba(0,240,255,.16);}
+.admin-err{font-size:12.5px;color:var(--accent);margin-top:9px;min-height:16px;
+  text-shadow:0 0 8px rgba(255,45,149,.5);}
+
+/* aviso de que estan llegando las imagenes */
+.sy-estado{
+  text-align:center;font-size:12px;font-weight:700;color:var(--cian);
+  text-shadow:0 0 10px rgba(0,240,255,.5);margin:0 0 10px;
+  padding:7px 10px;border-radius:10px;
+  background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.2);
+}
+.sy-marca{
+  display:inline-flex;align-items:center;gap:5px;margin-left:8px;
+  font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--gold);text-shadow:0 0 8px rgba(255,230,0,.6);vertical-align:middle;
+}
+
 </style>
 </head>
 <body>
@@ -1542,8 +1576,13 @@ input[type=text]:focus,input[type=number]:focus{
     <div style="color:var(--muted);font-size:20px;">&rsaquo;</div>
   </div>
   <div class="menu-grid" id="menuGrid"></div>
-  <div class="menu-tip">Toca el &#x1F4F7; de cada juego para poner tu propia imagen o un <b>GIF animado</b>.<br>Se guardan en este dispositivo y las puedes cambiar cuando quieras.</div>
+  <div class="sy-estado" id="syEstado" style="display:none;"></div>
+  <div class="menu-tip solo-admin">Toca el &#x1F4F7; de cada juego para poner la imagen o el <b>GIF</b>.<br>Cuando termines, baja y presiona <b>Publicar para todos</b>.</div>
 
+  <div class="card admin-card" id="adminCard">
+    <div class="card-title">&#x1F511; Administrador</div>
+    <div id="adminCuerpo"></div>
+  </div>
   <div class="card share-card">
     <div class="card-title">&#x1F4F2; Invitar a tus amigos</div>
     <div class="qr-caja"><img id="qrImg" alt="C&oacute;digo QR del juego"/></div>
@@ -1645,7 +1684,7 @@ input[type=text]:focus,input[type=number]:focus{
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v36</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v37</div></div>
 </div>
 
 <!-- RULETA -->
@@ -1664,7 +1703,7 @@ input[type=text]:focus,input[type=number]:focus{
   </div>
   <div class="cat-pills" id="catRuleta"></div>
   <div class="card" style="padding:12px 15px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Opciones</div><button class="btn-outline" id="ruletaOptsToggle" onclick="toggleCollapsible('ruletaOpts','ruletaOptsToggle')">&#x270F; Editar</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Opciones</div><button class="btn-outline solo-admin" id="ruletaOptsToggle" onclick="toggleCollapsible('ruletaOpts','ruletaOptsToggle')">&#x270F; Editar</button></div>
     <div class="collapsible-body" id="ruletaOpts"><div class="cat-pills" id="ruletaEditPills" style="margin-top:10px;"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="ruletaOptionsList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="ruletaInput" placeholder="Nueva opci&#xF3;n..." onkeydown="if(event.key==='Enter')phAddItem('ruleta','ruletaInput')"/><button class="btn btn-primary" onclick="phAddItem('ruleta','ruletaInput')">+</button></div><div id="memberImportRuleta" style="margin-top:8px;"></div></div>
   </div>
   <div class="wheel-wrap" onclick="spinWheel()">
@@ -1729,7 +1768,7 @@ input[type=text]:focus,input[type=number]:focus{
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
   <div class="cat-pills" id="catTor"></div>
-  <div class="card" style="padding:12px 15px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" id="torEditTab1" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" id="torEditTab2" onclick="torTab('dare')">&#x1F525; Retos</div></div><div class="cat-pills" id="torEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
+  <div class="card" style="padding:12px 15px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Preguntas / Retos</div><button class="btn-outline solo-admin" id="torOptsToggle" onclick="toggleCollapsible('torOpts','torOptsToggle')">&#x270F; Editar</button></div><div class="collapsible-body" id="torOpts"><div class="tor-cat-tabs" id="torEditTabs" style="margin-top:10px;"><div class="tor-cat-tab active" id="torEditTab1" onclick="torTab('truth')">&#x1F4AC; Verdades</div><div class="tor-cat-tab" id="torEditTab2" onclick="torTab('dare')">&#x1F525; Retos</div></div><div class="cat-pills" id="torEditPills"></div><div class="cat-hint">Editas la categor&iacute;a seleccionada aqu&iacute; arriba</div><div id="torList"></div><div class="flex-row" style="margin-top:8px;"><input type="text" id="torInput" placeholder="Agregar..." onkeydown="if(event.key==='Enter')addTor()"/><button class="btn btn-primary" onclick="addTor()">+</button></div></div></div>
   <div class="card"><div class="card-title">Jugar</div><div class="tor-cat-tabs"><div class="tor-cat-tab active" id="torPlayTab1" onclick="torPlayCat('truth')">&#x1F4AC; Verdad</div><div class="tor-cat-tab" id="torPlayTab2" onclick="torPlayCat('dare')">&#x1F525; Reto</div></div><div class="tor-result-box tor-truth" id="torResultBox">Elige categor&#xED;a y presiona el bot&#xF3;n</div><button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="pickTor()">&#x1F3B2; ELEGIR</button></div>
 </div>
 
@@ -1811,7 +1850,7 @@ input[type=text]:focus,input[type=number]:focus{
   <div class="card" style="margin-top:16px;padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Retos de a dos</div>
-      <button class="btn-outline" id="boEditToggle" onclick="toggleCollapsible('boEditBody','boEditToggle')">&#x270F; Editar</button>
+      <button class="btn-outline solo-admin" id="boEditToggle" onclick="toggleCollapsible('boEditBody','boEditToggle')">&#x270F; Editar</button>
     </div>
     <div class="collapsible-body" id="boEditBody">
       <div class="cat-pills" id="boEditPills" style="margin-top:10px;"></div>
@@ -1855,7 +1894,7 @@ input[type=text]:focus,input[type=number]:focus{
   <div class="card" style="padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Tus fotos</div>
-      <button class="btn-outline" id="adEditToggle" onclick="toggleCollapsible('adEditBody','adEditToggle')">&#x270F; Editar</button>
+      <button class="btn-outline solo-admin" id="adEditToggle" onclick="toggleCollapsible('adEditBody','adEditToggle')">&#x270F; Editar</button>
     </div>
     <div class="collapsible-body" id="adEditBody">
       <div class="cat-pills" id="adEditPills" style="margin-top:10px;"></div>
@@ -1950,7 +1989,7 @@ input[type=text]:focus,input[type=number]:focus{
   <div class="card" style="padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Retos del tablero</div>
-      <button class="btn-outline" id="tbEditToggle" onclick="toggleCollapsible('tbEditBody','tbEditToggle')">&#x270F; Editar</button>
+      <button class="btn-outline solo-admin" id="tbEditToggle" onclick="toggleCollapsible('tbEditBody','tbEditToggle')">&#x270F; Editar</button>
     </div>
     <div class="collapsible-body" id="tbEditBody">
       <div class="cat-pills" id="tbEditPills" style="margin-top:10px;"></div>
@@ -2119,7 +2158,7 @@ input[type=text]:focus,input[type=number]:focus{
   <div class="card" style="margin-top:16px;padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Preguntas</div>
-      <button class="btn-outline" id="bombaEditToggle" onclick="toggleCollapsible('bombaEditBody','bombaEditToggle')">&#x270F; Editar</button>
+      <button class="btn-outline solo-admin" id="bombaEditToggle" onclick="toggleCollapsible('bombaEditBody','bombaEditToggle')">&#x270F; Editar</button>
     </div>
     <div class="collapsible-body" id="bombaEditBody">
       <div class="cat-pills" id="bombaEditPills" style="margin-top:10px;"></div>
@@ -2287,7 +2326,7 @@ input[type=text]:focus,input[type=number]:focus{
   <div class="card" style="padding:12px 15px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="card-title" style="margin-bottom:0;">Frases</div>
-      <button class="btn-outline" id="ynOptsToggle" onclick="toggleCollapsible('ynOpts','ynOptsToggle')">&#x270F; Editar</button>
+      <button class="btn-outline solo-admin" id="ynOptsToggle" onclick="toggleCollapsible('ynOpts','ynOptsToggle')">&#x270F; Editar</button>
     </div>
     <div class="collapsible-body" id="ynOpts">
       <div class="cat-pills" id="ynEditPills" style="margin-top:10px;"></div>
@@ -2889,7 +2928,7 @@ function renderMenu(){
     return '<div class="menu-card" onclick="goPage(\''+j.k+'\')">'
       +fondo
       +'<div class="menu-nombre">'+j.n+'</div>'
-      +'<button class="menu-edit" onclick="event.stopPropagation();menuAbrir(\''+j.k+'\')" title="Cambiar imagen">&#x1F4F7;</button>'
+      +'<button class="menu-edit solo-admin" onclick="event.stopPropagation();menuAbrir(\''+j.k+'\')" title="Cambiar imagen">&#x1F4F7;</button>'
       +'</div>';
   }).join('');
 }
@@ -2981,10 +3020,14 @@ function menuPintarModal(){
 
 // ---- carga inicial: trae lo guardado y migra lo viejo ----
 function menuCargar(){
+  setTimeout(function(){try{syArrancar();}catch(e){}},250);
   idbTodo().then(function(guardadas){
     var viejas=ld('menuImgs',{});
     var hayViejas=Object.keys(viejas).length>0;
-    menuImgs=guardadas||{};
+    var solo={},valid={};
+    MENU_JUEGOS.forEach(function(j){valid[j.k]=1;});
+    Object.keys(guardadas||{}).forEach(function(k){if(valid[k])solo[k]=guardadas[k];});
+    menuImgs=solo;
     if(hayViejas){
       // pasa lo que estaba en localStorage a la memoria grande y libera espacio
       var pendientes=Object.keys(viejas).map(function(k){
@@ -6647,6 +6690,325 @@ function verReglas(k){
 function cerrarReglas(ev){
   if(ev&&ev.target&&ev.target.id!=='reglasPopup'&&ev.type==='click'&&ev.currentTarget!==ev.target)return;
   document.getElementById('reglasPopup').classList.remove('open');
+}
+
+
+// ===== CONTENIDO EN LINEA Y ADMINISTRADOR (v37) =====
+// El contenido (preguntas, retos, imagenes del menu y fotos de ¡Adivina!) vive en
+// Firebase. Solo el administrador puede publicarlo. Los demas lo reciben y no editan.
+//
+// Para que la app no se ponga lenta:
+//   - el texto llega primero (pesa poco) y se aplica de una,
+//   - las imagenes se bajan DESPUES, en segundo plano y de a una,
+//   - cada imagen queda guardada en el aparato, asi solo se baja cuando cambia.
+
+var SY={
+  admin:false, correo:'', uid:'',
+  idx:{},            // lo que hay publicado: {id: version}
+  cola:[], bajando:false, total:0, hechas:0,
+  encendido:false, estado:'', publicando:false
+};
+var syVer=ld('imgVer',{});     // versiones que ya tengo bajadas
+var syCache={};                // {id: dataURI} en memoria
+
+// ---------- utilidades ----------
+function syHash(s){            // huella corta del contenido: si no cambia, no se rebaja
+  var h=0x811c9dc5;
+  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*0x01000193)>>>0;}
+  return h.toString(36)+'_'+s.length.toString(36);
+}
+function syEsMenu(id){return id.indexOf('menu_')===0;}
+function syJuegoDe(id){return id.slice(5);}
+
+function syGuardarVer(){try{sv('imgVer',syVer);}catch(e){}}
+
+// ---------- caché local ----------
+function syCargarCache(){
+  return idbTodo().then(function(todo){
+    syCache=todo||{};
+    return syCache;
+  }).catch(function(){syCache={};return syCache;});
+}
+function syMeter(id,data){
+  syCache[id]=data;
+  idbGuardar(id,data).catch(function(){});
+}
+function syQuitar(id){
+  delete syCache[id];
+  delete syVer[id];
+  if(syEsMenu(id))delete menuImgs[syJuegoDe(id)];
+  idbBorrar(id).catch(function(){});
+}
+
+// ---------- aplicar lo que llega ----------
+function syRehidratar(){       // le devuelve la foto a cada carta de ¡Adivina!
+  if(!phData||!phData.adivina)return;
+  ['aburrido','hot','extremo'].forEach(function(c){
+    var lista=phData.adivina[c];
+    if(!lista||!lista.length)return;
+    lista.forEach(function(it){
+      if(it&&it.h&&!it.img&&syCache[it.h])it.img=syCache[it.h];
+    });
+  });
+}
+
+function syAplicarTexto(txt){
+  if(!txt||typeof txt!=='object')return;
+  phData=txt;
+  // Firebase no guarda arreglos vacios: los devolvemos a su sitio
+  Object.keys(PH_DEFAULTS).forEach(function(g){
+    if(!phData[g])phData[g]={};
+    ['aburrido','hot','extremo'].forEach(function(c){
+      if(!Array.isArray(phData[g][c]))phData[g][c]=[];
+    });
+  });
+  syRehidratar();
+  phSeed();
+  syRefrescarTodo();
+}
+
+function syRefrescarTodo(){
+  try{
+    if(typeof renderRuletaOpts==='function')renderRuletaOpts();
+    if(typeof renderWheel==='function')renderWheel();
+    ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella'].forEach(function(g){
+      if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+    });
+    if(typeof bombaRenderEdit==='function'){try{bombaRenderEdit();}catch(e){}}
+    if(typeof renderMenu==='function')renderMenu();
+  }catch(e){}
+}
+
+function syAplicarImagen(id,data){
+  syMeter(id,data);
+  syVer[id]=SY.idx[id];syGuardarVer();
+  if(syEsMenu(id)){
+    menuImgs[syJuegoDe(id)]=data;
+    if(typeof renderMenu==='function')renderMenu();
+  } else {
+    syRehidratar();
+    if(typeof adRenderEdit==='function')adRenderEdit();
+  }
+}
+
+// ---------- bajar en segundo plano, de a una ----------
+function syRevisarIdx(idx){
+  SY.idx=idx||{};
+  // fuera lo que ya no esta publicado
+  var limpio=false;
+  Object.keys(syVer).forEach(function(id){
+    if(!SY.idx[id]){syQuitar(id);limpio=true;}
+  });
+  if(limpio)syGuardarVer();
+  var faltan=[];
+  Object.keys(SY.idx).forEach(function(id){
+    if(syVer[id]!==SY.idx[id]||!syCache[id])faltan.push(id);
+    else if(syEsMenu(id))menuImgs[syJuegoDe(id)]=syCache[id];
+  });
+  syRehidratar();
+  if(typeof renderMenu==='function')renderMenu();
+  if(!faltan.length){SY.estado='';syPintarEstado();return;}
+  SY.cola=faltan;SY.total=faltan.length;SY.hechas=0;
+  syBajarSiguiente();
+}
+
+function syBajarSiguiente(){
+  if(!SY.cola.length){
+    SY.bajando=false;SY.estado='';syPintarEstado();
+    return;
+  }
+  SY.bajando=true;
+  SY.estado='Bajando imágenes '+(SY.hechas+1)+' de '+SY.total+'…';
+  syPintarEstado();
+  var id=SY.cola.shift();
+  fbDB.ref('config/img/'+id).once('value').then(function(s){
+    var d=s.val();
+    if(d)syAplicarImagen(id,d);
+    SY.hechas++;
+    setTimeout(syBajarSiguiente,60);      // un respiro entre imagen e imagen
+  }).catch(function(){
+    SY.hechas++;
+    setTimeout(syBajarSiguiente,60);
+  });
+}
+
+function syPintarEstado(){
+  var el=document.getElementById('syEstado');
+  if(!el)return;
+  el.textContent=SY.estado||'';
+  el.style.display=SY.estado?'':'none';
+}
+
+// ---------- arranque ----------
+function syArrancar(){
+  if(SY.encendido)return;
+  if(!fbInit())return;               // sin internet la app sigue con lo de siempre
+  SY.encendido=true;
+  syCargarCache().then(function(){
+    try{
+      fbDB.ref('config/txt').on('value',function(s){
+        var v=s.val();
+        if(v)syAplicarTexto(v);
+      });
+      fbDB.ref('config/idx').on('value',function(s){
+        syRevisarIdx(s.val()||{});
+      });
+    }catch(e){}
+  });
+  try{
+    firebase.auth().onAuthStateChanged(function(u){
+      SY.admin=!!(u&&!u.isAnonymous);
+      SY.correo=(u&&u.email)||'';
+      SY.uid=(u&&u.uid)||'';
+      if(u)fbUid=u.uid;
+      document.body.classList.toggle('es-admin',SY.admin);
+      syPintarAdmin();
+    });
+  }catch(e){}
+}
+
+// ---------- panel del administrador ----------
+function syPintarAdmin(){
+  var el=document.getElementById('adminCuerpo');
+  if(!el)return;
+  if(!SY.admin){
+    el.innerHTML=
+      '<div class="admin-txt">El contenido de los juegos y las imágenes vienen de internet. '
+      +'Solo el administrador puede cambiarlos para todos.</div>'
+      +'<input type="email" id="admMail" placeholder="Correo" autocomplete="username"/>'
+      +'<input type="password" id="admPass" placeholder="Contraseña" autocomplete="current-password" '
+      +'onkeydown="if(event.key===\'Enter\')syEntrar()"/>'
+      +'<button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="syEntrar()">Entrar</button>'
+      +'<div class="admin-err" id="admErr"></div>';
+    return;
+  }
+  var n=Object.keys(SY.idx).length;
+  el.innerHTML=
+     '<div class="admin-ok">✅ Sesión iniciada como <b>'+SY.correo+'</b></div>'
+    +'<div class="admin-txt">Tu identificador (lo necesitas para las reglas de Firebase):</div>'
+    +'<div class="admin-uid" onclick="syCopiarUid()" title="Tocar para copiar">'+SY.uid+'</div>'
+    +'<div class="admin-txt">Publicado ahora mismo: <b>'+n+'</b> '+(n===1?'imagen':'imágenes')+'.</div>'
+    +'<button class="btn btn-primary" style="width:100%;" id="admPub" onclick="syPublicar()">📤 Publicar para todos</button>'
+    +'<button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="syTraer()">⬇ Traer lo publicado</button>'
+    +'<button class="btn btn-secondary btn-sm" style="width:100%;margin-top:8px;" onclick="sySalir()">Cerrar sesión</button>'
+    +'<div class="admin-err" id="admErr"></div>';
+}
+
+function syEntrar(){
+  var m=(document.getElementById('admMail')||{}).value||'';
+  var p=(document.getElementById('admPass')||{}).value||'';
+  var err=document.getElementById('admErr');
+  if(!m||!p){if(err)err.textContent='Escribe el correo y la contraseña';return;}
+  if(!fbInit()){if(err)err.textContent=fbFallo||'Sin conexión';return;}
+  if(err)err.textContent='Entrando…';
+  firebase.auth().signInWithEmailAndPassword(m.trim(),p).then(function(){
+    ann('🔑 Modo administrador');
+  }).catch(function(e){
+    var t=(e&&e.code)||'';
+    if(err)err.textContent=
+      (t.indexOf('wrong-password')>=0||t.indexOf('invalid-cred')>=0)?'Contraseña incorrecta':
+      (t.indexOf('user-not-found')>=0)?'Ese correo no está registrado':
+      (t.indexOf('operation-not-allowed')>=0)?'Falta activar el inicio de sesión por correo en Firebase':
+      (t.indexOf('too-many')>=0)?'Demasiados intentos, espera un momento':
+      ((e&&e.message)||'No se pudo entrar');
+  });
+}
+function sySalir(){
+  try{firebase.auth().signOut();}catch(e){}
+  fbUid='';
+  ann('Sesión cerrada');
+}
+function syCopiarUid(){
+  try{navigator.clipboard.writeText(SY.uid);ann('Identificador copiado');}
+  catch(e){ann(SY.uid);}
+}
+
+// ---------- publicar ----------
+function syArmarPaquete(){
+  // texto: todo el contenido, pero las fotos de ¡Adivina! salen aparte
+  var txt=JSON.parse(JSON.stringify(phData||{}));
+  var imgs={},idx={};
+
+  ['aburrido','hot','extremo'].forEach(function(c){
+    var lista=(txt.adivina&&txt.adivina[c])||[];
+    lista.forEach(function(it){
+      if(!it)return;
+      var data=it.img||(it.h&&syCache[it.h])||'';
+      if(data){
+        var id='ad_'+syHash(data);
+        imgs[id]=data;idx[id]=id;
+        it.h=id;
+      }
+      delete it.img;
+    });
+  });
+
+  MENU_JUEGOS.forEach(function(j){
+    var data=menuImgs[j.k];
+    if(!data)return;
+    var id='menu_'+j.k;
+    imgs[id]=data;idx[id]=syHash(data);
+  });
+
+  return {txt:txt,imgs:imgs,idx:idx};
+}
+
+function syPublicar(){
+  if(!SY.admin||SY.publicando)return;
+  var p=syArmarPaquete();
+  var nuevas=Object.keys(p.idx).filter(function(id){return SY.idx[id]!==p.idx[id];});
+  var sobran=Object.keys(SY.idx).filter(function(id){return !p.idx[id];});
+  var btn=document.getElementById('admPub');
+  var err=document.getElementById('admErr');
+  SY.publicando=true;
+  function paso(txt){if(btn)btn.textContent=txt;}
+  paso('Subiendo… 0 de '+nuevas.length);
+
+  var i=0;
+  function subir(){
+    if(i>=nuevas.length)return Promise.resolve();
+    var id=nuevas[i];
+    paso('Subiendo… '+(i+1)+' de '+nuevas.length);
+    return fbDB.ref('config/img/'+id).set(p.imgs[id]).then(function(){
+      i++;return subir();
+    });
+  }
+  subir()
+    .then(function(){
+      return Promise.all(sobran.map(function(id){
+        return fbDB.ref('config/img/'+id).remove();
+      }));
+    })
+    .then(function(){paso('Guardando el contenido…');return fbDB.ref('config/txt').set(p.txt);})
+    .then(function(){return fbDB.ref('config/idx').set(p.idx);})
+    .then(function(){
+      SY.publicando=false;
+      if(err)err.textContent='';
+      // lo que subimos ya lo tenemos: lo damos por bajado
+      Object.keys(p.idx).forEach(function(id){
+        syVer[id]=p.idx[id];syCache[id]=p.imgs[id];
+      });
+      syGuardarVer();
+      syPintarAdmin();
+      ann('📤 Publicado. Todos lo verán al abrir la app');
+    })
+    .catch(function(e){
+      SY.publicando=false;syPintarAdmin();
+      var er=document.getElementById('admErr');
+      var m=(e&&e.message)||'';
+      if(er)er.textContent=(m.toLowerCase().indexOf('permission')>=0)
+        ? 'Firebase no te deja escribir. Revisa que las reglas tengan tu identificador.'
+        : ('No se pudo publicar: '+m);
+    });
+}
+
+function syTraer(){
+  if(!fbDB)return;
+  fbDB.ref('config/txt').once('value').then(function(s){
+    var v=s.val();
+    if(v){syAplicarTexto(v);ann('⬇ Contenido publicado cargado');}
+    else ann('Todavía no hay nada publicado');
+  }).catch(function(){ann('No se pudo leer');});
 }
 
 // POPUP
