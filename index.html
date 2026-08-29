@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v44</title>
+<title>🎉 Party Hub v46</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -1954,6 +1954,88 @@ body.modo-solo #tb-sala{display:none;}
 }
 .home-abajo span{font-size:15px;}
 
+
+/* ===== 6 pestañas: un poco más apretadas (v45) ===== */
+.tb-b{padding:9px 1px 8px;}
+.tb-i{font-size:19px;}
+.tb-t{font-size:9.5px;letter-spacing:0;}
+.tb-b.on::before{width:26px;}
+
+/* ===== CONTENIDO CON IA (v45) ===== */
+.mas-paso{
+  font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--cian);margin:16px 0 8px;text-shadow:0 0 10px rgba(0,240,255,.4);
+}
+.mas-fila{display:flex;gap:8px;margin-bottom:9px;}
+.mas-tab{
+  flex:1;padding:9px 6px;border-radius:11px;cursor:pointer;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted);
+  font-size:12.5px;font-weight:800;transition:.15s;
+}
+.mas-tab.on{
+  border-color:var(--cian);color:var(--cian);background:rgba(0,240,255,.1);
+  box-shadow:0 0 12px rgba(0,240,255,.22);
+}
+.mas-sel,.mas-inp,.mas-num{
+  width:100%;padding:10px 11px;margin-bottom:9px;border-radius:11px;
+  background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-size:13px;font-family:inherit;
+}
+.mas-fila2{
+  display:flex;align-items:center;gap:10px;margin-bottom:11px;
+  font-size:12.5px;color:var(--muted);font-weight:700;
+}
+.mas-fila2 .mas-num{width:74px;margin:0;text-align:center;font-weight:800;}
+.mas-ta{
+  width:100%;min-height:118px;padding:11px;margin-bottom:9px;border-radius:12px;
+  background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-size:12px;line-height:1.55;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  resize:vertical;
+}
+.mas-res{margin-top:11px;font-size:12.5px;line-height:1.6;}
+.mas-res:empty{display:none;}
+.mas-res.mala{
+  padding:11px 12px;border-radius:12px;color:var(--gold);
+  background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.3);
+}
+.mas-res.buena{
+  padding:12px;border-radius:12px;
+  background:rgba(57,255,139,.07);border:1px solid rgba(57,255,139,.28);
+}
+.mas-res-t{font-size:13.5px;font-weight:800;color:var(--green);margin-bottom:8px;}
+.mas-res-l{margin:0 0 8px;padding-left:17px;color:var(--text);}
+.mas-res-l li{margin-bottom:3px;}
+.mas-vieja{color:var(--muted);font-size:11.5px;}
+.mas-res-n{font-size:11.5px;color:var(--muted);line-height:1.6;}
+.mas-vacio{font-size:12px;color:var(--muted);line-height:1.6;}
+.mas-hist{display:flex;flex-direction:column;gap:7px;}
+.mas-h{
+  display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:12px;
+  background:var(--card2);border:1px solid var(--border);
+}
+.mas-h-d{flex:1;min-width:0;}
+.mas-h-n{font-size:13px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mas-h-s{font-size:11px;color:var(--muted);margin-top:2px;}
+
+
+/* ===== 5 pestañas otra vez: se pueden leer mejor (v46) ===== */
+.tb-b{padding:9px 2px 8px;}
+.tb-i{font-size:20px;}
+.tb-t{font-size:10.5px;letter-spacing:.2px;}
+.tb-b.on::before{width:30px;}
+/* el atajo a la sala, arriba de Invitar */
+#salaAtajo .menu-sala{margin-bottom:14px;}
+/* el correo y la contraseña del administrador estaban sin estilo */
+input[type=email],input[type=password]{
+  background:var(--card2);border:1px solid var(--border);border-radius:11px;
+  color:var(--text);padding:11px 13px;font-size:14px;width:100%;outline:none;
+  font-family:inherit;transition:border .2s;
+}
+input[type=email]:focus,input[type=password]:focus{
+  border-color:var(--cian);box-shadow:0 0 12px rgba(0,240,255,.25);
+}
+input[type=email]::placeholder,input[type=password]::placeholder{color:var(--muted);}
+
 </style>
 </head>
 <body>
@@ -2044,7 +2126,6 @@ body.modo-solo #tb-sala{display:none;}
   <button class="ab-back" id="abBack" onclick="phAtras()">&#x2190; Volver</button>
   <div class="ab-title" id="abTitle">🎉 Party Hub</div>
   <button class="ab-sala" id="abSala" style="display:none;" onclick="goPage('sala')">📡</button>
-  <button class="ab-cfg" id="abCfg" onclick="goPage('config')" title="Configuraci&oacute;n" aria-label="Configuraci&oacute;n">&#x2699;&#xFE0F;</button>
 </div>
 
 <!-- TU PERFIL -->
@@ -2064,6 +2145,7 @@ body.modo-solo #tb-sala{display:none;}
 <!-- INVITAR -->
 <div class="page" id="page-invitar">
   <div class="section-header" style="margin-top:6px;"><div class="section-title">&#x1F4F2; Invitar amigos<button class="btn-reglas" onclick="verReglas('invitar')" aria-label="Reglas de este juego">&#x1F4D6; Reglas</button></div></div>
+  <div id="salaAtajo"></div>
   <div class="pr-slot"></div>
   <div class="card share-card">
     <div class="card-title">&#x1F4F2; Invitar a tus amigos</div>
@@ -2109,6 +2191,14 @@ body.modo-solo #tb-sala{display:none;}
   <div class="solo-admin" id="cfgTodo">
     <div class="cfg-intro">Lo que cambies aqu&iacute; se guarda en este aparato. Para que le llegue a todos,
       sube y presiona <b>Publicar para todos</b>.</div>
+    <div class="card" id="masCard">
+      <div class="card-title">&#x1F916; Contenido nuevo con IA</div>
+      <div class="cfg-intro" style="margin:0 0 12px;">Pide a cualquier IA (ChatGPT, Gemini, Claude&hellip;) preguntas
+        y retos nuevos, y p&eacute;galos aqu&iacute;. <b>Reemplaza</b> lo que hab&iacute;a, pero cada cambio queda
+        guardado abajo por si quieres volver.</div>
+      <div class="mas-paso">1. Copia el pedido y d&aacute;selo a la IA</div>
+      <div id="masCuerpo"></div>
+    </div>
     <div id="cfgDestino"></div>
     <div class="cfg-barra">
       <button class="btn btn-primary" id="admPub2" onclick="syPublicar()">&#x1F4E4; Publicar para todos</button>
@@ -2135,9 +2225,9 @@ body.modo-solo #tb-sala{display:none;}
 <!-- CATEGORIA -->
 <div class="page" id="page-cats">
   <div class="cat-chip" id="catChip" style="display:none;"></div>
-  <div class="home-sec"><span>&#x1F3AF;</span>Elige la categor&iacute;a</div>
+  <div class="home-sec"><span>&#x1F3AF;</span>Primero elige la categor&iacute;a</div>
   <div class="menu-grid" id="homeCats"></div>
-  <div class="menu-tip">La categor&iacute;a vale para <b>todos</b> los juegos. Puedes cambiarla cuando quieras.</div>
+  <div class="menu-tip">La categor&iacute;a vale para <b>todos</b> los juegos. Al elegirla se abren los juegos, y la puedes cambiar cuando quieras.</div>
 </div>
 
 <!-- JUEGOS -->
@@ -2225,7 +2315,7 @@ body.modo-solo #tb-sala{display:none;}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v44</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v46</div></div>
 </div>
 
 <!-- RULETA -->
@@ -3708,9 +3798,12 @@ function appbarSet(id){
   if(typeof phEsTab==='function'&&phEsTab(id)){
     back.style.visibility='hidden';
     tit.textContent=(id==='menu')?'🎉 Party Hub'
-      :(id==='cats')?'🎯 Categoría'
+      :(id==='cats')?'🎯 Elige la categoría'
       :(id==='juegos')?'🎮 Juegos'
+      :(id==='config')?'⚙️ Configuración'
       :(MENU_NOMBRE[id]||'');
+    // la sala se abre desde Invitar, así que sí lleva botón para volver
+    if(id==='sala')back.style.visibility='visible';
   } else if(id==='menu'){
     back.style.visibility='hidden';
     tit.textContent='🎉 Party Hub';
@@ -4274,6 +4367,7 @@ function salaRender(){
     if(salaEstado==='on'){chip.style.display='';chip.textContent='📡 '+salaCode;}
     else chip.style.display='none';
   }
+  if(typeof salaPintarAtajo==='function')salaPintarAtajo();
   if(sub)sub.textContent=(salaEstado==='on')
     ? (salaNombreActual+' · '+salaJugadores.length+' conectados')
     : 'Jueguen todos desde su propio celular';
@@ -7077,7 +7171,7 @@ var REGLAS={
   pasos:['Escribe el nombre y presiona + Agregar.',
          'Toca el lápiz de cada uno para ponerle un avatar o una foto.',
          'Iniciar turnos ordena a todos al azar; el turno va pasando solo en todos los juegos.'],
-  tip:'Desde el Top 10 puedes importar esta misma lista con un botón.'},
+  tip:'El orden de los turnos es el mismo orden en que aparecen en esta lista.'},
 
  ruleta:{e:'🎡',t:'Ruleta',
   obj:'Gira y haz lo que salga.',
@@ -7085,7 +7179,7 @@ var REGLAS={
          'Toca la ruleta para girarla.',
          'Sale un reto y le toca al que esté en turno.',
          'Si no lo hace, toma.'],
-  tip:'En ✏ Editar agregas tus propias opciones. Cada categoría guarda las suyas.'},
+  tip:'Cada categoría tiene sus propias opciones: al cambiarla cambia lo que puede salir.'},
 
  dados:{e:'🎲',t:'Dados',
   obj:'Tirar dados para lo que se les ocurra.',
@@ -7100,7 +7194,7 @@ var REGLAS={
          'El del turno elige Verdad o Reto.',
          'La app le saca una al azar de esa categoría.',
          'Si no cumple, toma.'],
-  tip:'En ✏ Editar agregas tus propias verdades y retos.'},
+  tip:'La categoría manda: en Hot y en Extremo las verdades y los retos suben de tono.'},
 
  bomba:{e:'💣',t:'Bomba',
   obj:'Contesta antes de que explote.',
@@ -7108,7 +7202,7 @@ var REGLAS={
          'Sale una pregunta con opciones y la bomba empieza a correr.',
          'Si aciertas antes de que llegue a cero, te salvas.',
          'Si fallas o se te acaba el tiempo, explota y tomas.'],
-  tip:'El tiempo se ajusta de 3 a 120 segundos. En ✏ Editar pones tus preguntas y marcas cuál es la correcta.'},
+  tip:'El tiempo se ajusta de 3 a 120 segundos: mientras menos tiempo, más nervios.'},
 
  todis:{e:'🎰',t:'TODIS',
   obj:'Cinco letras, cinco castigos. Sale una al azar.',
@@ -7172,7 +7266,7 @@ var REGLAS={
          '🍀 <b>Suerte</b> — avanzas, retrocedes o vuelves a tirar.',
          '💤 <b>Descanso</b> — pierdes el turno.',
          '🏁 <b>Salida</b>.'],
-  tip:'Los retos del tablero se editan y usan la categoría que elijas.'},
+  tip:'Los retos de las casillas salen de la categoría que estén jugando.'},
 
  loro:{e:'🦜',t:'¡No es un loro!',
   obj:'Quedarte sin cartas antes que nadie.',
@@ -7189,7 +7283,7 @@ var REGLAS={
          'Tiene 5 segundos para decir la respuesta en voz alta.',
          'Si acierta, suma un punto.',
          'Si falla o se le acaba el tiempo, toma y quedan los demás para intentarlo.'],
-  tip:'Las fotos las cargas tú en ✏ Editar. Los segundos también se ajustan.'},
+  tip:'Los segundos que se ve la foto se pueden ajustar: menos tiempo, más difícil.'},
 
  botella:{e:'🍾',t:'La botella',
   obj:'La botella elige a dos y les toca un reto juntos.',
@@ -7198,7 +7292,7 @@ var REGLAS={
          'Nunca sale la misma persona dos veces.',
          'Les toca el reto que salga según la categoría elegida.',
          'Si no quieren hacerlo, toman los dos.'],
-  tip:'Los retos de a dos se editan en ✏ Editar.'},
+  tip:'Los retos son para las DOS personas que quedaron enfrentadas, no para una sola.'},
 
  eventos:{e:'⏰',t:'Eventos sorpresa',
   obj:'Que la app los interrumpa sola mientras juegan otra cosa.',
@@ -7225,7 +7319,7 @@ var REGLAS={
   pasos:['Presiona el botón y sale una frase: "Yo nunca nunca…".',
          'Toma el que SÍ lo haya hecho.',
          'Toca + en cada uno que tomó para llevar la cuenta.'],
-  tip:'En ✏ Editar agregas tus propias frases por categoría.'},
+  tip:'Cada categoría trae sus propias frases: en Extremo van sin filtro.'},
 
  top10:{e:'🏆',t:'Top 10 Shots',
   obj:'El marcador de tragos de toda la noche.',
@@ -7677,6 +7771,7 @@ function cfgAbrir(){
     if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
   });
   if(typeof updateImports==='function'){try{updateImports();}catch(e){}}
+  if(typeof masPintar==='function'){try{masPintar();}catch(e){}}
 }
 
 
@@ -9673,7 +9768,7 @@ function goPage(id){
   if(typeof salaMarcarPagina==='function')salaMarcarPagina(id);
   if(typeof phPintarPresencia==='function')phPintarPresencia();
   if(typeof salaPintarLobby==='function')salaPintarLobby();
-  if(id==='invitar'){shareRender();if(typeof prPintar==='function')prPintar();return;}
+  if(id==='invitar'){shareRender();if(typeof prPintar==='function')prPintar();if(typeof salaPintarAtajo==='function')salaPintarAtajo();return;}
   if(id==='menu'){homeRender();turnRefresh();phPintarChip();return;}
   if(id==='cats'){homeCategorias();phPintarChip();return;}
   if(id==='juegos'){renderMenu();homeCategorias();salaRender();turnRefresh();phPintarChip();return;}
@@ -10073,6 +10168,438 @@ function phArranqueCat(){
   if(typeof prArranquePerfil==='function'&&prArranquePerfil())return;
   if(!phModo){goPage('modo');return;}
   if(typeof homeRender==='function')homeRender();
+}
+
+
+
+// ===== PESTAÑAS NUEVAS, REGLAS LIMPIAS Y CONTENIDO CON IA (v45) =====
+
+// ---------- 1) Jugadores e Invitar salen del menú y bajan a las pestañas ----------
+MENU_JUEGOS=MENU_JUEGOS.filter(function(j){return j.k!=='members'&&j.k!=='invitar';});
+PH_TABS=[
+  {k:'menu',   e:'🏠', t:'Inicio'},
+  {k:'cats',   e:'🎯', t:'Categoría'},
+  {k:'juegos', e:'🎮', t:'Juegos'},
+  {k:'members',e:'👥', t:'Jugadores'},
+  {k:'invitar',e:'📲', t:'Invitar'},
+  {k:'sala',   e:'📡', t:'Sala'}
+];
+
+// ---------- 2) contenido masivo hecho con IA ----------
+// Grupos de texto que la IA puede rellenar. 'adivina' no está: son fotos.
+var MAS_JUEGOS=[
+  {k:'ruleta', n:'Ruleta',        q:'castigos y premios cortos que caen en la ruleta'},
+  {k:'truth',  n:'Verdades',      q:'preguntas de "Verdad", siempre en pregunta'},
+  {k:'dare',   n:'Retos',         q:'retos de "Reto", una acción que se hace ahí mismo'},
+  {k:'yn',     n:'Yo Nunca',      q:'frases que empiezan exactamente con "Yo nunca nunca "'},
+  {k:'cartas', n:'Cartas',        q:'castigos cortos que salen al sacar una carta'},
+  {k:'tablero',n:'Juego de mesa', q:'retos cortos para las casillas del tablero'},
+  {k:'botella',n:'Botella',       q:'retos para las DOS personas que quedan enfrentadas'},
+  {k:'bomba',  n:'Bomba',         q:'preguntas de trivia con 3 opciones, la primera es la correcta'}
+];
+var MAS_ALIAS={
+  ruleta:'ruleta', truth:'verdad', dare:'reto', yn:'yonunca',
+  cartas:'cartas', tablero:'tablero', botella:'botella', bomba:'bomba'
+};
+var MAS_DE_ALIAS={};
+Object.keys(MAS_ALIAS).forEach(function(k){MAS_DE_ALIAS[MAS_ALIAS[k]]=k;});
+// nombres sueltos que la IA podría usar igual
+['verdades:truth','retos:dare','yo nunca:yn','yonunca:yn','nunca:yn','trivia:bomba',
+ 'preguntas:bomba','mesa:tablero','juego de mesa:tablero','carta:cartas',
+ 'la botella:botella','ruletas:ruleta'].forEach(function(p){
+  var x=p.split(':');MAS_DE_ALIAS[x[0]]=x[1];
+});
+var MAS_CATS={aburrido:'aburrido',hot:'hot',extremo:'extremo',
+  suave:'aburrido',picante:'hot',fuerte:'extremo'};
+
+var masCfg=ld('masCfg',{alcance:'todo',juego:'truth',cat:'todas',tema:'',cuantas:15});
+function masGuardarCfg(){sv('masCfg',masCfg);}
+function masSet(campo,v){
+  masCfg[campo]=v;masGuardarCfg();
+  if(campo==='alcance'||campo==='juego'||campo==='cat')masPintar();
+}
+
+// ---------- el texto que se le pasa a la IA ----------
+function masPrompt(){
+  var cats=(masCfg.cat==='todas')?['aburrido','hot','extremo']:[masCfg.cat];
+  var juegos=(masCfg.alcance==='todo')?MAS_JUEGOS
+    :MAS_JUEGOS.filter(function(j){return j.k===masCfg.juego;});
+  var n=Math.max(3,Math.min(60,parseInt(masCfg.cuantas,10)||15));
+  var tema=String(masCfg.tema||'').trim();
+
+  var t='Eres el creador de contenido de "Party Hub", un juego de fiesta para adultos, en español de Bolivia, natural y divertido.\n\n';
+  t+='Escribe '+n+' frases NUEVAS para cada bloque que te pido abajo.\n\n';
+  t+='Las 3 categorías significan:\n';
+  t+='- aburrido: suave, sirve para cualquiera, sin nada subido de tono.\n';
+  t+='- hot: coqueto y atrevido, con doble sentido, pero sin ser explícito.\n';
+  t+='- extremo: sin filtro, va en serio, para gente de mucha confianza.\n\n';
+  if(tema)t+='TEMA O AMBIENTE que debes respetar: '+tema+'\n\n';
+  t+='Reglas de escritura:\n';
+  t+='- Frases cortas, máximo 14 palabras, que se entiendan de una.\n';
+  t+='- Nada repetido, ni parecido entre sí.\n';
+  t+='- Sin numerarlas, sin comillas, sin emojis.\n';
+  t+='- Tratamiento de "tú", no de "usted".\n\n';
+  t+='FORMATO DE LA RESPUESTA (respétalo exacto, sin ningún texto extra antes ni después):\n\n';
+  t+='[juego][categoria]\n- frase\n- frase\n\n';
+  t+='Bloques que tienes que entregar:\n';
+  juegos.forEach(function(j){
+    cats.forEach(function(c){
+      t+='\n['+MAS_ALIAS[j.k]+']['+c+']  -> '+n+' '+j.q;
+    });
+  });
+  t+='\n\nOjo con "bomba": cada línea va así, separada por barras, y la PRIMERA opción es la correcta:\n';
+  t+='- ¿Pregunta? | respuesta correcta | opción falsa | opción falsa\n';
+  return t;
+}
+function masVerPrompt(){
+  var el=document.getElementById('masPromptCaja');
+  if(!el)return;
+  var abierto=el.style.display!=='none';
+  el.style.display=abierto?'none':'';
+  if(!abierto)el.value=masPrompt();
+}
+function masCopiar(){
+  var txt=masPrompt();
+  function viejo(){
+    var ta=document.getElementById('masPromptCaja');
+    if(!ta)return ann('No se pudo copiar');
+    ta.style.display='';ta.value=txt;ta.focus();ta.select();
+    try{document.execCommand('copy');ann('📋 Prompt copiado');}
+    catch(e){ann('Selecciona el texto y cópialo a mano');}
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ann('📋 Prompt copiado — pégaselo a la IA');},viejo);
+  } else viejo();
+}
+
+// ---------- leer lo que devolvió la IA ----------
+function masLimpiar(t){
+  return String(t||'').replace(/```[a-z]*\n?/gi,'').replace(/\r/g,'');
+}
+function masNormal(x){
+  x=String(x==null?'':x).toLowerCase().trim();
+  try{x=x.normalize('NFD').replace(/[\u0300-\u036f]/g,'');}catch(e){}
+  return x;
+}
+function masCabecera(linea){
+  var l=masNormal(linea).replace(/[#*>]/g,' ').replace(/[\[\]]/g,' ')
+        .replace(/\s+/g,' ').replace(/[:\.]+$/,'').trim();
+  if(!l||l.length>44)return null;
+  var partes=l.split(/[^a-z0-9]+/).filter(Boolean);
+  var g=null,c=null,resto=[];
+  // busca la categoría
+  for(var i=0;i<partes.length;i++){
+    if(MAS_CATS[partes[i]]&&!c)c=MAS_CATS[partes[i]];
+    else resto.push(partes[i]);
+  }
+  if(!c)return null;
+  // busca el juego, primero por palabras juntas y luego sueltas
+  var junto=resto.join(' ');
+  if(MAS_DE_ALIAS[junto])g=MAS_DE_ALIAS[junto];
+  if(!g)for(var z=0;z<resto.length;z++){if(MAS_DE_ALIAS[resto[z]]){g=MAS_DE_ALIAS[resto[z]];break;}}
+  if(!g)return null;
+  return {g:g,c:c};
+}
+function masItem(linea){
+  return String(linea).replace(/^\s*(?:[-*•·—]+|\d+[\.\)])\s*/,'').replace(/^["“']|["”']$/g,'').trim();
+}
+function masBomba(t){
+  var p=t.split('|').map(function(x){return x.trim();}).filter(Boolean);
+  if(p.length<3)return null;
+  var q=p[0], op=p.slice(1,4);
+  while(op.length<3)op.push('—');
+  var correcta=0;
+  for(var i=0;i<op.length;i++){
+    if(/^\*/.test(op[i])||/\*$/.test(op[i])){correcta=i;op[i]=op[i].replace(/^\*|\*$/g,'').trim();}
+  }
+  return {q:q,o:op,c:correcta};
+}
+function masParse(texto){
+  var t=masLimpiar(texto).trim();
+  if(!t)return {datos:{},error:'No pegaste nada.'};
+  // ¿es JSON?
+  if(/^[\{\[]/.test(t)){
+    try{
+      var j=JSON.parse(t),out={};
+      Object.keys(j).forEach(function(k){
+        var g=MAS_DE_ALIAS[masNormal(k)]||(MAS_ALIAS[k]?k:null);
+        if(!g)return;
+        out[g]={};
+        Object.keys(j[k]).forEach(function(c){
+          var cc=MAS_CATS[masNormal(c)];
+          if(!cc||!Array.isArray(j[k][c]))return;
+          out[g][cc]=j[k][c].filter(Boolean);
+        });
+      });
+      return {datos:out};
+    }catch(e){/* seguimos con el formato de líneas */}
+  }
+  var lineas=t.split('\n'),out2={},act=null,vistos=0;
+  lineas.forEach(function(L){
+    if(!L.trim())return;
+    var cab=masCabecera(L);
+    if(cab){act=cab;if(!out2[cab.g])out2[cab.g]={};if(!out2[cab.g][cab.c])out2[cab.g][cab.c]=[];return;}
+    if(!act)return;
+    var it=masItem(L);
+    if(!it||it.length<3)return;
+    if(act.g==='bomba'){
+      var b=masBomba(it);
+      if(b){out2.bomba[act.c].push(b);vistos++;}
+    } else {
+      out2[act.g][act.c].push(it);vistos++;
+    }
+  });
+  if(!vistos)return {datos:{},error:'No encontré ninguna frase. Revisa que la IA haya usado las cabeceras tipo [verdad][hot].'};
+  return {datos:out2};
+}
+
+// ---------- revisar antes de aplicar ----------
+var masPendiente=null;
+function masRevisar(){
+  var ta=document.getElementById('masPegar');
+  var r=masParse(ta?ta.value:'');
+  var el=document.getElementById('masResumen');
+  if(!el)return;
+  if(r.error){masPendiente=null;el.className='mas-res mala';el.innerHTML='⚠️ '+esc(r.error);return;}
+  var total=0,filas=[];
+  Object.keys(r.datos).forEach(function(g){
+    Object.keys(r.datos[g]).forEach(function(c){
+      var n=r.datos[g][c].length;
+      if(!n)return;
+      total+=n;
+      var nom=(MAS_JUEGOS.filter(function(x){return x.k===g;})[0]||{}).n||g;
+      filas.push('<li><b>'+esc(nom)+'</b> · '+esc(PH_CATLBL[c]||c)+' → <b>'+n+'</b> nuevas '
+        +'<span class="mas-vieja">(reemplaza '+((phData[g]&&phData[g][c])?phData[g][c].length:0)+')</span></li>');
+    });
+  });
+  if(!total){masPendiente=null;el.className='mas-res mala';el.innerHTML='⚠️ No encontré frases válidas.';return;}
+  masPendiente=r.datos;
+  el.className='mas-res buena';
+  el.innerHTML='<div class="mas-res-t">Listo para aplicar: <b>'+total+'</b> frases</div>'
+    +'<ul class="mas-res-l">'+filas.join('')+'</ul>'
+    +'<div class="mas-res-n">Se <b>reemplaza</b> lo que había en esos bloques. Antes de cambiar nada '
+    +'se guarda una copia en el historial, por si quieres volver.</div>'
+    +'<button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="masAplicar()">✅ Aplicar y guardar versión</button>';
+}
+function masAplicar(){
+  if(!masPendiente)return ann('Primero toca Revisar');
+  if(!phHist.length)masHistGuardar('Contenido original');
+  var total=0;
+  Object.keys(masPendiente).forEach(function(g){
+    if(!phData[g])phData[g]={};
+    Object.keys(masPendiente[g]).forEach(function(c){
+      var arr=masPendiente[g][c];
+      if(!arr||!arr.length)return;
+      phData[g][c]=arr.slice();
+      total+=arr.length;
+    });
+  });
+  phSave();
+  var tema=String(masCfg.tema||'').trim();
+  masHistGuardar(tema||'Actualización con IA');
+  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella','bomba'].forEach(function(g){
+    if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  });
+  if(typeof syncRuleta==='function'){try{syncRuleta();}catch(e){}}
+  if(typeof bombaRenderEdit==='function'){try{bombaRenderEdit();}catch(e){}}
+  masPendiente=null;
+  var ta=document.getElementById('masPegar');if(ta)ta.value='';
+  masPintar();
+  ann('✅ '+total+' frases nuevas. No olvides Publicar para todos.');
+}
+
+// ---------- historial de versiones ----------
+var phHist=ld('histCont',[]);
+var MAS_HIST_MAX=12;
+var masSeq=0;
+function masHistGuardar(nombre){
+  phHist.push({
+    id:String(Date.now())+'-'+(++masSeq),
+    t:Date.now(),
+    n:String(nombre||'Versión').slice(0,40),
+    c:masContar(phData),
+    d:JSON.parse(JSON.stringify(phData))
+  });
+  while(phHist.length>MAS_HIST_MAX)phHist.shift();
+  masHistSalvar();
+}
+function masHistSalvar(){
+  try{sv('histCont',phHist);}
+  catch(e){
+    // si no entra, botamos las más viejas
+    while(phHist.length>2){
+      phHist.shift();
+      try{sv('histCont',phHist);return;}catch(e2){}
+    }
+  }
+}
+function masContar(d){
+  var n=0;
+  Object.keys(d||{}).forEach(function(g){
+    ['aburrido','hot','extremo'].forEach(function(c){
+      if(Array.isArray(d[g][c]))n+=d[g][c].length;
+    });
+  });
+  return n;
+}
+function masFecha(ts){
+  var f=new Date(ts);
+  var m=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  function dos(n){return (n<10?'0':'')+n;}
+  return f.getDate()+' '+m[f.getMonth()]+' '+dos(f.getHours())+':'+dos(f.getMinutes());
+}
+function masHistUsar(id){
+  var v=phHist.filter(function(x){return x.id===id;})[0];
+  if(!v)return;
+  masHistGuardar('Antes de volver a "'+v.n+'"');
+  phData=JSON.parse(JSON.stringify(v.d));
+  phSave();
+  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella','bomba'].forEach(function(g){
+    if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  });
+  if(typeof syncRuleta==='function'){try{syncRuleta();}catch(e){}}
+  masPintar();
+  ann('↩️ Volviste a "'+v.n+'". Publica para que le llegue a todos.');
+}
+function masHistBorrar(id){
+  phHist=phHist.filter(function(x){return x.id!==id;});
+  masHistSalvar();masPintar();
+}
+function masHistHTML(){
+  if(!phHist.length)
+    return '<div class="mas-vacio">Todavía no hay versiones guardadas. '
+      +'La primera se guarda sola cuando apliques contenido nuevo.</div>';
+  return '<div class="mas-hist">'+phHist.slice().reverse().map(function(v){
+    return '<div class="mas-h">'
+      +'<div class="mas-h-d"><div class="mas-h-n">'+esc(v.n)+'</div>'
+      +'<div class="mas-h-s">'+masFecha(v.t)+' · '+v.c+' frases</div></div>'
+      +'<button class="btn btn-secondary btn-sm" onclick="masHistUsar('+JSON.stringify(v.id)+')">Usar</button>'
+      +'<button class="btn-icon" onclick="masHistBorrar('+JSON.stringify(v.id)+')" title="Borrar esta versión">🗑</button>'
+      +'</div>';
+  }).join('')+'</div>';
+}
+
+// ---------- la tarjeta entera ----------
+function masPintar(){
+  var el=document.getElementById('masCuerpo');
+  if(!el)return;
+  var h='';
+  h+='<div class="mas-fila">'
+    +'<button class="mas-tab'+(masCfg.alcance==='todo'?' on':'')+'" onclick="masSet(\'alcance\',\'todo\')">Todos los juegos</button>'
+    +'<button class="mas-tab'+(masCfg.alcance==='uno'?' on':'')+'" onclick="masSet(\'alcance\',\'uno\')">Un solo juego</button>'
+    +'</div>';
+  if(masCfg.alcance==='uno'){
+    h+='<select class="mas-sel" onchange="masSet(\'juego\',this.value)">'
+      +MAS_JUEGOS.map(function(j){
+        return '<option value="'+j.k+'"'+(masCfg.juego===j.k?' selected':'')+'>'+j.n+'</option>';
+      }).join('')+'</select>';
+  }
+  h+='<select class="mas-sel" onchange="masSet(\'cat\',this.value)">'
+    +'<option value="todas"'+(masCfg.cat==='todas'?' selected':'')+'>Las 3 categorías</option>'
+    +['aburrido','hot','extremo'].map(function(c){
+      return '<option value="'+c+'"'+(masCfg.cat===c?' selected':'')+'>Solo '+PH_CATLBL[c]+'</option>';
+    }).join('')+'</select>';
+  h+='<input class="mas-inp" type="text" maxlength="60" placeholder="Tema o ambiente (opcional): cumpleaños, parejas, sin alcohol…" '
+    +'value="'+esc(masCfg.tema||'')+'" oninput="masSet(\'tema\',this.value)"/>';
+  h+='<div class="mas-fila2"><span>Frases por bloque</span>'
+    +'<input class="mas-num" type="number" min="3" max="60" value="'+(masCfg.cuantas||15)+'" '
+    +'oninput="masSet(\'cuantas\',this.value)"/></div>';
+  h+='<div class="mas-fila">'
+    +'<button class="btn btn-primary" style="flex:2;" onclick="masCopiar()">📋 Copiar prompt</button>'
+    +'<button class="btn btn-secondary" style="flex:1;" onclick="masVerPrompt()">👁 Ver</button>'
+    +'</div>';
+  h+='<textarea id="masPromptCaja" class="mas-ta" style="display:none;" readonly></textarea>';
+  h+='<div class="mas-paso">2. Pega aquí lo que te dio la IA</div>';
+  h+='<textarea id="masPegar" class="mas-ta" placeholder="[verdad][hot]&#10;- ¿Cuál fue tu peor cita?&#10;- ..."></textarea>';
+  h+='<button class="btn btn-secondary" style="width:100%;" onclick="masRevisar()">🔎 Revisar</button>';
+  h+='<div class="mas-res" id="masResumen"></div>';
+  h+='<div class="mas-paso">Versiones guardadas</div>'+masHistHTML();
+  el.innerHTML=h;
+}
+
+
+
+// ===== ORDEN NUEVO DE PESTAÑAS (v46) =====
+// Inicio · Juegos · Jugadores · Invitar · Configuración
+// La categoría dejó de ser pestaña: vive DENTRO de Juegos. Si todavía no
+// eligieron una, la pestaña Juegos muestra las categorías; recién al elegir
+// se pasa al menú de juegos.
+
+PH_TABS=[
+  {k:'menu',   e:'🏠', t:'Inicio'},
+  {k:'juegos', e:'🎮', t:'Juegos'},
+  {k:'members',e:'👥', t:'Jugadores'},
+  {k:'invitar',e:'📲', t:'Invitar'},
+  {k:'config', e:'⚙️', t:'Ajustes'}
+];
+// 'cats' y 'sala' no tienen pestaña propia, pero la barra se sigue viendo
+var PH_TABS_EXTRA={cats:'juegos', sala:'invitar'};
+
+function phEsTab(id){
+  if(PH_TABS_EXTRA[id])return true;
+  for(var i=0;i<PH_TABS.length;i++)if(PH_TABS[i].k===id)return true;
+  return false;
+}
+function phPintarTabs(id){
+  var bar=document.getElementById('tabbar');
+  if(!bar)return;
+  if(!bar.firstChild)bar.innerHTML=phTabbarHTML();
+  document.body.classList.toggle('hay-tabs',phEsTab(id));
+  var marcada=PH_TABS_EXTRA[id]||id;
+  PH_TABS.forEach(function(t){
+    var b=document.getElementById('tb-'+t.k);
+    if(b)b.classList.toggle('on',t.k===marcada);
+  });
+}
+
+// el botón ← de arriba
+function phAtras(){
+  if(phPagActual==='sala')return goPage('invitar');
+  if(phPagActual==='cats')return goPage('menu');
+  return goPage('juegos');
+}
+
+// ---------- la pestaña Juegos pide primero la categoría ----------
+var goPageBase=goPage;
+goPage=function(id){
+  if(id==='juegos'&&typeof phCatG!=='undefined'&&!phCatG)id='cats';
+  return goPageBase(id);
+};
+
+// al elegir la categoría, recién ahí se avanza al menú de juegos
+function phElegirCat(c){
+  if(!PH_CATINFO[c])return;
+  phCatG=c;sv('catGlobal',c);
+  phAplicarGlobal(c);
+  ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella'].forEach(function(g){
+    if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}
+  });
+  if(typeof syncRuleta==='function'){try{syncRuleta();}catch(e){}}
+  homeCategorias();
+  phPintarChip();
+  if(!phModo){goPage('modo');return;}
+  ann(PH_CATINFO[c].e+' Categoría: '+PH_CATINFO[c].t);
+  goPage('juegos');
+}
+function phSalirCat(){goPageBase('cats');}
+
+// ---------- la sala se entra desde Invitar ----------
+function salaAtajoHTML(){
+  var enSala=(typeof salaEstado!=='undefined'&&salaEstado==='on');
+  return '<div class="menu-sala" onclick="goPageBase(\'sala\')">'
+    +'<div class="menu-sala-ico">📡</div>'
+    +'<div class="menu-sala-txt">'
+      +'<div class="menu-sala-t">Sala en línea</div>'
+      +'<div class="menu-sala-s">'+(enSala
+          ? esc(salaNombreActual||'')+' · '+salaCode
+          : 'Jueguen todos desde su propio celular')+'</div>'
+    +'</div>'
+    +'<div style="color:var(--muted);font-size:20px;">›</div>'
+  +'</div>';
+}
+function salaPintarAtajo(){
+  var el=document.getElementById('salaAtajo');
+  if(el)el.innerHTML=salaAtajoHTML();
 }
 
 
