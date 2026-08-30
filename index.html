@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v58</title>
+<title>🎉 Party Hub v59</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -3416,6 +3416,53 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
   box-shadow:0 8px 26px rgba(0,0,0,.55);
 }
 
+
+/* ===== EN SALA, TODOS VEN LO MISMO (v59) ===== */
+
+/* el aviso de "espera tu turno" */
+#tuBar{
+  display:none;position:sticky;top:0;z-index:98;
+  padding:8px 10px 4px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(12,10,26,.96),rgba(12,10,26,.72) 70%,transparent);
+}
+#tuBar.on{display:block;}
+.tu-in{
+  max-width:640px;margin:0 auto;
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:999px;
+  background:linear-gradient(150deg,rgba(96,72,20,.96),rgba(48,32,8,.96));
+  border:1px solid rgba(255,209,102,.4);
+  box-shadow:0 8px 26px rgba(0,0,0,.55);
+}
+.tu-pt{
+  width:9px;height:9px;border-radius:50%;background:#ffd166;flex-shrink:0;
+  box-shadow:0 0 10px #ffd166;animation:slLate 1.1s ease-in-out infinite;
+}
+.tu-tx{flex:1;min-width:0;line-height:1.25;}
+.tu-tx b{display:block;font-size:10px;font-weight:900;letter-spacing:1.2px;
+  text-transform:uppercase;color:rgba(255,220,150,.8);}
+.tu-tx span{display:block;font-size:14.5px;font-weight:900;color:#fff;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* cuando no es tu turno, los botones de jugar quedan apagados */
+body.no-turno [onclick^="spinWheel"],
+body.no-turno [onclick^="rollDice"],
+body.no-turno [onclick^="rollCustomDie"],
+body.no-turno [onclick^="drawRandomCard"],
+body.no-turno [onclick^="drawCustomCard"],
+body.no-turno [onclick^="ynPick"],
+body.no-turno [onclick^="bombaStart"],
+body.no-turno [onclick^="playTodis"],
+body.no-turno .bomba-opt,
+body.no-turno .die-scene,
+body.no-turno .td-tablero,
+body.no-turno #page-tor .tor-b{
+  opacity:.34 !important;
+  filter:grayscale(.65);
+  pointer-events:none !important;
+  cursor:not-allowed;
+}
+
 </style>
 </head>
 <body>
@@ -3600,6 +3647,7 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
   <button class="ab-sala" id="abSala" style="display:none;" onclick="goPage('sala')">📡</button>
 </div>
 <div id="slBar"></div>
+<div id="tuBar"></div>
 
 <!-- TU PERFIL -->
 <div class="page cat-portada" id="page-perfil">
@@ -3795,7 +3843,7 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v58</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v59</div></div>
 </div>
 
 <!-- RULETA -->
@@ -14872,6 +14920,356 @@ phEsperaHTML=function(faltan,accion){
   if(!l.length)return '';
   return phEsperaHTMLV58(l,accion);
 };
+
+
+
+// ===== EN SALA, TODOS VEN LO MISMO (v59) =====
+// Antes, los juegos "de un solo celular" (ruleta, dados, verdad o reto,
+// TODIS, cartas, yo nunca, bomba) corrían sueltos en cada teléfono: cada uno
+// sacaba su propio resultado y había que mirar la pantalla del que jugaba.
+// Ahora, en sala:
+//   * solo juega quien tiene el turno; a los demás se les traba el botón;
+//   * lo que le sale a esa persona aparece igual en todas las pantallas;
+//   * la categoría también es del grupo, la pone quien manda.
+
+// ---------- ¿me toca a mí? ----------
+function phTurnoDe(){
+  if(typeof turnActive==='undefined'||!turnActive||!turnOrder||!turnOrder.length)return '';
+  return memberName(turnOrder[turnIdx%turnOrder.length]);
+}
+function phMeToca(){
+  if(salaEstado!=='on')return true;         // un solo celular: juega cualquiera
+  var q=phTurnoDe();
+  if(!q)return true;                        // sin turnos: juega cualquiera
+  return q===phYo();
+}
+function phPuedoJugar(){
+  if(phMeToca())return true;
+  ann('🔒 Le toca a '+phTurnoDe());
+  return false;
+}
+
+// ---------- el aviso de "espera tu turno" ----------
+var PH_TURNO_PAGS={ruleta:1,dados:1,tor:1,todis:1,cartas:1,yonunca:1,bomba:1};
+function phPintarTurno(){
+  var pag=(typeof phPagActual!=='undefined')?phPagActual:'';
+  var no=(salaEstado==='on'&&PH_TURNO_PAGS[pag]&&!phMeToca());
+  document.body.classList.toggle('no-turno',!!no);
+  var bar=document.getElementById('tuBar');
+  if(!bar)return;
+  if(!no){bar.classList.remove('on');bar.innerHTML='';return;}
+  bar.innerHTML='<div class="tu-in"><span class="tu-pt"></span>'
+    +'<div class="tu-tx"><b>Espera tu turno</b><span>Juega '+esc(phTurnoDe())+'</span></div>'
+    +'</div>';
+  bar.classList.add('on');
+}
+
+// ---------- el canal de resultados de la sala ----------
+var slResUlt=0, slAplicando=false, slNoPub=false;
+
+function slResPub(t,d){
+  if(salaEstado!=='on'||!salaRef||slAplicando||slNoPub)return;
+  var n=Date.now()*1000+Math.floor(Math.random()*1000);
+  slResUlt=n;
+  var ahora=(typeof fbServerNow==='function')?fbServerNow():Date.now();
+  try{salaRef.child('res').set({n:n,t:t,quien:phYo(),ts:ahora,d:d||{}});}catch(e){}
+}
+
+var SL_RES={};
+function slResAplicar(v){
+  if(!v||!v.n)return;
+  if(v.n===slResUlt)return;
+  slResUlt=v.n;
+  if(v.quien===phYo())return;                 // yo ya lo vi en vivo
+  var ahora=(typeof fbServerNow==='function')?fbServerNow():Date.now();
+  if(ahora-(v.ts||0)>40000)return;            // resultado viejo, no lo repito
+  var f=SL_RES[v.t];
+  if(!f)return;
+  slAplicando=true;
+  try{f(v.d||{},v.quien);}catch(e){}
+  slAplicando=false;
+}
+
+// ---------- lo que ve el que NO jugó ----------
+SL_RES.pop=function(d,quien){
+  showPopup(d.e||'',d.ti||'',phDe(quien,d.s),d.r||'',d.dv);
+};
+SL_RES.dados=function(d,quien){
+  showMultiDicePopup(d.v||[],d.tot||0);
+  phFirmaNv(quien);
+};
+SL_RES.dadoc=function(d,quien){
+  showPopupCustomDie(d.txt||'');
+  phFirmaNv(quien);
+};
+SL_RES.tor=function(d,quien){
+  if(quien&&d.tipo){torUsado[quien]=torUsado[quien]||{};torUsado[quien][d.tipo]=1;
+    if(torUsado[quien].truth&&torUsado[quien].dare)torUsado[quien]={};
+    sv('torUsado',torUsado);}
+  torFull(d.tipo||'truth',d.txt||'');
+  if(typeof torPintar==='function')torPintar();
+};
+SL_RES.carta=function(d,quien){
+  if(!d||!d.c)return;
+  cnRevelar(d.c);
+  phFirmaCn(quien);
+};
+SL_RES.cartatxt=function(d,quien){
+  cnTextoFull(d.txt||'');
+  phFirmaCn(quien);
+};
+SL_RES.todis=function(d,quien){
+  var L=d.L||'T';
+  var i=TD_ORDEN.indexOf(L);
+  if(i<0)i=0;
+  tdApagarTodas();tdEncender(i,'gana');
+  var pie=document.getElementById('tdPie');
+  if(pie){pie.textContent=TODIS_DATA[L].action;pie.className='td-pie listo';
+          pie.style.color=TODIS_DATA[L].color;}
+  tdFull(L,TODIS_DATA[L]);
+  phFirmaTd(quien);
+};
+SL_RES.bom=function(d,quien){
+  bnBoomFull(d.m||'',d.q||'',d.r||'');
+};
+SL_RES.yn=function(d,quien){
+  ynMostrar(d.txt||'',quien);
+};
+
+// firma "le tocó a Fulano" debajo del resultado
+function phDe(quien,base){
+  if(!quien)return base||'';
+  return (base?base+' · ':'')+'Le tocó a '+quien;
+}
+function phFirmaNv(quien){
+  if(!quien)return;
+  var s=document.getElementById('nvSub');
+  if(!s)return;
+  s.textContent=(s.textContent?s.textContent+' · ':'')+'Le tocó a '+quien;
+  s.style.display='';
+}
+function phFirmaTd(quien){
+  if(!quien)return;
+  var t=document.getElementById('tdSub');
+  if(t)t.textContent=(t.textContent?t.textContent+' · ':'')+'Le tocó a '+quien;
+}
+function phFirmaCn(quien){
+  if(!quien)return;
+  var n=document.getElementById('cnNombre');
+  if(n)n.innerHTML=n.innerHTML+' · Le tocó a '+esc(quien);
+}
+
+// ---------- se enganchan los juegos ----------
+var showPopupV59=showPopup;
+showPopup=function(e,ti,s,r,dv){
+  showPopupV59(e,ti,s,r,dv);
+  if(!slAplicando)slResPub('pop',{e:e||'',ti:ti||'',s:s||'',r:r||'',dv:dv});
+};
+var showMultiDicePopupV59=showMultiDicePopup;
+showMultiDicePopup=function(res,tot){
+  showMultiDicePopupV59(res,tot);
+  if(!slAplicando)slResPub('dados',{v:res,tot:tot});
+};
+var showPopupCustomDieV59=showPopupCustomDie;
+showPopupCustomDie=function(txt){
+  showPopupCustomDieV59(txt);
+  if(!slAplicando)slResPub('dadoc',{txt:txt});
+};
+var torFullV59=torFull;
+torFull=function(tipo,texto){
+  torFullV59(tipo,texto);
+  if(!slAplicando)slResPub('tor',{tipo:tipo,txt:texto});
+};
+var cnRevelarV59=cnRevelar;
+cnRevelar=function(c){
+  cnRevelarV59(c);
+  if(!slAplicando)slResPub('carta',{c:c});
+};
+var tdFullV59=tdFull;
+tdFull=function(L,d){
+  tdFullV59(L,d);
+  if(!slAplicando)slResPub('todis',{L:L});
+};
+var bnBoomFullV59=bnBoomFull;
+bnBoomFull=function(m,q,r){
+  bnBoomFullV59(m,q,r);
+  if(!slAplicando)slResPub('bom',{m:m||'',q:q||'',r:r||''});
+};
+
+// la carta con texto: se saca a su propia función para poder repetirla
+function cnTextoFull(v){
+  var el=document.getElementById('customCardResult');
+  if(el)el.textContent=v;
+  var ov=document.getElementById('cnFull');
+  if(!ov)return;
+  var w=Math.min(300,Math.round(Math.min(window.innerWidth*0.76,window.innerHeight*0.44)));
+  var h=Math.round(w*1.5);
+  document.getElementById('cnFlipFrente').innerHTML=cnCartaTexto(v,w,h);
+  document.getElementById('cnFlipAtras').innerHTML=cnDorso(w,h);
+  var nom=document.getElementById('cnNombre');
+  if(nom)nom.innerHTML='Carta del mazo';
+  ov.className='cn-full abierto';
+  var f=document.getElementById('cnFlip');
+  f.classList.remove('girada');
+  if(cnTimer)clearTimeout(cnTimer);
+  cnTimer=setTimeout(function(){f.classList.add('girada');},420);
+}
+function drawCustomCard(){
+  if(!phPuedoJugar())return;
+  var lista=phItems('cartas',phCat.cartas||'mixto');
+  if(!lista.length){ann('Sin cartas en esta categoría');return;}
+  var v=lista[Math.floor(Math.random()*lista.length)];
+  cnTextoFull(v);
+  slResPub('cartatxt',{txt:v});
+  if(typeof turnAdvance==='function')turnAdvance();
+}
+
+// ---------- Yo Nunca ----------
+function ynMostrar(frase,quien){
+  var res=document.getElementById('ynResult');
+  if(!res)return;
+  res.style.background='linear-gradient(135deg,rgba(233,69,96,.15),rgba(124,58,237,.15))';
+  res.style.borderColor='rgba(233,69,96,.4)';
+  res.innerHTML=
+    '<div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;">Yo nunca nunca...</div>'
+    +'<div style="font-size:clamp(16px,4vw,22px);font-weight:800;color:var(--text);line-height:1.4;animation:todisIn .35s cubic-bezier(.34,1.56,.64,1);">'+esc(frase)+'</div>'
+    +'<div style="font-size:12px;color:var(--muted);">Quien S&Iacute; lo ha hecho &rarr; toma un trago</div>'
+    +(quien?'<div style="font-size:11px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);">La sac&oacute; '+esc(quien)+'</div>':'');
+  if(typeof ynRenderScores==='function')ynRenderScores();
+}
+function ynPick(){
+  if(!phPuedoJugar())return;
+  var lista=phItems('yn',phCat.yn||'mixto');
+  if(!lista||!lista.length)lista=ynData;
+  if(!lista||!lista.length){ann('Sin frases en esta categoría');return;}
+  var frase=lista[Math.floor(Math.random()*lista.length)];
+  ynMostrar(frase,'');
+  slResPub('yn',{txt:frase});
+  if(typeof turnAdvance==='function')turnAdvance(true);
+}
+
+// ---------- los botones solo los toca quien tiene el turno ----------
+var spinWheelV59=spinWheel;
+spinWheel=function(){ if(!phPuedoJugar())return; spinWheelV59(); };
+var rollDiceV59=rollDice;
+rollDice=function(){ if(!phPuedoJugar())return; rollDiceV59(); };
+var rollCustomDieV59=rollCustomDie;
+rollCustomDie=function(){ if(!phPuedoJugar())return; rollCustomDieV59(); };
+var drawRandomCardV59=drawRandomCard;
+drawRandomCard=function(){ if(!phPuedoJugar())return; drawRandomCardV59(); };
+var torElegirV59=torElegir;
+torElegir=function(t){ if(!phPuedoJugar())return; torElegirV59(t); };
+var playTodisV59=playTodis;
+playTodis=function(){ if(!phPuedoJugar())return; playTodisV59(); };
+var bombaStartV59=bombaStart;
+bombaStart=function(){ if(!phPuedoJugar())return; bombaStartV59(); };
+var bombaAnswerV59=bombaAnswer;
+bombaAnswer=function(i){ if(!phPuedoJugar())return; bombaAnswerV59(i); };
+
+// ---------- la categoría también es del grupo ----------
+var phElegirCatV59=phElegirCat;
+phElegirCat=function(c){
+  if(salaEstado==='on'&&!slAplicando){
+    if(!slMando()){ann('🎯 La categoría la pone '+slNombreMando());return;}
+    try{salaRef.child('cat').set({c:c,ts:Date.now()});}catch(e){}
+  }
+  phElegirCatV59(c);
+};
+var slCatUlt='';
+function slAplicarCat(v){
+  var c=(v&&v.c)||'';
+  if(!c||c===slCatUlt)return;
+  slCatUlt=c;
+  if(phCatG===c)return;
+  slAplicando=true;
+  try{
+    phCatG=c;sv('catGlobal',c);
+    phAplicarGlobal(c);
+    ['ruleta','truth','dare','yn','cartas','tablero','adivina','botella','bomba','votop','votot']
+      .forEach(function(g){if(typeof phRefresh==='function'){try{phRefresh(g);}catch(e){}}});
+    if(typeof syncRuleta==='function'){try{syncRuleta();}catch(e){}}
+    if(typeof homeCategorias==='function')homeCategorias();
+    if(typeof phPintarChip==='function')phPintarChip();
+    ann((PH_CATINFO[c]?PH_CATINFO[c].e+' ':'')+'Categoría del grupo: '+(PH_CATINFO[c]?PH_CATINFO[c].t:c));
+  }catch(e){}
+  slAplicando=false;
+}
+
+// ---------- los turnos arrancan solos en la sala ----------
+function slTurnosListos(){
+  if(salaEstado!=='on'||!slMando())return;
+  if(turnActive&&turnOrder.length)return;
+  if(!members.length||members.length<2)return;
+  turnOrder=mjRandShuffle(members.slice());
+  turnIdx=0;turnActive=true;
+  turnRefresh();turnShowOrder();
+  var nb=document.getElementById('turnNextBtn');if(nb)nb.style.display='';
+  salaPushTurnos();
+}
+
+// ---------- todo pasa por el mismo sitio ----------
+// refuerzo del barrido de fantasmas: aunque se pierda un aviso de la sala,
+// se vuelve a intentar cada pocos segundos
+var slFant=[];
+function slBarrerFantasmas(){
+  if(salaEstado!=='on'||!salaRef||!slFant.length)return;
+  var ks=salaJugadores.slice().sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+  if(!ks.length||ks[0].uid!==fbUid)return;
+  var lista=slFant.slice();
+  slFant=[];
+  lista.forEach(function(uid){
+    if(uid===fbUid)return;
+    try{salaRef.child('jugadores/'+uid).remove();}catch(e){}
+  });
+}
+if(typeof slFantTimer!=='undefined'&&slFantTimer)clearInterval(slFantTimer);
+var slFantTimer=setInterval(slBarrerFantasmas,3000);
+
+var salaAplicarV59=salaAplicar;
+salaAplicar=function(snap){
+  var crudo=(snap&&snap.val)?snap.val():snap;
+  slFant=[];
+  if(crudo&&crudo.jugadores){
+    Object.keys(crudo.jugadores).forEach(function(uid){
+      var j=crudo.jugadores[uid];
+      var nn=(j&&typeof j.n==='string')?j.n.trim():'';
+      if(!nn)slFant.push(uid);
+    });
+  }
+  salaAplicarV59(snap);
+  if(slFant.length)setTimeout(slBarrerFantasmas,150);
+  var v=(snap&&snap.val)?snap.val():snap;
+  if(!v)return;
+  if(typeof slAplicarCat==='function')slAplicarCat(v.cat);
+  slResAplicar(v.res);
+  if(salaJuego&&salaJuego.k&&PH_TURNO_PAGS[salaJuego.k])slTurnosListos();
+  phPintarTurno();
+};
+
+// El aviso de "Turno de X" no debe pisar el resultado del juego: en sala se
+// anuncia con el mensajito de arriba, no a pantalla completa.
+var turnAdvanceV59=turnAdvance;
+turnAdvance=function(silent){
+  turnAdvanceV59(salaEstado==='on'?true:silent);
+};
+var turnStartV59=turnStart;
+turnStart=function(){
+  slNoPub=true;
+  try{turnStartV59();}catch(e){}
+  slNoPub=false;
+};
+
+var turnRefreshV59=turnRefresh;
+turnRefresh=function(){ turnRefreshV59(); phPintarTurno(); };
+
+var goPageV59=goPage;
+goPage=function(id){ goPageV59(id); phPintarTurno(); };
+
+// ---------- ya casi ninguno es "de un solo celular" ----------
+// Ruleta, Dados, Verdad o Reto, TODIS, Cartas, Yo Nunca y Bomba ahora se
+// juegan por turnos y todos ven el resultado. El único que sigue siendo
+// de un solo aparato es Encuentra, que es un rompecabezas personal.
+PH_SOLOJUEGO={mahjong:1};
 
 
 // INIT
