@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v52</title>
+<title>🎉 Party Hub v53</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -2626,6 +2626,164 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   color:rgba(255,255,255,.35);
 }
 
+
+/* ===== PODIO DE NEÓN EN 3D (v53) ===== */
+.pd3{
+  position:relative;margin:2px 0 18px;padding:14px 0 6px;border-radius:20px;
+  overflow:hidden;background:#0b0718;
+  border:1px solid rgba(255,255,255,.07);
+}
+.pd3-fondo{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(58% 46% at 50% 62%,rgba(120,60,255,.30),transparent 70%),
+    radial-gradient(40% 34% at 18% 30%,rgba(0,240,255,.16),transparent 70%),
+    radial-gradient(40% 34% at 84% 26%,rgba(255,45,149,.16),transparent 70%),
+    repeating-linear-gradient(0deg,transparent 0 26px,rgba(255,255,255,.028) 26px 27px),
+    repeating-linear-gradient(90deg,transparent 0 26px,rgba(255,255,255,.028) 26px 27px);
+}
+.pd3-chispas{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.pd3-chispas i{
+  position:absolute;bottom:-8px;width:3px;height:3px;border-radius:50%;
+  background:#fff;box-shadow:0 0 8px #7ee3ff,0 0 16px #7ee3ff;opacity:0;
+  animation:pdChispa 6s linear infinite;
+}
+@keyframes pdChispa{
+  0%{transform:translateY(0) scale(.6);opacity:0;}
+  12%{opacity:.9;}
+  85%{opacity:.5;}
+  100%{transform:translateY(-230px) scale(1.1);opacity:0;}
+}
+
+.pd3-mesa{
+  position:relative;perspective:900px;perspective-origin:50% -130%;
+  padding:26px 6px 0;
+}
+.pd3-escena{
+  display:flex;align-items:flex-end;justify-content:center;gap:12px;
+  transform-style:preserve-3d;
+  animation:pdVaiven 9s ease-in-out infinite;
+}
+@keyframes pdVaiven{
+  0%,100%{transform:rotateY(-15deg);}
+  50%    {transform:rotateY(15deg);}
+}
+
+.pd-col{
+  position:relative;width:96px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  transform-style:preserve-3d;
+  animation:pdSube .75s cubic-bezier(.2,.9,.3,1.25) both;
+}
+.pd-col.pd-2{animation-delay:.05s;}
+.pd-col.pd-1{animation-delay:.22s;}
+.pd-col.pd-3{animation-delay:.38s;}
+/* la entrada NO puede animar opacidad: aplanaría el 3D de la columna */
+@keyframes pdSube{
+  from{transform:translate3d(0,54px,0) scale3d(.82,.82,1);}
+  to{transform:translate3d(0,0,0) scale3d(1,1,1);}
+}
+
+/* la copa que flota sobre el primero */
+.pd-copa{
+  position:relative;font-size:40px;line-height:1;margin-bottom:2px;
+  transform:translateZ(30px);
+  filter:drop-shadow(0 0 10px rgba(255,230,0,.85)) drop-shadow(0 0 26px rgba(255,180,0,.6));
+  animation:pdFlota 3.2s ease-in-out infinite;
+}
+@keyframes pdFlota{
+  0%,100%{transform:translateY(0) rotate(-3deg);}
+  50%{transform:translateY(-9px) rotate(3deg);}
+}
+.pd-rayo{
+  position:absolute;left:50%;top:70%;width:70px;height:74px;margin-left:-35px;
+  background:radial-gradient(50% 100% at 50% 0%,rgba(255,230,0,.30),transparent 70%);
+  filter:blur(7px);
+  pointer-events:none;animation:pdLate 2.6s ease-in-out infinite;
+}
+@keyframes pdLate{0%,100%{opacity:.75;}50%{opacity:.35;}}
+
+.pd-cabeza{display:flex;flex-direction:column;align-items:center;gap:3px;margin-bottom:50px;
+  transform:translateZ(30px);}
+.pd-med{font-size:19px;line-height:1;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));}
+.pd-av{
+  width:44px;height:44px;border-radius:50%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:#0d0a1e;border:2px solid var(--c);
+  box-shadow:0 0 14px var(--luz),inset 0 0 12px rgba(255,255,255,.08);
+  font-size:18px;font-weight:900;color:var(--c);
+}
+.pd-nom{
+  font-size:11.5px;font-weight:900;max-width:94px;text-align:center;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:#fff;text-shadow:0 0 8px var(--luz);
+}
+.pd-tragos{font-size:10.5px;font-weight:800;color:var(--c);text-shadow:0 0 8px var(--luz);}
+.pd-tragos span{color:var(--muted);font-weight:700;}
+
+/* el bloque en 3D */
+.pd-caja{
+  position:relative;width:96px;height:var(--h);
+  transform-style:preserve-3d;
+}
+.pd-cara{position:absolute;left:50%;top:50%;border-radius:9px;}
+.pd-frente{
+  width:96px;height:var(--h);margin-left:-48px;margin-top:calc(var(--h) / -2);
+  transform:translateZ(23px);
+  background:linear-gradient(170deg,#191430,#0a0718 60%,#141029);
+  border:2px solid var(--c);
+  box-shadow:0 0 16px var(--luz),inset 0 0 22px rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:center;
+}
+.pd-lado{
+  width:46px;height:var(--h);margin-left:-23px;margin-top:calc(var(--h) / -2);
+  transform:rotateY(90deg) translateZ(48px);
+  background:linear-gradient(170deg,#181233,#070510);
+  border:2px solid var(--c);
+  box-shadow:inset 0 0 20px rgba(0,0,0,.65),0 0 14px var(--luz);
+}
+.pd-tapa{
+  width:96px;height:46px;margin-left:-48px;margin-top:-23px;
+  transform:rotateX(90deg) translateZ(calc(var(--h) / 2));
+  background:linear-gradient(160deg,var(--c),var(--c2));
+  box-shadow:0 0 24px var(--luz),inset 0 0 14px rgba(255,255,255,.35);
+}
+.pd-pos{
+  font-size:44px;font-weight:900;line-height:1;color:var(--c);
+  text-shadow:0 0 10px var(--luz),0 0 26px var(--luz);
+  animation:pdPulso 2.8s ease-in-out infinite;
+}
+@keyframes pdPulso{0%,100%{opacity:1;}50%{opacity:.66;}}
+.pd-halo{
+  position:absolute;bottom:-16px;left:50%;width:120px;height:26px;margin-left:-60px;
+  border-radius:50%;background:var(--luz);filter:blur(11px);opacity:.65;
+  animation:pdLate 3s ease-in-out infinite;
+}
+
+/* la tarima con las tiras encendidas */
+.pd3-base{
+  position:relative;margin:12px auto 4px;width:88%;max-width:330px;
+  display:flex;flex-direction:column;gap:5px;align-items:center;
+}
+.pd3-base i{
+  display:block;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,transparent,#39d7ff,#a855ff,#ff4fd8,transparent);
+  box-shadow:0 0 12px rgba(120,120,255,.75);
+  animation:pdTira 3.4s ease-in-out infinite;
+}
+.pd3-base i:nth-child(1){width:100%;}
+.pd3-base i:nth-child(2){width:86%;animation-delay:.35s;}
+.pd3-base i:nth-child(3){width:70%;animation-delay:.7s;}
+@keyframes pdTira{0%,100%{opacity:1;filter:brightness(1);}50%{opacity:.55;filter:brightness(1.5);}}
+
+@media (max-width:380px){
+  .pd3-escena{gap:7px;}
+  .pd-col,.pd-caja{width:84px;}
+  .pd-frente,.pd-tapa{width:84px;margin-left:-42px;}
+  .pd-lado{transform:rotateY(90deg) translateZ(42px);}
+  .pd-nom{max-width:82px;}
+}
+
 </style>
 </head>
 <body>
@@ -2948,7 +3106,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v52</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v53</div></div>
 </div>
 
 <!-- RULETA -->
@@ -12870,6 +13028,61 @@ turnRefresh=function(){
   turnRefreshV52();
   try{torPintar();}catch(e){}
 };
+
+
+
+// ===== PODIO DE NEÓN EN 3D (v53) =====
+// El Top 10 abre con un podio isométrico: 2º · 1º · 3º, con la copa
+// flotando sobre el primero y las tiras de neón encendidas.
+
+var PD_COL={
+  1:{c:'#ffe600',c2:'#a88a00',luz:'rgba(255,230,0,.55)',copa:'🥇'},
+  2:{c:'#39d7ff',c2:'#0a6f8e',luz:'rgba(57,215,255,.5)', copa:'🥈'},
+  3:{c:'#ff4fd8',c2:'#8e1a72',luz:'rgba(255,79,216,.5)', copa:'🥉'}
+};
+var PD_ALTO={1:132,2:96,3:74};
+
+function pdCol(p,puesto){
+  var col=PD_COL[puesto],av=topAvatar(p.name);
+  var h=PD_ALTO[puesto];
+  return '<div class="pd-col pd-'+puesto+'" style="--c:'+col.c+';--c2:'+col.c2+';--luz:'+col.luz+';--h:'+h+'px;">'
+    +(puesto===1?'<div class="pd-copa">🏆<div class="pd-rayo"></div></div>':'')
+    +'<div class="pd-cabeza">'
+      +'<div class="pd-med">'+col.copa+'</div>'
+      +'<div class="pd-av">'+(av?avatarHTML(av,40):esc(String(p.name).charAt(0).toUpperCase()))+'</div>'
+      +'<div class="pd-nom">'+esc(p.name)+'</div>'
+      +'<div class="pd-tragos">'+p.count+' <span>shots</span></div>'
+    +'</div>'
+    +'<div class="pd-caja">'
+      +'<div class="pd-cara pd-frente"><span class="pd-pos">'+puesto+'</span></div>'
+      +'<div class="pd-cara pd-lado"></div>'
+      +'<div class="pd-cara pd-tapa"></div>'
+    +'</div>'
+    +'<div class="pd-halo"></div>'
+  +'</div>';
+}
+
+function topPodio(orden){
+  var conPuntos=(orden||[]).filter(function(p){return p.count>0;});
+  if(!conPuntos.length)return '';
+  var t=conPuntos.slice(0,3);
+  // orden visual: 2º · 1º · 3º
+  var visual=[];
+  if(t[1])visual.push({p:t[1],n:2});
+  if(t[0])visual.push({p:t[0],n:1});
+  if(t[2])visual.push({p:t[2],n:3});
+  return '<div class="pd3">'
+    +'<div class="pd3-fondo"></div>'
+    +'<div class="pd3-chispas">'+[0,1,2,3,4,5,6,7].map(function(i){
+        return '<i style="left:'+(6+i*12)+'%;animation-delay:'+(i*0.7)+'s;'
+          +'animation-duration:'+(5+(i%4))+'s;"></i>';
+      }).join('')+'</div>'
+    +'<div class="pd3-mesa"><div class="pd3-escena">'
+      +visual.map(function(v){return pdCol(v.p,v.n);}).join('')
+    +'</div>'
+    +'<div class="pd3-base"><i></i><i></i><i></i></div>'
+    +'</div></div>';
+}
 
 
 // INIT
