@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v50</title>
+<title>🎉 Party Hub v51</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -2395,12 +2395,135 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
   to{transform:none;opacity:1;}
 }
 
+
+/* ===== CARTAS v51 ===== */
+.cr-modo{font-size:12px;color:var(--muted);text-align:center;margin-bottom:12px;line-height:1.6;}
+.cr-modo b{color:var(--cn-cian);}
+.cr-fila2,.cr-tragos{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;
+  font-size:12px;color:var(--muted);font-weight:800;
+}
+.cr-fila2 span,.cr-tragos span{margin-right:4px;}
+.cr-prog{text-align:center;font-size:11.5px;color:var(--muted);margin-top:10px;font-weight:700;}
+
+/* --- mano secreta --- */
+.mn-lista{display:flex;flex-direction:column;gap:8px;}
+.mn-p{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:13px;
+  background:var(--card2);border:1px solid var(--border);
+}
+.mn-p.mio{border-color:var(--cn-cian);box-shadow:0 0 14px rgba(57,215,255,.25);}
+.mn-p.visto{opacity:.72;}
+.mn-av{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;background:var(--card);
+  border:1px solid var(--border);}
+.mn-n{flex:1;min-width:0;font-size:13.5px;font-weight:800;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mn-ok{font-size:11.5px;font-weight:800;color:var(--green);flex-shrink:0;}
+.mn-esp{font-size:11.5px;color:var(--muted);flex-shrink:0;}
+.mn-mesa{display:flex;flex-direction:column;gap:11px;margin-bottom:14px;}
+.mn-fila{
+  padding:10px;border-radius:14px;background:var(--card2);border:1px solid var(--border);
+  animation:cnSube .45s ease both;
+}
+@keyframes cnSube{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.mn-fila.gana{border-color:var(--green);box-shadow:0 0 16px rgba(57,255,139,.22);}
+.mn-fila.pierde{border-color:var(--accent);box-shadow:0 0 16px rgba(255,45,149,.22);}
+.mn-cab{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.mn-val{
+  font-size:16px;font-weight:900;color:var(--cn-cian);flex-shrink:0;
+  text-shadow:0 0 10px rgba(57,215,255,.6);
+}
+.mn-fila.pierde .mn-val{color:var(--accent);text-shadow:0 0 10px rgba(255,45,149,.6);}
+.mn-fila.gana .mn-val{color:var(--green);text-shadow:0 0 10px rgba(57,255,139,.6);}
+.mn-cartas{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+
+/* --- mayor o menor --- */
+.hl-turno{
+  text-align:center;font-size:14px;color:var(--muted);margin-bottom:12px;font-weight:700;
+  padding:10px;border-radius:13px;background:var(--card2);border:1px solid var(--border);
+}
+.hl-turno.mio{border-color:var(--gold);box-shadow:0 0 16px rgba(255,214,0,.25);color:var(--text);}
+.hl-turno b{color:var(--gold);font-size:17px;}
+.hl-racha{font-size:11.5px;color:var(--muted);margin-top:3px;font-weight:700;}
+.hl-mesa{display:flex;gap:14px;justify-content:center;align-items:center;padding:6px 0 12px;}
+.hl-hueco{display:flex;flex-direction:column;align-items:center;gap:7px;}
+.hl-hueco span{font-size:10.5px;font-weight:900;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);}
+.hl-flecha{font-size:26px;color:var(--muted);}
+.hl-res{
+  text-align:center;font-size:14px;font-weight:800;padding:10px;border-radius:12px;
+  margin-bottom:12px;
+}
+.hl-res.ok{color:var(--green);background:rgba(57,255,139,.09);border:1px solid rgba(57,255,139,.3);}
+.hl-res.fail{color:var(--accent);background:rgba(255,45,149,.09);border:1px solid rgba(255,45,149,.3);}
+.hl-res.empate{color:var(--gold);background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.3);}
+.hl-btns{display:flex;gap:9px;justify-content:center;}
+.hl-btns .btn{flex:1;max-width:170px;padding:13px;font-size:15px;}
+.hl-btns .btn[disabled]{opacity:.4;pointer-events:none;}
+.hl-tabla{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px;}
+.hl-t{font-size:11.5px;font-weight:700;background:var(--card2);border:1px solid var(--border);
+  border-radius:14px;padding:4px 10px;color:var(--muted);}
+.hl-t b{color:var(--cn-cian);}
+
+/* --- pantalla de la mano privada --- */
+.cn-mano{
+  display:none;position:fixed;inset:0;z-index:520;
+  flex-direction:column;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(70% 55% at 50% 45%,rgba(10,24,54,.95),rgba(3,3,10,.98));
+  backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+}
+.cn-mano.abierto{display:flex;animation:cnFade .22s ease;}
+.cn-mano-t{font-size:17px;font-weight:800;color:var(--muted);margin-bottom:18px;text-align:center;}
+.cn-mano-t b{color:var(--cn-cian);font-size:21px;text-shadow:0 0 14px rgba(57,215,255,.7);}
+.cn-mano-c{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;perspective:900px;}
+.cn-mano-v{
+  margin-top:20px;font-size:15px;font-weight:900;color:var(--cn-cian);
+  text-shadow:0 0 12px rgba(57,215,255,.6);
+}
+.cn-mano-b{margin-top:26px;width:100%;max-width:300px;}
+.cn-mano-s{font-size:11.5px;color:var(--muted);margin-top:14px;text-align:center;line-height:1.6;}
+
+/* --- aviso a pantalla completa (duelo) --- */
+.cn-aviso{
+  display:none;position:fixed;inset:0;z-index:510;
+  flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:pointer;
+  background:radial-gradient(70% 55% at 50% 45%,rgba(40,8,44,.94),rgba(3,3,10,.97));
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);text-align:center;
+}
+.cn-aviso.abierto{display:flex;animation:cnFade .22s ease;}
+.cn-av-e{font-size:56px;margin-bottom:14px;animation:cnSube .5s ease both;}
+.cn-av-t{font-size:22px;font-weight:900;line-height:1.4;margin-bottom:12px;
+  animation:cnSube .5s ease .12s both;}
+.cn-av-t b{color:var(--accent);text-shadow:0 0 16px rgba(255,45,149,.7);}
+.cn-av-s{font-size:16px;color:var(--muted);line-height:1.5;animation:cnSube .5s ease .24s both;}
+.cn-av-s b{color:var(--cn-cian);text-shadow:0 0 12px rgba(57,215,255,.6);}
+
+/* --- carta con mensaje --- */
+.cn-msg{
+  position:absolute;inset:13%;display:flex;align-items:center;justify-content:center;
+  text-align:center;font-weight:800;line-height:1.35;color:#eaf7ff;
+  text-shadow:0 0 12px rgba(57,215,255,.7);overflow:hidden;
+}
+
 </style>
 </head>
 <body>
 <div class="result-announce" id="announce"></div>
 
 <div class="rr-flash" id="rrFlash"></div>
+<div class="cn-mano" id="cnMano">
+  <div class="cn-mano-t" id="cnManoT"></div>
+  <div class="cn-mano-c" id="cnManoC"></div>
+  <div class="cn-mano-v" id="cnManoV"></div>
+  <button class="btn btn-primary cn-mano-b" onclick="cnManoCerrar()">&#x2705; Listo, ya vi</button>
+  <div class="cn-mano-s">Que nadie m&aacute;s vea la pantalla</div>
+</div>
+
+<div class="cn-aviso" id="cnAviso" onclick="cnAvisoCerrar()">
+  <div id="cnAvisoC"></div>
+  <div class="cn-tip" style="position:absolute;bottom:30px;">Toca para cerrar</div>
+</div>
+
 <div class="cn-full" id="cnFull" onclick="cnCerrar()">
   <div class="cn-rayos"></div>
   <div class="cn-flip" id="cnFlip">
@@ -2691,7 +2814,7 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v50</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v51</div></div>
 </div>
 
 <!-- RULETA -->
@@ -3324,20 +3447,6 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     <span class="turn-widget-init" onclick="goPage('members')">Iniciar turnos &rarr;</span>
   </div>
   <div class="card" style="padding:12px 15px;">
-    <!-- Style selector -->
-    <div class="card-title">Estilo de cartas</div>
-    <div class="card-style-sel">
-      <div class="card-style-btn active" id="csbNeon" onclick="setCardStyle('neon')">
-        <span class="cs-preview">&#x1F4A0;</span>Ne&oacute;n 3D
-      </div>
-      <div class="card-style-btn" id="csbClassic" onclick="setCardStyle('classic')">
-        <span class="cs-preview">&#x1F0CF;</span>Cl&aacute;sico
-      </div>
-      <div class="card-style-btn" id="csbDark" onclick="setCardStyle('dark')">
-        <span class="cs-preview">&#x1F3B4;</span>Oscuro
-      </div>
-    </div>
-    <div style="border-top:1px solid var(--border);margin:10px 0 12px;"></div>
     <div class="game-tabs">
       <div class="game-tab active" onclick="cardGame('random')">&#x1F3B4; Carta aleatoria</div>
       <div class="game-tab" onclick="cardGame('hand')">&#x1F91A; Repartir mano</div>
@@ -3352,25 +3461,20 @@ input[type=email]::placeholder,input[type=password]::placeholder{color:var(--mut
     </div>
     <!-- Repartir mano -->
     <div class="game-panel" id="gpHand">
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;"><span style="font-size:13px;color:var(--muted);">Cartas por persona:</span><div style="display:flex;gap:5px;" id="handCountBtns"></div></div>
-      <div id="handArea"></div>
-      <div style="text-align:center;margin-top:12px;"><button class="btn btn-gold" style="font-size:16px;padding:12px 32px;" onclick="dealHand()">&#x1F91A; REPARTIR</button></div>
+      <div id="mnArena" style="min-height:150px;"></div>
+      <div style="text-align:center;margin-top:14px;"><button class="btn btn-gold" style="font-size:16px;padding:12px 32px;" onclick="mnRepartir()">&#x1F91A; REPARTIR</button></div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6;text-align:center;">
+        Cada uno mira su mano a escondidas &middot; cuando todos vieron, se destapan<br>
+        La mano m&aacute;s alta se salva, la m&aacute;s baja toma
+      </div>
     </div>
     <!-- Mayor o Menor -->
     <div class="game-panel" id="gpHigher">
-      <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:10px;">Adivina si la siguiente carta es mayor o menor</div>
-      <div style="display:flex;gap:16px;justify-content:center;align-items:center;padding:16px 0;">
-        <div id="holCard" style="display:flex;align-items:center;justify-content:center;"></div>
-        <div style="font-size:32px;color:var(--muted);">&#x2192;</div>
-        <div id="nextCard" style="display:flex;align-items:center;justify-content:center;"></div>
+      <div id="hlArena" style="min-height:180px;"></div>
+      <div style="text-align:center;margin-top:14px;"><button class="btn btn-gold btn-sm" onclick="hlNueva()">&#x21BA; Nueva partida</button></div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6;text-align:center;">
+        Si aciertas sigues jugando y sumas racha &middot; si fallas tomas y pasa al siguiente
       </div>
-      <div id="holResult" style="text-align:center;font-size:15px;font-weight:700;min-height:28px;color:var(--green);margin-bottom:12px;"></div>
-      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn btn-primary" style="padding:12px 24px;font-size:15px;" onclick="holGuess('higher')">&#x1F53A; Mayor</button>
-        <button class="btn btn-secondary" style="padding:12px 24px;font-size:15px;" onclick="holGuess('lower')">&#x1F53B; Menor</button>
-        <button class="btn btn-gold btn-sm" onclick="holReset()">&#x21BA; Nueva</button>
-      </div>
-      <div id="holScore" style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);"></div>
     </div>
     <!-- Duelo -->
     <div class="game-panel" id="gpDuelo">
@@ -4764,6 +4868,8 @@ function salaAplicar(snap){
   boAplicar(v.botella);
   if(typeof voAplicar==='function')voAplicar(v.votacion);
   if(typeof sugAplicar==='function')sugAplicar(v.sugerencias);
+  if(typeof mnAplicar==='function')mnAplicar(v.mano);
+  if(typeof hlAplicar==='function')hlAplicar(v.mayor);
   if(typeof salaAplicarJuego==='function')salaAplicarJuego(v.juego);
   histRegistrar();
   salaRender();
@@ -10299,7 +10405,7 @@ function drawRandomCard(){
   document.getElementById('randomCardResult').innerHTML=buildCard(c,100,150,44,12);
   showCardPopup(c);turnAdvance();
 }
-function updateHandCountBtns(){document.getElementById('handCountBtns').innerHTML=[1,2,3,4,5,7].map(function(n){return '<button class="dcb'+(n===handCount?' active':'')+'" onclick="setHandCount('+n+')">'+n+'</button>';}).join('');}
+function updateHandCountBtns(){var _h=document.getElementById('handCountBtns');if(!_h)return;_h.innerHTML=[1,2,3,4,5,7].map(function(n){return '<button class="dcb'+(n===handCount?' active':'')+'" onclick="setHandCount('+n+')">'+n+'</button>';}).join('');}
 function setHandCount(n){handCount=n;updateHandCountBtns();}
 function dealHand(){
   var deck=shuffle(makeDeck());var people=members.length?members:['Mano'];
@@ -12122,6 +12228,387 @@ function cartasAbrir(){
   cartasPintarMazo();
   setCardStyle(cardStyle);
 }
+
+
+
+// ===== CARTAS: MANO SECRETA, MAYOR O MENOR POR TURNOS Y CUSTOM EN NEÓN (v51) =====
+
+// solo queda el estilo de neón
+cardStyle='neon';sv('cardStyle','neon');
+function setCardStyle(){cardStyle='neon';}
+
+// el juego de cartas ya se juega también en sala
+delete PH_SOLOJUEGO.cartas;
+
+function crJugadores(){
+  if(crEnSala())return salaJugadores.map(function(j){
+    return {name:j.name,avatar:j.avatar,isImg:j.isImg,uid:j.uid};
+  });
+  return members.map(function(m){
+    return {name:memberName(m),avatar:memberAvatar(m),isImg:memberIsImg(m),uid:''};
+  });
+}
+function crEnSala(){
+  return typeof salaEstado!=='undefined'&&salaEstado==='on'&&salaJugadores.length>1;
+}
+function crArbitro(){
+  if(!crEnSala())return true;
+  return salaJugadores.length&&salaJugadores[0].uid===fbUid;
+}
+function crYo(){
+  if(!crEnSala())return '';
+  var m=salaJugadores.filter(function(j){return j.uid===fbUid;})[0];
+  return m?m.name:'';
+}
+function crTragos(){return Math.max(1,Math.min(5,parseInt(ld('crTragos',2),10)||2));}
+function crSetTragos(n){
+  sv('crTragos',Math.max(1,Math.min(5,parseInt(n,10)||2)));
+  mnRender();hlRender();
+}
+function crPillsTragos(fn){
+  var t=crTragos();
+  return '<div class="cr-tragos"><span>Tragos</span>'+[1,2,3,4,5].map(function(n){
+    return '<button class="vo-tr'+(t===n?' on':'')+'" onclick="'+fn+'('+n+')">'+n+'</button>';
+  }).join('')+'</div>';
+}
+
+// ============ 1) REPARTIR MANO: mano secreta ============
+// Cada uno ve SOLO sus cartas. Cuando todos las vieron, se destapan de golpe:
+// la mano más alta se salva y la más baja toma.
+var mnE={ronda:0,manos:null,vistas:{},estado:'listo',turno:0};
+var mnCuantas=ld('mnCuantas',3);
+
+function mnSetCuantas(n){mnCuantas=Math.max(1,Math.min(5,n));sv('mnCuantas',mnCuantas);mnRender();}
+function mnValor(cartas){
+  var t=0;
+  (cartas||[]).forEach(function(c){t+=RANK_VAL[c.r]||0;});
+  return t;
+}
+function mnRepartir(){
+  var js=crJugadores();
+  if(js.length<2){ann('Necesitas al menos 2 jugadores');return;}
+  if(crEnSala()&&!crArbitro()){ann('Reparte el primero de la sala');return;}
+  var mazo=shuffle(makeDeck()),manos={};
+  js.forEach(function(j,i){
+    manos[crEnSala()?j.uid:j.name]=mazo.slice(i*mnCuantas,(i+1)*mnCuantas)
+      .map(function(c){return {r:c.r,s:c.s};});
+  });
+  if(crEnSala()&&salaRef){
+    salaRef.child('mano').set({ronda:mnE.ronda+1,manos:manos,vistas:null,ts:Date.now()});
+    return;
+  }
+  mnE={ronda:mnE.ronda+1,manos:manos,vistas:{},estado:'repartida',turno:0};
+  mnRender();
+}
+function mnClave(j){return crEnSala()?j.uid:j.name;}
+function mnFaltan(){
+  return crJugadores().filter(function(j){return !mnE.vistas[mnClave(j)];});
+}
+function mnVer(clave){
+  if(!mnE.manos||!mnE.manos[clave])return;
+  var js=crJugadores();
+  var quien=js.filter(function(j){return mnClave(j)===clave;})[0];
+  cnManoFull(quien?quien.name:'', mnE.manos[clave], function(){
+    mnE.vistas[clave]=1;
+    if(crEnSala()&&salaRef){try{salaRef.child('mano/vistas/'+clave).set(1);}catch(e){}}
+    else {
+      // pasando el celular: le toca al siguiente que no vio
+      var f=mnFaltan();
+      mnE.turno=f.length?js.indexOf(f[0]):0;
+    }
+    if(!mnFaltan().length)mnCerrar();
+    else mnRender();
+  });
+}
+function mnCerrar(){
+  if(mnE.estado==='fin')return;
+  mnE.estado='fin';
+  var res=mnResultado();
+  res.pierden.forEach(function(n){
+    if(typeof phSumaTop10==='function')phSumaTop10(n,crTragos());
+  });
+  mnRender();
+}
+function mnResultado(){
+  var js=crJugadores();
+  var filas=js.map(function(j){
+    return {name:j.name,av:j,cartas:(mnE.manos&&mnE.manos[mnClave(j)])||[],
+            val:mnValor((mnE.manos||{})[mnClave(j)])};
+  });
+  var vals=filas.map(function(f){return f.val;});
+  var alto=Math.max.apply(null,vals),bajo=Math.min.apply(null,vals);
+  return {
+    filas:filas.sort(function(a,b){return b.val-a.val;}),
+    ganan:(alto!==bajo)?filas.filter(function(f){return f.val===alto;}).map(function(f){return f.name;}):[],
+    pierden:(alto!==bajo)?filas.filter(function(f){return f.val===bajo;}).map(function(f){return f.name;}):[]
+  };
+}
+function mnAplicar(v){
+  if(!crEnSala())return;
+  if(!v||!v.manos)return;
+  if(v.ronda&&v.ronda!==mnE.ronda){
+    mnE={ronda:v.ronda,manos:v.manos,vistas:v.vistas||{},estado:'repartida',turno:0};
+  } else {
+    mnE.vistas=v.vistas||{};
+  }
+  if(mnE.estado!=='fin'&&!mnFaltan().length)mnCerrar();
+  else mnRender();
+}
+function mnRender(){
+  var el=document.getElementById('mnArena');
+  if(!el)return;
+  var js=crJugadores();
+  var h='<div class="cr-modo">'+(crEnSala()
+      ? '📡 En sala: cada uno ve <b>solo sus cartas</b> en su celular'
+      : '📱 En este celular: se pasa el teléfono y cada uno mira la suya')+'</div>';
+
+  if(js.length<2){
+    el.innerHTML=h+'<div class="tp-msg">Agrega al menos 2 jugadores</div>';
+    return;
+  }
+  h+='<div class="cr-fila2"><span>Cartas c/u</span>'
+    +[1,2,3,4,5].map(function(n){
+      return '<button class="vo-tr'+(mnCuantas===n?' on':'')+'" onclick="mnSetCuantas('+n+')">'+n+'</button>';
+    }).join('')+'</div>'
+    +crPillsTragos('crSetTragos');
+
+  if(mnE.estado==='listo'||!mnE.manos){
+    h+='<div class="tp-msg">Presiona <b>REPARTIR</b> y cada uno mira su mano a escondidas</div>';
+    el.innerHTML=h;return;
+  }
+
+  if(mnE.estado==='repartida'){
+    var mios=crEnSala()?[fbUid]:null;
+    h+='<div class="mn-lista">'+js.map(function(j,i){
+      var k=mnClave(j),visto=!!mnE.vistas[k];
+      var puedo=crEnSala()?(k===fbUid):(mnFaltan().length&&mnClave(mnFaltan()[0])===k);
+      return '<div class="mn-p'+(visto?' visto':'')+(puedo?' mio':'')+'">'
+        +'<div class="mn-av">'+avatarHTML(j,32)+'</div>'
+        +'<div class="mn-n">'+esc(j.name)+'</div>'
+        +(visto?'<span class="mn-ok">✅ ya vio</span>'
+               :(puedo?'<button class="btn btn-primary btn-sm" onclick="mnVer('+JSON.stringify(k)+')">👀 Ver mis cartas</button>'
+                      :'<span class="mn-esp">esperando…</span>'))
+        +'</div>';
+    }).join('')+'</div>';
+    var f=mnFaltan();
+    h+='<div class="cr-prog">'+(js.length-f.length)+' de '+js.length+' ya vieron'
+      +(f.length?' · falta '+esc(f.map(function(x){return x.name;}).join(', ')):'')+'</div>';
+    el.innerHTML=h;return;
+  }
+
+  // destapadas
+  var r=mnResultado();
+  h+='<div class="mn-mesa">'+r.filas.map(function(f,i){
+    var cls=(r.ganan.indexOf(f.name)>=0?' gana':'')+(r.pierden.indexOf(f.name)>=0?' pierde':'');
+    return '<div class="mn-fila'+cls+'" style="animation-delay:'+(i*110)+'ms;">'
+      +'<div class="mn-cab"><div class="mn-av">'+avatarHTML(f.av,28)+'</div>'
+        +'<div class="mn-n">'+esc(f.name)+'</div><div class="mn-val">'+f.val+'</div></div>'
+      +'<div class="mn-cartas">'+f.cartas.map(function(c,k){
+          return '<div class="cn-entra" style="animation-delay:'+(i*110+k*80)+'ms;">'
+            +cnCarta(c,52,78,24,8)+'</div>';
+        }).join('')+'</div>'
+      +'</div>';
+  }).join('')+'</div>';
+  if(r.pierden.length){
+    h+='<div class="vo-castigo"><span class="vo-castigo-e">🥃</span>'
+      +'<b>'+esc(r.pierden.join(' y '))+'</b> '+(r.pierden.length>1?'toman':'toma')+' <b>'+crTragos()+'</b>'
+      +'<div class="vo-castigo-s">Se salva '+esc(r.ganan.join(' y '))+' con la mano más alta</div></div>';
+  } else {
+    h+='<div class="vo-castigo empate">🤝 Empate: nadie toma</div>';
+  }
+  el.innerHTML=h;
+}
+
+// ============ 2) MAYOR O MENOR: por turnos ============
+var hlE={ronda:0,act:null,sig:null,idx:0,res:'',racha:{},estado:'listo'};
+
+function hlQuien(){
+  var js=crJugadores();
+  if(!js.length)return null;
+  return js[hlE.idx%js.length];
+}
+function hlMiTurno(){
+  var q=hlQuien();
+  if(!q)return false;
+  return crEnSala()?(q.uid===fbUid):true;
+}
+function hlNueva(){
+  var js=crJugadores();
+  if(!js.length){ann('Agrega jugadores');return;}
+  if(crEnSala()&&!crArbitro()){ann('Empieza el primero de la sala');return;}
+  var mazo=shuffle(makeDeck());
+  hlPublicar({ronda:hlE.ronda+1,act:{r:mazo[0].r,s:mazo[0].s},sig:null,idx:0,res:'',racha:{}});
+}
+function hlPublicar(e){
+  if(crEnSala()&&salaRef){
+    try{salaRef.child('mayor').set({r:e.ronda,act:e.act,sig:e.sig,idx:e.idx,res:e.res,racha:e.racha,ts:Date.now()});}catch(err){}
+    return;
+  }
+  hlE={ronda:e.ronda,act:e.act,sig:e.sig,idx:e.idx,res:e.res,racha:e.racha||{},estado:'jugando'};
+  hlRender();
+}
+function hlAdivinar(g){
+  if(!hlE.act){ann('Presiona Nueva partida');return;}
+  if(!hlMiTurno()){ann('No es tu turno');return;}
+  var js=crJugadores(),quien=hlQuien();
+  var mazo=shuffle(makeDeck());
+  var sig=mazo.filter(function(c){return !(c.r===hlE.act.r&&c.s===hlE.act.s);})[0];
+  var cv=RANK_VAL[hlE.act.r],nv=RANK_VAL[sig.r];
+  var res='empate';
+  if(nv>cv)res=(g==='higher')?'ok':'fail';
+  else if(nv<cv)res=(g==='lower')?'ok':'fail';
+  var racha={};
+  Object.keys(hlE.racha||{}).forEach(function(k){racha[k]=hlE.racha[k];});
+  var k=crEnSala()?quien.uid:quien.name;
+  var idx=hlE.idx;
+  if(res==='ok')racha[k]=(racha[k]||0)+1;
+  else if(res==='fail'){racha[k]=0;idx=hlE.idx+1;}
+  hlPublicar({ronda:hlE.ronda,act:{r:sig.r,s:sig.s},sig:{r:sig.r,s:sig.s},idx:idx,res:res,racha:racha});
+  if(res==='fail'&&typeof phSumaTop10==='function')phSumaTop10(quien.name,crTragos());
+}
+function hlAplicar(v){
+  if(!crEnSala()||!v)return;
+  hlE={ronda:v.r||0,act:v.act||null,sig:v.sig||null,idx:v.idx||0,
+       res:v.res||'',racha:v.racha||{},estado:v.act?'jugando':'listo'};
+  hlRender();
+}
+function hlRender(){
+  var el=document.getElementById('hlArena');
+  if(!el)return;
+  var js=crJugadores(),quien=hlQuien();
+  var h='<div class="cr-modo">'+(crEnSala()
+      ? '📡 En sala: todos ven la misma carta, pero solo juega el del turno'
+      : '📱 En este celular: se pasa el teléfono en cada turno')+'</div>';
+  if(!js.length){el.innerHTML=h+'<div class="tp-msg">Agrega jugadores</div>';return;}
+  h+=crPillsTragos('crSetTragos');
+  if(!hlE.act){
+    h+='<div class="tp-msg">Presiona <b>NUEVA PARTIDA</b> para empezar</div>';
+    el.innerHTML=h;return;
+  }
+  h+='<div class="hl-turno'+(hlMiTurno()?' mio':'')+'">'
+    +(hlMiTurno()?'Te toca a ti, ':'Le toca a ')+'<b>'+esc(quien?quien.name:'')+'</b>'
+    +'<div class="hl-racha">Racha: '+((hlE.racha||{})[crEnSala()?quien.uid:quien.name]||0)+'</div></div>';
+  h+='<div class="hl-mesa">'
+    +'<div class="hl-hueco">'+cnCarta(hlE.act,84,126,38,11)+'<span>ahora</span></div>'
+    +'<div class="hl-flecha">→</div>'
+    +'<div class="hl-hueco">'+cnDorso(84,126)+'<span>siguiente</span></div>'
+    +'</div>';
+  if(hlE.res){
+    var txt=hlE.res==='ok'?'✅ ¡Acertó! sigue jugando'
+      :hlE.res==='fail'?('❌ Falló · '+esc((js[(hlE.idx-1+js.length)%js.length]||{}).name||'')+' toma '+crTragos())
+      :'🤝 Empate, no pasa nada';
+    h+='<div class="hl-res '+hlE.res+'">'+txt+'</div>';
+  }
+  h+='<div class="hl-btns">'
+    +'<button class="btn btn-primary" '+(hlMiTurno()?'':'disabled')+' onclick="hlAdivinar(\'higher\')">🔺 Mayor</button>'
+    +'<button class="btn btn-secondary" '+(hlMiTurno()?'':'disabled')+' onclick="hlAdivinar(\'lower\')">🔻 Menor</button>'
+    +'</div>';
+  var rs=js.map(function(j){
+    var k=crEnSala()?j.uid:j.name;
+    return {n:j.name,v:(hlE.racha||{})[k]||0};
+  }).filter(function(x){return x.v>0;}).sort(function(a,b){return b.v-a.v;});
+  if(rs.length){
+    h+='<div class="hl-tabla">'+rs.map(function(x){
+      return '<span class="hl-t"><b>'+esc(x.n)+'</b> '+x.v+'</span>';
+    }).join('')+'</div>';
+  }
+  el.innerHTML=h;
+}
+
+// ============ 3) pantallas completas de neón ============
+// la mano privada de un jugador
+var cnManoFn=null;
+function cnManoFull(nombre,cartas,alCerrar){
+  var ov=document.getElementById('cnMano');
+  if(!ov)return;
+  cnManoFn=alCerrar||null;
+  var n=Math.max(1,(cartas||[]).length);
+  var w=Math.max(74,Math.min(150,Math.round((Math.min(window.innerWidth,430)-60)/n)));
+  var h=Math.round(w*1.5);
+  document.getElementById('cnManoT').innerHTML='Cartas de <b>'+esc(nombre)+'</b>';
+  document.getElementById('cnManoC').innerHTML=(cartas||[]).map(function(c,i){
+    return '<div class="cn-entra" style="animation-delay:'+(i*110)+'ms;">'
+      +cnCarta(c,w,h,Math.round(w*0.56),Math.round(w*0.16))+'</div>';
+  }).join('');
+  document.getElementById('cnManoV').textContent='Suma: '+mnValor(cartas);
+  ov.classList.add('abierto');
+}
+function cnManoCerrar(){
+  var ov=document.getElementById('cnMano');
+  if(ov)ov.classList.remove('abierto');
+  var f=cnManoFn;cnManoFn=null;
+  if(f)f();
+}
+
+// una carta con un mensaje adentro (cartas custom)
+function cnCartaTexto(txt,w,h){
+  var r=Math.round(w*0.09);
+  return '<div class="cn cn-txt" style="width:'+w+'px;height:'+h+'px;border-radius:'+r+'px;">'
+    +'<div class="cn-borde" style="border-radius:'+r+'px;"></div>'
+    +'<div class="cn-borde2" style="border-radius:'+Math.max(2,r-3)+'px;"></div>'
+    +'<div class="cn-esq tl" style="font-size:'+Math.round(w*0.13)+'px;">★<i>♠</i></div>'
+    +'<div class="cn-msg" style="font-size:'+Math.max(15,Math.round(w*0.115))+'px;">'+esc(txt)+'</div>'
+    +'<div class="cn-esq br" style="font-size:'+Math.round(w*0.13)+'px;">★<i>♠</i></div>'
+    +'<div class="cn-brillo" style="border-radius:'+r+'px;"></div>'
+    +'</div>';
+}
+function drawCustomCard(){
+  var lista=phItems('cartas',phCat.cartas||'mixto');
+  if(!lista.length){ann('Sin cartas en esta categoría');return;}
+  var v=lista[Math.floor(Math.random()*lista.length)];
+  var el=document.getElementById('customCardResult');
+  if(el)el.textContent=v;
+  var ov=document.getElementById('cnFull');
+  if(!ov)return;
+  var w=Math.min(300,Math.round(Math.min(window.innerWidth*0.76,window.innerHeight*0.44)));
+  var h=Math.round(w*1.5);
+  document.getElementById('cnFlipFrente').innerHTML=cnCartaTexto(v,w,h);
+  document.getElementById('cnFlipAtras').innerHTML=cnDorso(w,h);
+  var nom=document.getElementById('cnNombre');
+  if(nom)nom.innerHTML='Carta del mazo';
+  ov.className='cn-full abierto';
+  var f=document.getElementById('cnFlip');
+  f.classList.remove('girada');
+  if(cnTimer)clearTimeout(cnTimer);
+  cnTimer=setTimeout(function(){f.classList.add('girada');},420);
+  if(typeof turnAdvance==='function')turnAdvance();
+}
+
+// ============ 4) el duelo se destapa una por una ============
+var duMostrarV51=duMostrar;
+duMostrar=function(manos){
+  duMostrarV51(manos);
+  if(duTimerV51)clearTimeout(duTimerV51);
+  duTimerV51=setTimeout(duVeredicto,1500);
+};
+var duTimerV51=null;
+function duVeredicto(){
+  if(!duManos.length)return;
+  var vals=duManos.map(function(m){return m.valor;});
+  var alto=Math.max.apply(null,vals),bajo=Math.min.apply(null,vals);
+  if(alto===bajo)return;
+  var toman=duManos.filter(function(m){return m.valor===alto;}).map(function(m){return m.name;});
+  var mandan=duManos.filter(function(m){return m.valor===bajo;}).map(function(m){return m.name;});
+  var ov=document.getElementById('cnAviso');
+  if(!ov)return;
+  document.getElementById('cnAvisoC').innerHTML=
+    '<div class="cn-av-e">⚔️</div>'
+    +'<div class="cn-av-t">🍺 <b>'+esc(toman.join(' y '))+'</b> '+(toman.length>1?'toman':'toma')+'</div>'
+    +'<div class="cn-av-s">👉 <b>'+esc(mandan.join(' y '))+'</b> '+(mandan.length>1?'eligen':'elige')+' a quién obligar</div>';
+  ov.classList.add('abierto');
+  toman.forEach(function(n){if(typeof phSumaTop10==='function')phSumaTop10(n,1);});
+}
+function cnAvisoCerrar(){
+  var ov=document.getElementById('cnAviso');
+  if(ov)ov.classList.remove('abierto');
+}
+
+// ============ 5) enganches ============
+var cartasAbrirV51=cartasAbrir;
+cartasAbrir=function(){
+  cartasAbrirV51();
+  mnRender();hlRender();
+};
 
 
 // INIT
