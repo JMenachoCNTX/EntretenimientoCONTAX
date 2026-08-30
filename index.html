@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v57</title>
+<title>🎉 Party Hub v58</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -3795,7 +3795,7 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v57</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v58</div></div>
 </div>
 
 <!-- RULETA -->
@@ -14767,6 +14767,111 @@ function rrRender(){
 // el aviso se repinta cuando cambia algo de la sala
 var salaRenderV57=salaRender;
 salaRender=function(){salaRenderV57();slPintarAviso();};
+
+
+
+// ===== JUGADORES FANTASMA (v58) =====
+// Cuando un celular se duerme o pierde señal, Firebase le borra su ficha de
+// la sala (onDisconnect). Al despertar, la app seguía escribiendo solamente
+// "en qué pantalla estoy" y eso volvía a crear una ficha SIN NOMBRE.
+// Ese fantasma contaba como jugador, nunca podía estar listo, y el juego se
+// quedaba esperando: "Esperando a undefined".
+
+var slReReg=0, slBarrido=0;
+
+function slNombreLimpio(j){
+  var n=(j&&typeof j.n==='string')?j.n.trim():'';
+  return n;
+}
+
+// vuelvo a inscribirme entero si mi ficha se perdió o quedó a medias
+function slReRegistrar(){
+  if(salaEstado!=='on'||!salaRef||!fbUid)return;
+  if(Date.now()-slReReg<4000)return;
+  slReReg=Date.now();
+  var yo=perfilComoMiembro();
+  salaAvatarChico(yo,function(av,esImg){
+    if(salaEstado!=='on'||!salaRef)return;
+    var miRef=salaRef.child('jugadores/'+fbUid);
+    try{
+      miRef.set({n:perfil.nombre||'Yo',a:av||'',i:esImg?1:0,
+                 ts:Date.now(),p:salaMiPagina||'menu'});
+      miRef.onDisconnect().remove();
+    }catch(e){}
+  });
+}
+
+// al escribir mi pantalla, nunca dejar la ficha sin nombre
+function salaMarcarPagina(id){
+  salaMiPagina=id;
+  if(salaEstado==='on'&&salaRef&&fbUid){
+    try{
+      salaRef.child('jugadores/'+fbUid).update({p:id,n:perfil.nombre||'Yo'});
+    }catch(e){}
+  }
+}
+
+// las fichas sin nombre no entran al juego, y quien manda las borra de la sala
+var salaAplicarV58=salaAplicar;
+salaAplicar=function(snap){
+  var v=(snap&&snap.val)?snap.val():snap;
+  if(v&&v.jugadores){
+    var limpio={},fantasmas=[],yoOk=false;
+    Object.keys(v.jugadores).forEach(function(uid){
+      var j=v.jugadores[uid];
+      if(slNombreLimpio(j)){
+        limpio[uid]=j;
+        if(uid===fbUid&&j.ts)yoOk=true;
+      }else{
+        fantasmas.push(uid);
+      }
+    });
+    v.jugadores=limpio;
+
+    // si mi propia ficha se perdió (celular dormido, sin señal), me reinscribo
+    if(salaEstado==='on'&&!yoOk)slReRegistrar();
+
+    // y el que manda barre los fantasmas para que le desaparezcan a todos
+    if(fantasmas.length&&salaRef&&Date.now()-slBarrido>4000){
+      var primero='';
+      var ks=Object.keys(limpio).sort(function(a,b){
+        return (limpio[a].ts||0)-(limpio[b].ts||0);
+      });
+      primero=ks[0]||'';
+      if(primero===fbUid){
+        slBarrido=Date.now();
+        fantasmas.forEach(function(uid){
+          if(uid===fbUid)return;             // el mío lo arreglo reinscribiéndome
+          try{salaRef.child('jugadores/'+uid).remove();}catch(e){}
+        });
+      }
+    }
+  }
+  salaAplicarV58({val:function(){return v;}});
+};
+
+// por si acaso, que ningún nombre vacío llegue a la pantalla
+function slFaltan(pagina){
+  if(salaEstado!=='on')return [];
+  return salaJugadores.filter(function(j){return j.p!==pagina&&j.name;})
+                      .map(function(j){return j.name;});
+}
+function rrFaltan(){
+  if(!rrEnSala()||rrEstado!=='listo')return [];
+  return rrJugadores().filter(function(j){return j.name&&!rrListos[j.name];})
+                      .map(function(j){return j.name;});
+}
+function tpFaltan(){
+  if(!tpEnSala()||tpEstado!=='ya')return [];
+  return tpJugadores().filter(function(j){return j.name&&!tpRonda[j.name];})
+                      .map(function(j){return j.name;});
+}
+var phEsperaHTMLV58=phEsperaHTML;
+phEsperaHTML=function(faltan,accion){
+  var l=(faltan||[]).filter(function(n){return n&&n!=='undefined';});
+  if(!l.length)return '';
+  return phEsperaHTMLV58(l,accion);
+};
 
 
 // INIT
