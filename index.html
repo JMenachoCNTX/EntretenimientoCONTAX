@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Hub v56</title>
+<title>🎉 Party Hub v57</title>
 <style>
 :root{
   --bg:#0a0a14;--card:#141428;--card2:#1a1a35;
@@ -3341,12 +3341,93 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
   color:rgba(255,255,255,.33);
 }
 
+
+/* ===== LA SALA MANDA (v57) ===== */
+
+/* el aviso fijo de "el grupo está en otro juego" */
+#slBar{
+  display:none;position:sticky;top:0;z-index:99;
+  padding:8px 10px 4px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(12,10,26,.96),rgba(12,10,26,.72) 70%,transparent);
+}
+#slBar.on{display:block;}
+.sl-in{
+  pointer-events:auto;cursor:pointer;
+  max-width:640px;margin:0 auto;
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:999px;
+  background:linear-gradient(150deg,rgba(255,45,149,.95),rgba(120,20,180,.95));
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 8px 30px rgba(0,0,0,.6),0 0 26px rgba(255,45,149,.45);
+  animation:slEntra .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes slEntra{from{transform:translateY(-24px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.sl-pt{
+  width:9px;height:9px;border-radius:50%;background:#fff;flex-shrink:0;
+  box-shadow:0 0 10px #fff;animation:slLate 1.1s ease-in-out infinite;
+}
+@keyframes slLate{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.7);}}
+.sl-tx{flex:1;min-width:0;line-height:1.25;}
+.sl-tx b{display:block;font-size:10px;font-weight:900;letter-spacing:1.2px;
+  text-transform:uppercase;color:rgba(255,255,255,.75);}
+.sl-tx span{display:block;font-size:14.5px;font-weight:900;color:#fff;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sl-btn{
+  flex-shrink:0;font-size:12.5px;font-weight:900;color:#2a0018;
+  background:#fff;border-radius:999px;padding:7px 15px;
+  box-shadow:0 2px 10px rgba(0,0,0,.3);
+}
+
+
+/* el aviso grande cuando el grupo cambia de juego */
+.sl-flash{
+  display:none;position:fixed;inset:0;z-index:640;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:26px 20px;pointer-events:none;
+  background:radial-gradient(60% 45% at 50% 46%,rgba(120,30,190,.96),rgba(10,4,20,.97) 75%);
+}
+.sl-flash.abierto{display:flex;animation:cnFade .2s ease;}
+.sl-flash-k{
+  font-size:12px;font-weight:900;letter-spacing:3.4px;text-transform:uppercase;
+  color:rgba(255,255,255,.6);margin-bottom:12px;
+}
+.sl-flash-t{
+  font-family:'PHNeon','Brush Script MT','Segoe Script',cursive;
+  font-size:clamp(38px,12vw,72px);line-height:1.2;color:#fff;text-align:center;
+  text-shadow:0 0 6px #fff,0 0 14px #ff2d95,0 0 30px #ff2d95,0 0 60px #ff2d95;
+  animation:torPrende .8s ease both;
+}
+.sl-flash-s{
+  margin-top:16px;font-size:13px;font-weight:900;letter-spacing:1.6px;
+  text-transform:uppercase;color:rgba(255,255,255,.62);text-align:center;
+  opacity:0;animation:cnEntra .4s ease .45s forwards;
+}
+
+/* la barra de adentro del juego */
+.lobby-btn2{width:100%;margin-top:10px;}
+
+.sl-in.manda{
+  background:linear-gradient(150deg,rgba(0,180,120,.95),rgba(0,90,140,.95));
+  box-shadow:0 8px 30px rgba(0,0,0,.6),0 0 26px rgba(0,200,150,.4);
+}
+.sl-in.espera{
+  cursor:default;
+  background:linear-gradient(150deg,rgba(60,50,110,.95),rgba(30,22,60,.95));
+  box-shadow:0 8px 26px rgba(0,0,0,.55);
+}
+
 </style>
 </head>
 <body>
 <div class="result-announce" id="announce"></div>
 
 <div class="rr-flash" id="rrFlash"></div>
+<div class="sl-flash" id="slFlash">
+  <div class="sl-flash-k">Todos a jugar</div>
+  <div class="sl-flash-t" id="slFlashTx"></div>
+  <div class="sl-flash-s" id="slFlashSub"></div>
+</div>
+
 <div class="td-full" id="tdFull" onclick="tdFullCerrar()">
   <div class="td-pared"></div>
   <div class="td-luz"></div>
@@ -3518,6 +3599,7 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
   <div class="ab-title" id="abTitle">🎉 Party Hub</div>
   <button class="ab-sala" id="abSala" style="display:none;" onclick="goPage('sala')">📡</button>
 </div>
+<div id="slBar"></div>
 
 <!-- TU PERFIL -->
 <div class="page cat-portada" id="page-perfil">
@@ -3713,7 +3795,7 @@ body.hay-tabs.ct-on .page.active{padding-bottom:180px;}
     </div>
     <div id="turnOrderPreview" style="margin-top:10px;"></div>
   </div>
-  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v56</div></div>
+  <div class="card" style="text-align:center;padding:28px 16px;"><div style="font-size:46px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:22px;font-weight:800;margin-bottom:6px;">Party Hub</div><div style="color:var(--muted);font-size:13px;line-height:1.7;">Ruleta &middot; Dados &middot; Verdad o Reto &middot; Bomba<br>Cartas &middot; Encuentra &middot; TODIS &middot; Top 10</div><div style="margin-top:10px;color:var(--muted);font-size:11px;">Todo guardado en tu dispositivo &middot; v57</div></div>
 </div>
 
 <!-- RULETA -->
@@ -14366,6 +14448,325 @@ CT.todis={
   on:function(){return !!todisSpinning;},
   parar:function(){tdParar();tdFullCerrar();}
 };
+
+
+
+// ===== LA SALA MANDA: el anfitrión elige el juego y entran todos (v57) =====
+// Antes cada uno podía irse a un juego distinto y los juegos esperaban a
+// TODOS los de la sala, aunque estuvieran en otra pantalla: por eso en
+// Ruleta Rusa nadie podía disparar. Ahora:
+//   1) el juego lo elige quien creó la sala, y a todos les entra solo;
+//   2) si alguien se sale, le queda un aviso grande con el botón para volver;
+//   3) cada juego solo espera a los que están en esa pantalla.
+
+// ---------- quién manda ----------
+function slHostUid(){
+  if(salaEstado!=='on')return fbUid||'';
+  for(var i=0;i<salaJugadores.length;i++)
+    if(salaJugadores[i].uid===salaHost)return salaHost;   // el anfitrión sigue aquí
+  return salaJugadores.length?salaJugadores[0].uid:'';    // se fue: manda el primero
+}
+function slMando(){return salaEstado!=='on'||slHostUid()===fbUid;}
+function slNombreMando(){
+  var u=slHostUid();
+  for(var i=0;i<salaJugadores.length;i++)
+    if(salaJugadores[i].uid===u)return salaJugadores[i].name;
+  return 'el anfitrión';
+}
+function slNombreDe(uid){
+  for(var i=0;i<salaJugadores.length;i++)
+    if(salaJugadores[i].uid===uid)return salaJugadores[i].name;
+  return '';
+}
+// mi nombre tal como lo ve la sala (si hay dos "Juan", aquí soy "Juan (2)")
+function phYo(){
+  return (salaEstado==='on'&&slNombreDe(fbUid))||perfil.nombre||'Yo';
+}
+
+// ---------- qué páginas son juegos del grupo ----------
+var SL_NO_JUEGO={menu:1,juegos:1,cats:1,members:1,invitar:1,config:1,sala:1,
+                 perfil:1,modo:1,top10:1,eventos:1};
+function slEsJuego(k){return !!MENU_NOMBRE[k]&&!SL_NO_JUEGO[k];}
+
+// ---------- sólo esperar a los que están en esa pantalla ----------
+function slPresentes(pagina){
+  if(salaEstado!=='on')return salaJugadores;
+  var aqui=salaJugadores.filter(function(j){return j.p===pagina;});
+  return aqui.length>=2?aqui:salaJugadores;   // nunca dejar el juego trabado
+}
+function slFaltan(pagina){
+  if(salaEstado!=='on')return [];
+  return salaJugadores.filter(function(j){return j.p!==pagina;})
+                      .map(function(j){return j.name;});
+}
+
+// ---------- el aviso de "el grupo está en otro juego" ----------
+function slPintarAviso(){
+  var bar=document.getElementById('slBar');
+  if(!bar)return;
+  function nada(){
+    bar.classList.remove('on');bar.innerHTML='';
+    document.body.classList.remove('sl-on');
+  }
+  if(salaEstado!=='on')return nada();
+  var pg=salaMiPagina||'';
+  var k=(salaJuego&&salaJuego.k)||'';
+
+  if(k){
+    if(pg===k)return nada();                       // ya está donde tiene que estar
+    bar.innerHTML='<div class="sl-in" onclick="goPage(\''+k+'\')">'
+      +'<span class="sl-pt"></span>'
+      +'<div class="sl-tx"><b>El grupo está jugando</b><span>'+esc(MENU_NOMBRE[k]||k)+'</span></div>'
+      +'<span class="sl-btn">Entrar</span>'
+      +'</div>';
+  }else{
+    // todavía nadie eligió: que cada uno sepa qué esperar
+    if(pg&&pg!=='menu'&&pg!=='juegos'&&pg!=='cats'&&pg!=='sala')return nada();
+    if(slMando()){
+      bar.innerHTML='<div class="sl-in manda" onclick="goPage(\'juegos\')">'
+        +'<span class="sl-pt"></span>'
+        +'<div class="sl-tx"><b>Tú eliges por el grupo</b>'
+          +'<span>Toca un juego y entran todos</span></div>'
+        +'</div>';
+    }else{
+      bar.innerHTML='<div class="sl-in espera">'
+        +'<span class="sl-pt"></span>'
+        +'<div class="sl-tx"><b>Esperando</b>'
+          +'<span>'+esc(slNombreMando())+' elige el juego</span></div>'
+        +'</div>';
+    }
+  }
+  bar.classList.add('on');
+  document.body.classList.add('sl-on');
+}
+
+// ---------- el aviso grande cuando el grupo cambia de juego ----------
+function slFlash(k){
+  var ov=document.getElementById('slFlash');
+  if(!ov)return;
+  var t=document.getElementById('slFlashTx');
+  if(t)t.textContent=MENU_NOMBRE[k]||k;
+  var s=document.getElementById('slFlashSub');
+  if(s)s.textContent=slMando()?'Elegiste este juego':(slNombreMando()+' eligió este juego');
+  ov.classList.remove('abierto');void ov.offsetWidth;
+  ov.classList.add('abierto');
+  if(navigator.vibrate){try{navigator.vibrate(60);}catch(e){}}
+  clearTimeout(slFlash.t);
+  slFlash.t=setTimeout(function(){ov.classList.remove('abierto');},1900);
+}
+
+// ---------- el juego del grupo ----------
+// la del programa base ya no decide nada: todo pasa por goPage
+function salaAbrirJuego(k){return false;}
+
+function slPonerJuego(k){
+  if(salaEstado!=='on'||!salaRef)return;
+  if(salaJuego&&salaJuego.k===k)return;
+  try{salaRef.child('juego').set({k:k,estado:'lobby',ts:Date.now()});}catch(e){}
+}
+
+var slUlt='';
+function salaAplicarJuego(v){
+  salaJuego=(v&&v.k)?{k:v.k,estado:'lobby'}:null;
+  var k=salaJuego?salaJuego.k:'';
+  if(k&&k!==slUlt){
+    slUlt=k;
+    if(salaMiPagina!==k){slFlash(k);goPage(k);}
+  }else if(!k&&slUlt){
+    slUlt='';
+    if(salaMiPagina&&slEsJuego(salaMiPagina))goPage('juegos');
+  }
+  salaPintarLobby();
+  slPintarAviso();
+}
+
+var goPageV57=goPage;
+goPage=function(id){
+  if(salaEstado==='on'&&slEsJuego(id)){
+    if(slMando()){
+      slPonerJuego(id);
+    }else if(salaJuego&&salaJuego.k!==id){
+      ann('🎮 El juego lo elige '+slNombreMando());
+      return goPageV57(salaJuego.k);
+    }else if(!salaJuego){
+      ann('⏳ Espera a que '+slNombreMando()+' elija el juego');
+      return goPageV57('juegos');
+    }
+  }
+  goPageV57(id);
+  slPintarAviso();
+};
+
+function slTerminar(){
+  if(!salaRef)return;
+  if(!slMando()){ann('Lo termina '+slNombreMando());return;}
+  try{salaRef.child('juego').remove();}catch(e){}
+  slUlt='';
+  goPage('juegos');
+  ann('Listo, elige otro juego');
+}
+
+// ---------- la barra de adentro del juego, ahora clarita ----------
+function salaLobbyHTML(){
+  if(salaEstado!=='on'||!salaJuego||!salaJuego.k)return '';
+  var k=salaJuego.k;
+  if(salaMiPagina!==k)return '';
+  var faltan=slFaltan(k);
+  var total=salaJugadores.length;
+  var aqui=total-faltan.length;
+  var solo=(typeof PH_SOLOJUEGO!=='undefined'&&PH_SOLOJUEGO[k]);
+  return '<div class="lobby">'
+    +'<div class="lobby-t">👥 '+aqui+' de '+total+' en '+esc(MENU_NOMBRE[k]||k)+'</div>'
+    +(faltan.length
+      ? '<div class="lobby-s">Ya les avisamos. Falta'+(faltan.length>1?'n':'')
+        +': <b>'+esc(faltan.join(', '))+'</b></div>'
+      : '<div class="lobby-s">Están todos. ¡A jugar!</div>')
+    +(solo?'<div class="lobby-s">📱 Este se juega en un solo celular: miren la pantalla de '
+        +esc(slNombreMando())+'</div>':'')
+    +(slMando()
+      ? '<button class="btn btn-secondary btn-sm lobby-btn2" onclick="slTerminar()">🔄 Cambiar de juego (todos)</button>'
+      : '<div class="lobby-s">El juego lo cambia <b>'+esc(slNombreMando())+'</b></div>')
+    +'</div>';
+}
+function salaTrabada(){return false;}   // ya no se encierra a nadie
+function salaPintarLobby(){
+  var els=document.querySelectorAll('.lobby-slot');
+  var h=salaLobbyHTML();
+  for(var i=0;i<els.length;i++)els[i].innerHTML=h;
+  document.body.classList.remove('sala-trabada');
+}
+
+// ---------- cada juego espera sólo a los que están ahí ----------
+function slMap(pagina){
+  return slPresentes(pagina).map(function(j){
+    return {name:j.name,avatar:j.avatar,isImg:j.isImg,uid:j.uid};
+  });
+}
+function slNombres(pagina){
+  return slPresentes(pagina).map(function(j){return j.name;});
+}
+
+function rrJugadores(){
+  if(rrEnSala())return slMap('rusa');
+  return members.map(function(m){return {name:memberName(m),avatar:memberAvatar(m),isImg:memberIsImg(m),uid:''};});
+}
+function tpJugadores(){
+  if(tpEnSala())return slMap('reflejos');
+  return members.map(function(m){return {name:memberName(m),avatar:memberAvatar(m),isImg:memberIsImg(m),uid:''};});
+}
+function adJugadores(){
+  if(adEnSala())return slMap('adivina');
+  return members.map(function(m){return {name:memberName(m),avatar:memberAvatar(m),isImg:memberIsImg(m)};});
+}
+function boJugadores(){
+  if(boEnSala())return slMap('botella');
+  return members.map(function(m){return {name:memberName(m),avatar:memberAvatar(m),isImg:memberIsImg(m)};});
+}
+function voJugadores(){
+  if(voEnSala())return slMap('votos');
+  return members.map(function(m){return {name:memberName(m),avatar:m.avatar||'',isImg:!!m.isImg,uid:''};});
+}
+function palJugadores(){
+  if(palEnSala())return slNombres('palabras');
+  if(turnActive&&turnOrder.length)return turnOrder.map(function(m){return memberName(m);});
+  return members.map(function(m){return memberName(m);});
+}
+function bsJugadores(){
+  if(bsEnSala())return slNombres('basta');
+  if(turnActive&&turnOrder.length)return turnOrder.map(function(m){return memberName(m);});
+  return members.map(function(m){return memberName(m);});
+}
+function tbNombres(){
+  if(tbEnSala())return slNombres('tablero');
+  if(turnActive&&turnOrder.length)return turnOrder.map(function(m){return memberName(m);});
+  return members.map(function(m){return memberName(m);});
+}
+function loNombres(){
+  if(loEnSala())return slNombres('loro');
+  if(turnActive&&turnOrder.length)return turnOrder.map(function(m){return memberName(m);});
+  return members.map(function(m){return memberName(m);});
+}
+
+// ---------- Ruleta Rusa: que el nombre repetido no trabe la ronda ----------
+function rrAplicar(r){
+  if(!rrEnSala()||!r)return;
+  var ls=r.listos||{};
+  var nuevos={};
+  Object.keys(ls).forEach(function(uid){
+    if(!ls[uid])return;
+    nuevos[slNombreDe(uid)||ls[uid]]=true;      // el nombre de la sala, no el del celular
+  });
+  rrListos=nuevos;
+  if(r.ronda&&r.ronda!==rrRonda&&r.victima){
+    rrRonda=r.ronda;
+    rrLimpiar();
+    var falta=(r.ts||0)-fbServerNow();
+    rrTimers.push(setTimeout(function(){rrDisparar(r.victima);},Math.max(60,falta)));
+    return;
+  }
+  if(rrEstado==='listo'){rrRender();rrRevisar();}
+}
+function rrTapDisparar(){
+  if(rrEstado!=='listo'||rrCargando)return;
+  var js=rrJugadores();
+  if(js.length<2){ann('Necesitas al menos 2 jugadores aquí');return;}
+  if(rrEnSala()){
+    var yo=phYo();
+    if(rrListos[yo])return;
+    rrListo(yo,fbUid);
+    return;
+  }
+  rrDisparar(rrElegirVictima(js).name);
+}
+function rrRender(){
+  var el=document.getElementById('rrArena');
+  if(!el)return;
+  var js=rrJugadores();
+  var modo=document.getElementById('rrModoTxt');
+  if(modo)modo.textContent=rrEnSala()
+    ? '📡 En sala: cada uno toca su pantalla'
+    : '📱 En este celular: toca la pantalla para disparar';
+  rrEtiquetaTambor();
+  if(js.length<2){el.innerHTML='<div class="tp-msg">Se necesitan 2 jugadores en esta pantalla</div>';return;}
+
+  if(rrEstado==='fin'){
+    el.innerHTML='<div class="rr-fin'+(rrUltimoBala?' bala':' salvado')+'">'
+      +'<div class="rr-fin-t">'+(rrUltimoBala?'💥 ¡BANG!':'😮‍💨 Click…')+'</div>'
+      +'<div class="rr-fin-n">'+esc(rrVictima)+'</div>'
+      +'<div class="rr-fin-s">'+(rrUltimoBala?'Le tocó: toma':'Recámara vacía, se salvó')+'</div>'
+      +'</div>'
+      +(rrCfg.modo==='tension'?'<div class="rr-camlbl">Quedan '+(6-(rrIdx%6))+' recámaras</div>':'')
+      +'<div class="rr-toca">👆 Toca de nuevo para otra ronda</div>';
+    return;
+  }
+  if(rrEstado==='girando'){
+    el.innerHTML='<div class="rr-girando">Girando el tambor…</div>';
+    return;
+  }
+
+  if(rrEnSala()){
+    var yo=phYo();
+    var falt=rrFaltan();
+    el.innerHTML='<div class="rr-toca">'
+      +(rrListos[yo]?'✔ Listo, esperando a los demás…':'👆 Toca la pantalla para apretar el gatillo')
+      +'</div>'
+      +'<div class="tp-otros">'+js.map(function(j){
+        return '<div class="tp-mini'+(rrListos[j.name]?' ok':'')+'">'+esc(j.name)+(rrListos[j.name]?' ✔':'')+'</div>';
+      }).join('')+'</div>'
+      +((rrListos[yo]&&falt.length)?phEsperaHTML(falt,'rrSeguirSinEllos()'):'');
+    if(rrListos[yo]&&falt.length)phEsperaArranca('rrRender');else phEsperaPara();
+    return;
+  }
+
+  var quien=(rrCfg.modo==='tension')?js[rrTurno%js.length].name:'';
+  el.innerHTML='<div class="rr-toca">👆 Toca la pantalla para disparar</div>'
+    +(quien?'<div class="rr-turnoTxt">Le toca a <b>'+esc(quien)+'</b></div>'
+           :'<div class="rr-turnoTxt">Sale uno al azar</div>');
+}
+
+// el aviso se repinta cuando cambia algo de la sala
+var salaRenderV57=salaRender;
+salaRender=function(){salaRenderV57();slPintarAviso();};
 
 
 // INIT
